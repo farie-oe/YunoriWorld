@@ -1,0 +1,162 @@
+/* ---------------------------------------------------------
+   YourAnime design tokens
+   Default theme: "Default White Kawaii"
+   Overridden per-theme in styles/themes.css via [data-theme]
+--------------------------------------------------------- */
+:root {
+  /* colour tokens */
+  --color-bg: #fffbf6;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #fdf3f7;
+  --color-primary: #f3b8cb;
+  --color-primary-hover: #ec9fb8;
+  --color-secondary: #d9cff0;
+  --color-accent: #bfe0f2;
+  --color-text: #423b4d;
+  --color-text-muted: #8a8296;
+  --color-border: #f0dce7;
+  --color-shadow: rgba(140, 110, 130, 0.14);
+  --color-danger: #e08999;
+  --color-danger-hover: #d5707e;
+  --color-on-primary: #4a2f3b;
+
+  /* radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* spacing scale */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* shadow */
+  --shadow-sm: 0 2px 8px var(--color-shadow);
+  --shadow-md: 0 8px 24px var(--color-shadow);
+  --shadow-lg: 0 16px 40px var(--color-shadow);
+
+  /* typography */
+  --font-heading: 'Fredoka', system-ui, 'Segoe UI', sans-serif;
+  --font-body: 'Nunito', system-ui, 'Segoe UI', sans-serif;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100svh;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+#root {
+  min-height: 100svh;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+/* ---------------- typography utilities ---------------- */
+
+.ya-page-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-3xl);
+  color: var(--color-text);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+.ya-section-heading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-xl);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-body-text {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-text-muted {
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0;
+}
+
+.ya-nav-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+}
+
+.ya-meta-text {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.02em;
+}
+
+.ya-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* focus visibility for accessibility */
+:focus-visible {
+  outline: 2px solid var(--color-secondary);
+  outline-offset: 2px;
+}

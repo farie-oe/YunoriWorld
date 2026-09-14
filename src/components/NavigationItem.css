@@ -1,0 +1,25 @@
+.ya-nav-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.ya-nav-item:hover {
+  background: var(--color-surface-secondary);
+  color: var(--color-text);
+}
+
+.ya-nav-item--active {
+  background: var(--color-surface-secondary);
+  color: var(--color-text);
+  box-shadow: inset 3px 0 0 var(--color-primary);
+}
+
+.ya-nav-item__label {
+  white-space: nowrap;
+}

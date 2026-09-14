@@ -1,0 +1,72 @@
+/* ---------------------------------------------------------
+   Theme overrides.
+   Applying a theme only swaps these CSS variables — it must
+   never touch application data, only presentation.
+--------------------------------------------------------- */
+
+[data-theme='sakura-pink'] {
+  --color-bg: #fff5f7;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #fdeaf0;
+  --color-primary: #f2a4c1;
+  --color-primary-hover: #e888a9;
+  --color-secondary: #f7cede;
+  --color-accent: #e6b8d1;
+  --color-text: #4a2f3b;
+  --color-text-muted: #8f6f7c;
+  --color-border: #f6d9e3;
+}
+
+[data-theme='lavender-dream'] {
+  --color-bg: #f8f6ff;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #efe9fc;
+  --color-primary: #c9b8f0;
+  --color-primary-hover: #b39ce8;
+  --color-secondary: #ded4f7;
+  --color-accent: #b8c9f0;
+  --color-text: #3c3454;
+  --color-text-muted: #85809e;
+  --color-border: #e4dcf7;
+}
+
+[data-theme='mint-breeze'] {
+  --color-bg: #f5fbf8;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #e7f7f0;
+  --color-primary: #a8dfc9;
+  --color-primary-hover: #8ccdb2;
+  --color-secondary: #cdeee1;
+  --color-accent: #bfe0f2;
+  --color-text: #2f4a42;
+  --color-text-muted: #7c968c;
+  --color-border: #dcf0e7;
+}
+
+[data-theme='night-mode'] {
+  --color-bg: #201d29;
+  --color-surface: #2a2635;
+  --color-surface-secondary: #322d40;
+  --color-primary: #7a5c74;
+  --color-primary-hover: #91709a;
+  --color-secondary: #4a4460;
+  --color-accent: #3d5570;
+  --color-text: #f1ecf5;
+  --color-text-muted: #a89fb5;
+  --color-border: #3d3750;
+  --color-shadow: rgba(0, 0, 0, 0.35);
+  --color-on-primary: #f1ecf5;
+}
+
+[data-theme='sunset-glow'] {
+  --color-bg: #fff6ee;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #fbe7d6;
+  --color-primary: #f2b088;
+  --color-primary-hover: #e8975f;
+  --color-secondary: #f6cf9c;
+  --color-accent: #e8a3a3;
+  --color-text: #4a352c;
+  --color-text-muted: #93796c;
+  --color-border: #f6ddc4;
+}

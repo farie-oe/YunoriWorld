@@ -1,0 +1,33 @@
+.ya-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.02em;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  border: 1px solid transparent;
+}
+
+.ya-badge--neutral {
+  background: var(--color-surface-secondary);
+  color: var(--color-text-muted);
+  border-color: var(--color-border);
+}
+
+.ya-badge--primary {
+  background: color-mix(in srgb, var(--color-primary) 35%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.ya-badge--secondary {
+  background: color-mix(in srgb, var(--color-secondary) 40%, var(--color-surface));
+  color: var(--color-text);
+}
+
+.ya-badge--accent {
+  background: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
+  color: var(--color-text);
+}

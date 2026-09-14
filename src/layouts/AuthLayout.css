@@ -1,0 +1,87 @@
+.ya-auth-layout {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-5);
+  background: var(--color-bg);
+  overflow: hidden;
+}
+
+.ya-auth-layout__blossom {
+  position: absolute;
+  width: 90px;
+  height: 90px;
+}
+
+.ya-auth-layout__blossom--top {
+  top: -20px;
+  right: 8%;
+  opacity: 0.5;
+}
+
+.ya-auth-layout__blossom--bottom {
+  bottom: -24px;
+  left: 6%;
+  opacity: 0.4;
+  transform: rotate(30deg);
+}
+
+.ya-auth-layout__panel {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.ya-auth-layout__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-2xl);
+  color: var(--color-text);
+}
+
+.ya-auth-layout__brand-icon {
+  color: var(--color-primary-hover);
+  fill: var(--color-primary);
+}
+
+.ya-auth-layout__tagline {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.ya-auth-layout__tagline-sparkle {
+  width: 14px;
+  height: 14px;
+}
+
+.ya-auth-layout__card {
+  width: 100%;
+  text-align: left;
+  padding: var(--space-6);
+}
+
+.ya-auth-layout__title {
+  margin-bottom: var(--space-1);
+}
+
+.ya-auth-layout__subtitle {
+  margin-bottom: var(--space-5);
+}
+
+.ya-auth-submit {
+  width: 100%;
+  margin-top: var(--space-2);
+}

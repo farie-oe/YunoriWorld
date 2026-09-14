@@ -1,0 +1,30 @@
+.ya-star-rating {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.ya-star-rating__star {
+  color: var(--color-border);
+  fill: transparent;
+  transition: color 0.15s ease, fill 0.15s ease;
+}
+
+.ya-star-rating__star--filled {
+  color: var(--color-primary-hover);
+  fill: var(--color-primary);
+}
+
+.ya-star-rating__button {
+  background: none;
+  border: none;
+  padding: 2px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  line-height: 0;
+}
+
+.ya-star-rating--interactive .ya-star-rating__button:hover .ya-star-rating__star {
+  color: var(--color-primary-hover);
+  fill: var(--color-primary);
+}

@@ -1,0 +1,49 @@
+.ya-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  margin-bottom: var(--space-4);
+}
+
+.ya-field__label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+}
+
+.ya-input {
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ya-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.ya-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-primary) 30%, transparent);
+}
+
+.ya-form-footer {
+  margin-top: var(--space-5);
+  text-align: center;
+}
+
+.ya-form-link {
+  color: var(--color-primary-hover);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.ya-form-link:hover {
+  text-decoration: underline;
+}

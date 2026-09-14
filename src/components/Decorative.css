@@ -1,0 +1,23 @@
+.ya-decor-sparkle {
+  width: 16px;
+  height: 16px;
+  color: var(--color-primary-hover);
+  opacity: 0.85;
+}
+
+.ya-decor-blossom {
+  width: 32px;
+  height: 32px;
+  color: var(--color-primary);
+  opacity: 0.7;
+}
+
+.ya-decor-blob {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, var(--color-secondary), transparent 70%);
+  filter: blur(10px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}

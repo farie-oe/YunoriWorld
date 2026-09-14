@@ -1,0 +1,13 @@
+.ya-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  padding: var(--space-5);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.ya-card--hoverable:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
+}

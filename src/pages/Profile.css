@@ -1,0 +1,57 @@
+.ya-profile__card {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.ya-profile__avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-secondary);
+  color: var(--color-primary-hover);
+  flex-shrink: 0;
+}
+
+.ya-profile__identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.ya-profile__info-title {
+  margin-bottom: var(--space-4);
+}
+
+.ya-profile__info-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-5);
+  margin: 0;
+}
+
+.ya-profile__info-grid dt {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-1);
+}
+
+.ya-profile__info-grid dd {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .ya-profile__card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .ya-profile__info-grid {
+    grid-template-columns: 1fr;
+  }
+}

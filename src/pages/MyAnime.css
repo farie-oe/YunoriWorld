@@ -1,0 +1,31 @@
+.ya-my-anime__toolbar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+  flex-wrap: wrap;
+}
+
+.ya-my-anime__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 260px;
+  background: var(--color-surface-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-4);
+  color: var(--color-text-muted);
+}
+
+.ya-my-anime__search-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  padding: var(--space-3) 0;
+}
+
+.ya-my-anime__search-input:focus {
+  outline: none;
+  box-shadow: none;
+}
