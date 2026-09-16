@@ -48,6 +48,19 @@
   gap: var(--space-4);
 }
 
+.ya-export-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+  margin-bottom: var(--space-5);
+}
+
+.ya-export-bar__message {
+  margin: 0;
+}
+
 .ya-collection-controls {
   display: flex;
   flex-direction: column;

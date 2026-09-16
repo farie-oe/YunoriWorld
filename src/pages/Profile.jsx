@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react'
-import { UserCircle } from 'lucide-react'
+import { UserCircle, Pencil } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Badge from '../components/Badge'
+import Button from '../components/Button'
 import { useAuth } from '../hooks/useAuth'
-import { getProfile } from '../services/profiles'
+import { getProfile, updateProfileUsername } from '../services/profiles'
 import './Profile.css'
 
 function formatDate(value) {
@@ -21,6 +22,11 @@ function Profile() {
   const [profile, setProfile] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
+
+  const [isEditingUsername, setIsEditingUsername] = useState(false)
+  const [usernameInput, setUsernameInput] = useState('')
+  const [usernameSaving, setUsernameSaving] = useState(false)
+  const [usernameError, setUsernameError] = useState('')
 
   useEffect(() => {
     if (!user) return
@@ -46,6 +52,35 @@ function Profile() {
 
   const displayName = profile?.username || 'Setting up your profile...'
   const uniqueId = profile?.unique_id || '—————'
+
+  function handleStartEditingUsername() {
+    setUsernameInput(profile?.username || '')
+    setUsernameError('')
+    setIsEditingUsername(true)
+  }
+
+  function handleCancelEditingUsername() {
+    setIsEditingUsername(false)
+    setUsernameError('')
+  }
+
+  async function handleSaveUsername(event) {
+    event.preventDefault()
+    if (usernameSaving) return
+
+    setUsernameSaving(true)
+    setUsernameError('')
+
+    try {
+      const updated = await updateProfileUsername(user.id, usernameInput)
+      setProfile(updated)
+      setIsEditingUsername(false)
+    } catch (err) {
+      setUsernameError(err.message || 'We could not save your display name right now.')
+    } finally {
+      setUsernameSaving(false)
+    }
+  }
 
   return (
     <div>
@@ -74,7 +109,49 @@ function Profile() {
         <dl className="ya-profile__info-grid">
           <div>
             <dt className="ya-text-muted">Display name</dt>
-            <dd className="ya-body-text">{profile?.username || 'Not set yet'}</dd>
+            {isEditingUsername ? (
+              <form className="ya-profile__username-form" onSubmit={handleSaveUsername}>
+                <label htmlFor="profile-username" className="ya-visually-hidden">
+                  Display name
+                </label>
+                <input
+                  id="profile-username"
+                  type="text"
+                  className="ya-input"
+                  value={usernameInput}
+                  onChange={(event) => setUsernameInput(event.target.value)}
+                  placeholder="How should we call you?"
+                  autoFocus
+                />
+                {usernameError && <p className="ya-field__error">{usernameError}</p>}
+                <div className="ya-profile__username-actions">
+                  <Button type="submit" disabled={usernameSaving}>
+                    {usernameSaving ? 'Saving...' : 'Save'}
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={handleCancelEditingUsername}
+                    disabled={usernameSaving}
+                  >
+                    Cancel
+                  </Button>
+                </div>
+              </form>
+            ) : (
+              <dd className="ya-body-text ya-profile__username-display">
+                {profile?.username || 'Not set yet'}
+                {profile && (
+                  <Button
+                    type="button"
+                    variant="icon"
+                    icon={Pencil}
+                    onClick={handleStartEditingUsername}
+                    aria-label="Edit display name"
+                  />
+                )}
+              </dd>
+            )}
           </div>
           <div>
             <dt className="ya-text-muted">Email</dt>

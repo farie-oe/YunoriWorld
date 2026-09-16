@@ -36,3 +36,31 @@ export async function updateProfileTheme(userId, themeId) {
 
   return data
 }
+
+/**
+ * Persists the user's chosen display name to profiles.username. This is
+ * the only value ever shown as the user's name elsewhere in the app (the
+ * Dashboard, PDF export, etc.) — the authenticated email address is never
+ * used as a display name. Throws a user-friendly Error on failure and
+ * returns the updated profile row.
+ */
+export async function updateProfileUsername(userId, username) {
+  const trimmed = username.trim()
+
+  if (!trimmed) {
+    throw new Error('Display name cannot be empty.')
+  }
+
+  const { data, error } = await supabase
+    .from('profiles')
+    .update({ username: trimmed })
+    .eq('id', userId)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error('We could not save your display name right now. Please try again.')
+  }
+
+  return data
+}

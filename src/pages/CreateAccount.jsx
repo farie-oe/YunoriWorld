@@ -14,9 +14,9 @@ function validate({ username, email, password, confirmPassword }) {
   const errors = {}
 
   if (!username.trim()) {
-    errors.username = 'Username is required.'
+    errors.username = 'Display name is required.'
   } else if (username.trim().length < MIN_USERNAME_LENGTH) {
-    errors.username = `Username must be at least ${MIN_USERNAME_LENGTH} characters.`
+    errors.username = `Display name must be at least ${MIN_USERNAME_LENGTH} characters.`
   }
 
   if (!email.trim()) {
@@ -130,15 +130,15 @@ function CreateAccount() {
       <form onSubmit={handleSubmit} noValidate>
         <div className={`ya-field ${fieldErrors.username ? 'ya-field--invalid' : ''}`}>
           <label className="ya-field__label" htmlFor="register-username">
-            Username
+            Display name
           </label>
           <input
             id="register-username"
             name="username"
             type="text"
             className="ya-input"
-            placeholder="yourusername"
-            autoComplete="username"
+            placeholder="How should we call you?"
+            autoComplete="nickname"
             value={formValues.username}
             onChange={handleChange}
             aria-invalid={Boolean(fieldErrors.username)}

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Search, Plus, X, Clapperboard, SearchX, RotateCcw } from 'lucide-react'
+import { Search, Plus, X, Clapperboard, SearchX, RotateCcw, FileDown } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
 import Card from '../components/Card'
@@ -11,6 +11,8 @@ import EditAnimeModal from '../components/EditAnimeModal'
 import DeleteAnimeModal from '../components/DeleteAnimeModal'
 import { searchAnime } from '../services/anilist'
 import { getAnimeEntries } from '../services/animeEntries'
+import { getProfile } from '../services/profiles'
+import { exportCollectionToPdf } from '../services/pdfExport'
 import { useAuth } from '../hooks/useAuth'
 import { CATEGORIES, STATUS_OPTIONS } from '../constants/animeOptions'
 import './MyAnime.css'
@@ -68,6 +70,9 @@ function MyAnime() {
   const [categoryFilter, setCategoryFilter] = useState(DEFAULT_CATEGORY_FILTER)
   const [favouriteOnly, setFavouriteOnly] = useState(false)
   const [sortBy, setSortBy] = useState(DEFAULT_SORT)
+
+  const [exportStatus, setExportStatus] = useState('idle')
+  const [exportError, setExportError] = useState('')
 
   useEffect(() => {
     if (!user) return
@@ -203,6 +208,36 @@ function MyAnime() {
     return sortCollection(filtered, sortBy)
   }, [collection, collectionSearch, statusFilter, categoryFilter, favouriteOnly, sortBy])
 
+  const isFilteredView = filteredCollection.length !== collection.length
+
+  async function handleExport() {
+    if (exportStatus === 'generating' || filteredCollection.length === 0 || !user) return
+
+    setExportStatus('generating')
+    setExportError('')
+
+    let username
+    try {
+      const profile = await getProfile(user.id)
+      username = profile?.username
+    } catch (err) {
+      console.error('Failed to load profile for PDF export:', err)
+    }
+
+    try {
+      await exportCollectionToPdf({
+        entries: filteredCollection,
+        username,
+        isFiltered: isFilteredView,
+      })
+      setExportStatus('idle')
+    } catch (err) {
+      console.error('Failed to export anime collection to PDF:', err)
+      setExportError(err.message || 'We could not generate your PDF right now. Please try again.')
+      setExportStatus('error')
+    }
+  }
+
   return (
     <div>
       <PageHeader
@@ -277,6 +312,29 @@ function MyAnime() {
           )}
         </div>
       </Card>
+
+      {!collectionLoading && !collectionError && (
+        <div className="ya-export-bar">
+          <p className="ya-text-muted ya-export-bar__message">
+            {collection.length === 0
+              ? 'Your collection is still waiting for its first anime. ♡'
+              : isFilteredView
+                ? `Export the ${filteredCollection.length} anime currently shown.`
+                : 'Export your anime collection as a PDF.'}
+          </p>
+          <Button
+            type="button"
+            variant="outline"
+            icon={FileDown}
+            onClick={handleExport}
+            disabled={filteredCollection.length === 0 || exportStatus === 'generating'}
+          >
+            {exportStatus === 'generating' ? 'Generating PDF...' : 'Export Collection'}
+          </Button>
+        </div>
+      )}
+
+      {exportStatus === 'error' && exportError && <p className="ya-field__error">{exportError}</p>}
 
       {!collectionLoading && !collectionError && collection.length > 0 && (
         <div className="ya-collection-controls">

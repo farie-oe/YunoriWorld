@@ -45,6 +45,24 @@
   margin: 0;
 }
 
+.ya-profile__username-display {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ya-profile__username-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: 320px;
+}
+
+.ya-profile__username-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
 @media (max-width: 600px) {
   .ya-profile__card {
     flex-direction: column;
