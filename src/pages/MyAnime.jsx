@@ -7,6 +7,7 @@ import EmptyState from '../components/EmptyState'
 import AnimeSearchResultCard from '../components/AnimeSearchResultCard'
 import SavedAnimeCard from '../components/SavedAnimeCard'
 import AddAnimeModal from '../components/AddAnimeModal'
+import EditAnimeModal from '../components/EditAnimeModal'
 import { searchAnime } from '../services/anilist'
 import { getAnimeEntries } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
@@ -20,6 +21,7 @@ function MyAnime() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [selectedAnime, setSelectedAnime] = useState(null)
+  const [editingEntry, setEditingEntry] = useState(null)
 
   const [collection, setCollection] = useState([])
   const [collectionLoading, setCollectionLoading] = useState(true)
@@ -94,6 +96,19 @@ function MyAnime() {
       prev.some((entry) => entry.id === savedEntry.id) ? prev : [savedEntry, ...prev],
     )
     setSelectedAnime(null)
+  }
+
+  function handleEditSelect(entry) {
+    setEditingEntry(entry)
+  }
+
+  function handleEditCancel() {
+    setEditingEntry(null)
+  }
+
+  function handleEditSaved(updatedEntry) {
+    setCollection((prev) => prev.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry)))
+    setEditingEntry(null)
   }
 
   return (
@@ -203,7 +218,7 @@ function MyAnime() {
       {!collectionLoading && !collectionError && collection.length > 0 && (
         <div className="ya-anime-search__grid">
           {collection.map((entry) => (
-            <SavedAnimeCard key={entry.id} entry={entry} />
+            <SavedAnimeCard key={entry.id} entry={entry} onEdit={handleEditSelect} />
           ))}
         </div>
       )}
@@ -214,6 +229,15 @@ function MyAnime() {
           userId={user.id}
           onCancel={handleCancelAdd}
           onSaved={handleAnimeSaved}
+        />
+      )}
+
+      {editingEntry && user && (
+        <EditAnimeModal
+          entry={editingEntry}
+          userId={user.id}
+          onCancel={handleEditCancel}
+          onSaved={handleEditSaved}
         />
       )}
     </div>

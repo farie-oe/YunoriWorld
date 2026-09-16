@@ -100,6 +100,23 @@
   margin: 0 0 var(--space-2);
 }
 
+.ya-modal__clear-rating {
+  display: inline-block;
+  margin-top: var(--space-2);
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.ya-modal__clear-rating:hover {
+  color: var(--color-text);
+}
+
 .ya-modal__textarea {
   resize: vertical;
   font-family: inherit;

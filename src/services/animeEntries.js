@@ -57,6 +57,33 @@ export async function getAnimeEntries(userId) {
 }
 
 /**
+ * Updates the editable fields (category, rating, description, status) of
+ * one existing anime_entries row belonging to the given user. AniList id,
+ * title, cover image, user_id, and date_added are never touched here.
+ * Throws a user-friendly Error on failure and returns the updated row.
+ */
+export async function updateAnimeEntry(entryId, userId, updates) {
+  const { data, error } = await supabase
+    .from('anime_entries')
+    .update({
+      category: updates.category || null,
+      rating: updates.rating || null,
+      description: updates.description || null,
+      status: updates.status || 'Want to Watch',
+    })
+    .eq('id', entryId)
+    .eq('user_id', userId)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error('We could not save your changes right now. Please try again.')
+  }
+
+  return data
+}
+
+/**
  * Fetches the authenticated user's anime entries whose status is
  * 'Want to Watch' — the Watch List is a filtered view of anime_entries,
  * not a separate collection. RLS already restricts rows to the given

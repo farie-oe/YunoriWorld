@@ -1,18 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { Star, Tv, X } from 'lucide-react'
+import { Tv, X } from 'lucide-react'
 import Button from './Button'
 import AnimeDetailsFields from './AnimeDetailsFields'
-import { addAnimeEntry } from '../services/animeEntries'
+import { updateAnimeEntry } from '../services/animeEntries'
 import './AddAnimeModal.css'
 
-function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
-  const [category, setCategory] = useState('')
-  const [rating, setRating] = useState(0)
-  const [description, setDescription] = useState('')
-  const [status, setStatus] = useState('Want to Watch')
+function EditAnimeModal({ entry, userId, onCancel, onSaved }) {
+  const [category, setCategory] = useState(entry.category || '')
+  const [rating, setRating] = useState(entry.rating || 0)
+  const [description, setDescription] = useState(entry.description || '')
+  const [status, setStatus] = useState(entry.status || 'Want to Watch')
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState('')
-  const [duplicate, setDuplicate] = useState(false)
 
   const firstFieldRef = useRef(null)
 
@@ -30,13 +29,6 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
     return () => document.removeEventListener('keydown', handleKeyDown)
   }, [saving, onCancel])
 
-  const title = anime.title?.english || anime.title?.romaji || 'Untitled'
-  const secondaryTitle =
-    anime.title?.english && anime.title?.romaji && anime.title.romaji !== anime.title.english
-      ? anime.title.romaji
-      : null
-  const genres = anime.genres?.slice(0, 4) ?? []
-
   function handleOverlayMouseDown(event) {
     if (event.target === event.currentTarget && !saving) {
       onCancel()
@@ -49,22 +41,17 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
 
     setSaving(true)
     setError('')
-    setDuplicate(false)
 
     try {
-      const saved = await addAnimeEntry(anime, userId, {
+      const updated = await updateAnimeEntry(entry.id, userId, {
         category: category || null,
         rating: rating || null,
         description: description.trim() || null,
         status,
       })
-      onSaved(saved)
+      onSaved(updated)
     } catch (err) {
-      if (err.message === 'Already in My Anime') {
-        setDuplicate(true)
-      } else {
-        setError(err.message || 'We could not save this anime right now. Please try again.')
-      }
+      setError(err.message || 'We could not save your changes right now. Please try again.')
       setSaving(false)
     }
   }
@@ -75,24 +62,24 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
         className="ya-modal"
         role="dialog"
         aria-modal="true"
-        aria-labelledby="add-anime-modal-title"
+        aria-labelledby="edit-anime-modal-title"
       >
         <div className="ya-modal__header">
-          <h2 id="add-anime-modal-title" className="ya-section-heading">
-            Add to My Anime
+          <h2 id="edit-anime-modal-title" className="ya-section-heading">
+            Edit Anime
           </h2>
           <Button
             variant="icon"
             icon={X}
             onClick={() => !saving && onCancel()}
-            aria-label="Close Add Anime form"
+            aria-label="Close Edit Anime form"
           />
         </div>
 
         <div className="ya-modal__preview">
           <div className="ya-modal__preview-cover">
-            {anime.coverImage ? (
-              <img src={anime.coverImage} alt="" loading="lazy" />
+            {entry.cover_image ? (
+              <img src={entry.cover_image} alt="" loading="lazy" />
             ) : (
               <div className="ya-modal__preview-cover-fallback" aria-hidden="true">
                 <Tv size={24} />
@@ -100,22 +87,7 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
             )}
           </div>
           <div className="ya-modal__preview-info">
-            <h3 className="ya-section-heading ya-modal__preview-title">{title}</h3>
-            {secondaryTitle && <p className="ya-text-muted">{secondaryTitle}</p>}
-            {genres.length > 0 && (
-              <p className="ya-meta-text ya-modal__preview-genres">{genres.join(' · ')}</p>
-            )}
-            <div className="ya-modal__preview-meta">
-              {anime.averageScore != null && (
-                <span className="ya-meta-text ya-modal__preview-score">
-                  <Star size={13} aria-hidden="true" />
-                  AniList score: {anime.averageScore}
-                </span>
-              )}
-              {anime.episodes != null && (
-                <span className="ya-meta-text">{anime.episodes} episodes</span>
-              )}
-            </div>
+            <h3 className="ya-section-heading ya-modal__preview-title">{entry.title}</h3>
           </div>
         </div>
 
@@ -132,7 +104,6 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
             firstFieldRef={firstFieldRef}
           />
 
-          {duplicate && <p className="ya-form-alert ya-form-alert--error">Already in My Anime.</p>}
           {error && <p className="ya-field__error">{error}</p>}
 
           <div className="ya-modal__actions">
@@ -140,7 +111,7 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
               Cancel
             </Button>
             <Button type="submit" disabled={saving}>
-              {saving ? 'Saving...' : 'Save to My Anime'}
+              {saving ? 'Saving...' : 'Save Changes'}
             </Button>
           </div>
         </form>
@@ -149,4 +120,4 @@ function AddAnimeModal({ anime, userId, onCancel, onSaved }) {
   )
 }
 
-export default AddAnimeModal
+export default EditAnimeModal

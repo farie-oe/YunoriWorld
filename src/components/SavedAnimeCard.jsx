@@ -1,9 +1,10 @@
-import { Heart, Tv } from 'lucide-react'
+import { Heart, Pencil, Tv } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
+import Button from './Button'
 import './SavedAnimeCard.css'
 
-function SavedAnimeCard({ entry }) {
+function SavedAnimeCard({ entry, onEdit }) {
   return (
     <Card className="ya-saved-card">
       <div className="ya-saved-card__cover">
@@ -33,6 +34,18 @@ function SavedAnimeCard({ entry }) {
         <p className="ya-text-muted ya-saved-card__description">
           {entry.description || 'No description added yet.'}
         </p>
+
+        {onEdit && (
+          <Button
+            variant="outline"
+            icon={Pencil}
+            className="ya-saved-card__edit-btn"
+            onClick={() => onEdit(entry)}
+            aria-label={`Edit ${entry.title}`}
+          >
+            Edit
+          </Button>
+        )}
       </div>
     </Card>
   )
