@@ -127,6 +127,14 @@
   margin-top: var(--space-1);
 }
 
+.ya-modal--small {
+  max-width: 400px;
+}
+
+.ya-modal--small .ya-body-text {
+  margin-bottom: var(--space-4);
+}
+
 .ya-modal__actions {
   display: flex;
   justify-content: flex-end;

@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { Heart, Pencil, Tv } from 'lucide-react'
+import { Heart, Pencil, Trash2, Tv } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
 import Button from './Button'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './SavedAnimeCard.css'
 
-function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange }) {
+function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequest }) {
   const [favouriteSaving, setFavouriteSaving] = useState(false)
   const [favouriteError, setFavouriteError] = useState('')
 
@@ -64,16 +64,31 @@ function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange }) {
 
         {favouriteError && <p className="ya-field__error">{favouriteError}</p>}
 
-        {onEdit && (
-          <Button
-            variant="outline"
-            icon={Pencil}
-            className="ya-saved-card__edit-btn"
-            onClick={() => onEdit(entry)}
-            aria-label={`Edit ${entry.title}`}
-          >
-            Edit
-          </Button>
+        {(onEdit || onDeleteRequest) && (
+          <div className="ya-saved-card__actions">
+            {onEdit && (
+              <Button
+                variant="outline"
+                icon={Pencil}
+                className="ya-saved-card__edit-btn"
+                onClick={() => onEdit(entry)}
+                aria-label={`Edit ${entry.title}`}
+              >
+                Edit
+              </Button>
+            )}
+            {onDeleteRequest && (
+              <Button
+                variant="danger"
+                icon={Trash2}
+                className="ya-saved-card__delete-btn"
+                onClick={() => onDeleteRequest(entry)}
+                aria-label={`Delete ${entry.title} from My Anime`}
+              >
+                Delete
+              </Button>
+            )}
+          </div>
         )}
       </div>
     </Card>

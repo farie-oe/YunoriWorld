@@ -105,6 +105,21 @@ export async function updateAnimeFavourite(entryId, userId, favourite) {
 }
 
 /**
+ * Permanently deletes one anime_entries row belonging to the given user.
+ * Only removes the user's saved entry — never touches AniList itself.
+ * Throws a user-friendly Error on failure.
+ */
+export async function deleteAnimeEntry(entryId, userId) {
+  const { error } = await supabase.from('anime_entries').delete().eq('id', entryId).eq('user_id', userId)
+
+  if (error) {
+    throw new Error('We could not delete this anime right now. Please try again.')
+  }
+
+  return true
+}
+
+/**
  * Fetches the authenticated user's anime entries whose status is
  * 'Want to Watch' — the Watch List is a filtered view of anime_entries,
  * not a separate collection. RLS already restricts rows to the given

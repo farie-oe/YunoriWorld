@@ -8,6 +8,7 @@ import AnimeSearchResultCard from '../components/AnimeSearchResultCard'
 import SavedAnimeCard from '../components/SavedAnimeCard'
 import AddAnimeModal from '../components/AddAnimeModal'
 import EditAnimeModal from '../components/EditAnimeModal'
+import DeleteAnimeModal from '../components/DeleteAnimeModal'
 import { searchAnime } from '../services/anilist'
 import { getAnimeEntries } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
@@ -22,6 +23,7 @@ function MyAnime() {
   const [error, setError] = useState('')
   const [selectedAnime, setSelectedAnime] = useState(null)
   const [editingEntry, setEditingEntry] = useState(null)
+  const [deletingEntry, setDeletingEntry] = useState(null)
 
   const [collection, setCollection] = useState([])
   const [collectionLoading, setCollectionLoading] = useState(true)
@@ -113,6 +115,19 @@ function MyAnime() {
 
   function handleFavouriteChange(updatedEntry) {
     setCollection((prev) => prev.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry)))
+  }
+
+  function handleDeleteRequest(entry) {
+    setDeletingEntry(entry)
+  }
+
+  function handleDeleteCancel() {
+    setDeletingEntry(null)
+  }
+
+  function handleDeleted(deletedEntryId) {
+    setCollection((prev) => prev.filter((entry) => entry.id !== deletedEntryId))
+    setDeletingEntry(null)
   }
 
   return (
@@ -228,6 +243,7 @@ function MyAnime() {
               userId={user?.id}
               onEdit={handleEditSelect}
               onFavouriteChange={handleFavouriteChange}
+              onDeleteRequest={handleDeleteRequest}
             />
           ))}
         </div>
@@ -248,6 +264,15 @@ function MyAnime() {
           userId={user.id}
           onCancel={handleEditCancel}
           onSaved={handleEditSaved}
+        />
+      )}
+
+      {deletingEntry && user && (
+        <DeleteAnimeModal
+          entry={deletingEntry}
+          userId={user.id}
+          onCancel={handleDeleteCancel}
+          onDeleted={handleDeleted}
         />
       )}
     </div>
