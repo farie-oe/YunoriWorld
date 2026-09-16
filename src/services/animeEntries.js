@@ -55,3 +55,24 @@ export async function getAnimeEntries(userId) {
 
   return data ?? []
 }
+
+/**
+ * Fetches the authenticated user's anime entries whose status is
+ * 'Want to Watch' — the Watch List is a filtered view of anime_entries,
+ * not a separate collection. RLS already restricts rows to the given
+ * user, but the query also filters by user_id explicitly for clarity.
+ */
+export async function getWatchList(userId) {
+  const { data, error } = await supabase
+    .from('anime_entries')
+    .select('id, anilist_id, title, cover_image, category, rating, description, status, favourite, date_added')
+    .eq('user_id', userId)
+    .eq('status', 'Want to Watch')
+    .order('date_added', { ascending: false })
+
+  if (error) {
+    throw new Error('We could not load your watch list right now.')
+  }
+
+  return data ?? []
+}
