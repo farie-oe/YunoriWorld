@@ -39,7 +39,23 @@
   border-radius: var(--radius-pill);
   background: var(--color-surface);
   color: var(--color-danger);
+  border: none;
   box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+.ya-saved-card__favourite:hover:not(:disabled) {
+  box-shadow: var(--shadow-md);
+}
+
+.ya-saved-card__favourite:active:not(:disabled) {
+  transform: scale(0.94);
+}
+
+.ya-saved-card__favourite:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .ya-saved-card__body {

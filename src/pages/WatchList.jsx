@@ -64,7 +64,14 @@ function WatchList() {
       {!loading && !error && entries.length > 0 && (
         <div className="ya-anime-search__grid">
           {entries.map((entry) => (
-            <SavedAnimeCard key={entry.id} entry={entry} />
+            <SavedAnimeCard
+              key={entry.id}
+              entry={entry}
+              userId={user?.id}
+              onFavouriteChange={(updated) =>
+                setEntries((prev) => prev.map((item) => (item.id === updated.id ? updated : item)))
+              }
+            />
           ))}
         </div>
       )}

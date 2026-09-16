@@ -111,6 +111,10 @@ function MyAnime() {
     setEditingEntry(null)
   }
 
+  function handleFavouriteChange(updatedEntry) {
+    setCollection((prev) => prev.map((entry) => (entry.id === updatedEntry.id ? updatedEntry : entry)))
+  }
+
   return (
     <div>
       <PageHeader
@@ -218,7 +222,13 @@ function MyAnime() {
       {!collectionLoading && !collectionError && collection.length > 0 && (
         <div className="ya-anime-search__grid">
           {collection.map((entry) => (
-            <SavedAnimeCard key={entry.id} entry={entry} onEdit={handleEditSelect} />
+            <SavedAnimeCard
+              key={entry.id}
+              entry={entry}
+              userId={user?.id}
+              onEdit={handleEditSelect}
+              onFavouriteChange={handleFavouriteChange}
+            />
           ))}
         </div>
       )}

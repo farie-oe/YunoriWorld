@@ -84,6 +84,27 @@ export async function updateAnimeEntry(entryId, userId, updates) {
 }
 
 /**
+ * Sets the favourite flag on one existing anime_entries row belonging to
+ * the given user. Throws a user-friendly Error on failure and returns the
+ * updated row.
+ */
+export async function updateAnimeFavourite(entryId, userId, favourite) {
+  const { data, error } = await supabase
+    .from('anime_entries')
+    .update({ favourite })
+    .eq('id', entryId)
+    .eq('user_id', userId)
+    .select()
+    .single()
+
+  if (error) {
+    throw new Error('We could not update your favourite right now. Please try again.')
+  }
+
+  return data
+}
+
+/**
  * Fetches the authenticated user's anime entries whose status is
  * 'Want to Watch' — the Watch List is a filtered view of anime_entries,
  * not a separate collection. RLS already restricts rows to the given
