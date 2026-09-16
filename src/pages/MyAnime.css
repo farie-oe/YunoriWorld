@@ -48,12 +48,31 @@
   gap: var(--space-4);
 }
 
-.ya-my-anime__toolbar {
+.ya-collection-controls {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-5);
+}
+
+.ya-collection-controls__filters {
   display: flex;
   align-items: center;
   gap: var(--space-3);
-  margin-bottom: var(--space-5);
   flex-wrap: wrap;
+}
+
+.ya-collection-controls__field {
+  flex: 1 1 160px;
+  min-width: 140px;
+}
+
+.ya-collection-controls__field .ya-input {
+  width: 100%;
+}
+
+.ya-collection-controls__count {
+  margin: 0;
 }
 
 .ya-my-anime__search {

@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Search, Plus, X, Clapperboard, SearchX } from 'lucide-react'
+import { Search, Plus, X, Clapperboard, SearchX, RotateCcw } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
 import Card from '../components/Card'
@@ -12,7 +12,41 @@ import DeleteAnimeModal from '../components/DeleteAnimeModal'
 import { searchAnime } from '../services/anilist'
 import { getAnimeEntries } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
+import { CATEGORIES, STATUS_OPTIONS } from '../constants/animeOptions'
 import './MyAnime.css'
+
+const SORT_OPTIONS = [
+  { value: 'recent', label: 'Recently Added' },
+  { value: 'title-asc', label: 'Title A–Z' },
+  { value: 'title-desc', label: 'Title Z–A' },
+  { value: 'rating-desc', label: 'Highest Rated' },
+  { value: 'rating-asc', label: 'Lowest Rated' },
+]
+
+const DEFAULT_STATUS_FILTER = 'All'
+const DEFAULT_CATEGORY_FILTER = 'All'
+const DEFAULT_SORT = 'recent'
+
+function sortCollection(entries, sortBy) {
+  const sorted = [...entries]
+
+  if (sortBy === 'title-asc') {
+    return sorted.sort((a, b) => a.title.localeCompare(b.title))
+  }
+  if (sortBy === 'title-desc') {
+    return sorted.sort((a, b) => b.title.localeCompare(a.title))
+  }
+  if (sortBy === 'rating-desc' || sortBy === 'rating-asc') {
+    const rated = sorted.filter((entry) => entry.rating != null)
+    const unrated = sorted.filter((entry) => entry.rating == null)
+    rated.sort((a, b) => (sortBy === 'rating-desc' ? b.rating - a.rating : a.rating - b.rating))
+    return [...rated, ...unrated]
+  }
+
+  // 'recent' — the collection already arrives from Supabase ordered by
+  // date_added descending, so just preserve that order.
+  return sorted.sort((a, b) => new Date(b.date_added) - new Date(a.date_added))
+}
 
 function MyAnime() {
   const { user } = useAuth()
@@ -28,6 +62,12 @@ function MyAnime() {
   const [collection, setCollection] = useState([])
   const [collectionLoading, setCollectionLoading] = useState(true)
   const [collectionError, setCollectionError] = useState('')
+
+  const [collectionSearch, setCollectionSearch] = useState('')
+  const [statusFilter, setStatusFilter] = useState(DEFAULT_STATUS_FILTER)
+  const [categoryFilter, setCategoryFilter] = useState(DEFAULT_CATEGORY_FILTER)
+  const [favouriteOnly, setFavouriteOnly] = useState(false)
+  const [sortBy, setSortBy] = useState(DEFAULT_SORT)
 
   useEffect(() => {
     if (!user) return
@@ -130,6 +170,39 @@ function MyAnime() {
     setDeletingEntry(null)
   }
 
+  const hasActiveControls =
+    collectionSearch.trim() !== '' ||
+    statusFilter !== DEFAULT_STATUS_FILTER ||
+    categoryFilter !== DEFAULT_CATEGORY_FILTER ||
+    favouriteOnly ||
+    sortBy !== DEFAULT_SORT
+
+  function handleResetControls() {
+    setCollectionSearch('')
+    setStatusFilter(DEFAULT_STATUS_FILTER)
+    setCategoryFilter(DEFAULT_CATEGORY_FILTER)
+    setFavouriteOnly(false)
+    setSortBy(DEFAULT_SORT)
+  }
+
+  const filteredCollection = useMemo(() => {
+    const query = collectionSearch.trim().toLowerCase()
+
+    const filtered = collection.filter((entry) => {
+      if (query) {
+        const matchesTitle = entry.title.toLowerCase().includes(query)
+        const matchesDescription = entry.description?.toLowerCase().includes(query)
+        if (!matchesTitle && !matchesDescription) return false
+      }
+      if (statusFilter !== DEFAULT_STATUS_FILTER && entry.status !== statusFilter) return false
+      if (categoryFilter !== DEFAULT_CATEGORY_FILTER && entry.category !== categoryFilter) return false
+      if (favouriteOnly && !entry.favourite) return false
+      return true
+    })
+
+    return sortCollection(filtered, sortBy)
+  }, [collection, collectionSearch, statusFilter, categoryFilter, favouriteOnly, sortBy])
+
   return (
     <div>
       <PageHeader
@@ -205,18 +278,113 @@ function MyAnime() {
         </div>
       </Card>
 
-      <div className="ya-my-anime__toolbar">
-        <div className="ya-my-anime__search">
-          <Search size={18} aria-hidden="true" />
-          <input
-            type="search"
-            className="ya-input ya-my-anime__search-input"
-            placeholder="Search your anime..."
-            aria-label="Search your anime"
-          />
+      {!collectionLoading && !collectionError && collection.length > 0 && (
+        <div className="ya-collection-controls">
+          <div className="ya-my-anime__search">
+            <Search size={18} aria-hidden="true" />
+            <label htmlFor="my-anime-search-input" className="ya-visually-hidden">
+              Search your saved anime
+            </label>
+            <input
+              id="my-anime-search-input"
+              type="search"
+              className="ya-input ya-my-anime__search-input"
+              placeholder="Search My Anime..."
+              value={collectionSearch}
+              onChange={(event) => setCollectionSearch(event.target.value)}
+            />
+          </div>
+
+          <div className="ya-collection-controls__filters">
+            <div className="ya-collection-controls__field">
+              <label htmlFor="status-filter" className="ya-visually-hidden">
+                Filter by status
+              </label>
+              <select
+                id="status-filter"
+                className="ya-input"
+                value={statusFilter}
+                onChange={(event) => setStatusFilter(event.target.value)}
+              >
+                <option value={DEFAULT_STATUS_FILTER}>All statuses</option>
+                {STATUS_OPTIONS.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="ya-collection-controls__field">
+              <label htmlFor="category-filter" className="ya-visually-hidden">
+                Filter by category
+              </label>
+              <select
+                id="category-filter"
+                className="ya-input"
+                value={categoryFilter}
+                onChange={(event) => setCategoryFilter(event.target.value)}
+              >
+                <option value={DEFAULT_CATEGORY_FILTER}>All categories</option>
+                {CATEGORIES.map((option) => (
+                  <option key={option} value={option}>
+                    {option}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div className="ya-collection-controls__field">
+              <label htmlFor="favourite-filter" className="ya-visually-hidden">
+                Filter by favourite
+              </label>
+              <select
+                id="favourite-filter"
+                className="ya-input"
+                value={favouriteOnly ? 'favourites' : 'all'}
+                onChange={(event) => setFavouriteOnly(event.target.value === 'favourites')}
+              >
+                <option value="all">All anime</option>
+                <option value="favourites">Favourites only</option>
+              </select>
+            </div>
+
+            <div className="ya-collection-controls__field">
+              <label htmlFor="sort-by" className="ya-visually-hidden">
+                Sort collection
+              </label>
+              <select
+                id="sort-by"
+                className="ya-input"
+                value={sortBy}
+                onChange={(event) => setSortBy(event.target.value)}
+              >
+                {SORT_OPTIONS.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {hasActiveControls && (
+              <Button
+                type="button"
+                variant="outline"
+                icon={RotateCcw}
+                onClick={handleResetControls}
+                aria-label="Reset search, filters, and sorting"
+              >
+                Clear Filters
+              </Button>
+            )}
+          </div>
+
+          <p className="ya-meta-text ya-collection-controls__count">
+            Showing {filteredCollection.length} of {collection.length} anime
+          </p>
         </div>
-        <Button variant="outline">Filter</Button>
-      </div>
+      )}
 
       {collectionLoading && (
         <p className="ya-text-muted" role="status">
@@ -234,9 +402,22 @@ function MyAnime() {
         />
       )}
 
-      {!collectionLoading && !collectionError && collection.length > 0 && (
+      {!collectionLoading && !collectionError && collection.length > 0 && filteredCollection.length === 0 && (
+        <EmptyState
+          icon={SearchX}
+          title="No anime match your filters"
+          description="Try a different search term or clear your filters."
+          action={
+            <Button type="button" variant="outline" icon={RotateCcw} onClick={handleResetControls}>
+              Clear Filters
+            </Button>
+          }
+        />
+      )}
+
+      {!collectionLoading && !collectionError && filteredCollection.length > 0 && (
         <div className="ya-anime-search__grid">
-          {collection.map((entry) => (
+          {filteredCollection.map((entry) => (
             <SavedAnimeCard
               key={entry.id}
               entry={entry}
