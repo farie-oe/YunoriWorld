@@ -5,4 +5,5 @@ export const ThemeContext = createContext({
   themeId: DEFAULT_THEME_ID,
   setThemeId: () => {},
   themes: THEMES,
+  themeError: '',
 })

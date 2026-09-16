@@ -6,7 +6,7 @@ import { useTheme } from '../hooks/useTheme'
 import './Themes.css'
 
 function Themes() {
-  const { themeId, setThemeId, themes } = useTheme()
+  const { themeId, setThemeId, themes, themeError } = useTheme()
 
   return (
     <div>
@@ -14,6 +14,8 @@ function Themes() {
         title="Themes"
         description="Choose the look and feel of your YourAnime space. Themes only change presentation — your anime data stays exactly the same."
       />
+
+      {themeError && <p className="ya-form-alert ya-form-alert--error">{themeError}</p>}
 
       <div className="ya-themes__grid">
         {themes.map((theme) => {
