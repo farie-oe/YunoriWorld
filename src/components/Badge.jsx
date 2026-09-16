@@ -5,6 +5,9 @@ const TONE_CLASS = {
   primary: 'ya-badge--primary',
   secondary: 'ya-badge--secondary',
   accent: 'ya-badge--accent',
+  success: 'ya-badge--success',
+  warning: 'ya-badge--warning',
+  danger: 'ya-badge--danger',
 }
 
 function Badge({ children, tone = 'neutral', className = '' }) {

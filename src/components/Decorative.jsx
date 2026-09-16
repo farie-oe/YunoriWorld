@@ -17,6 +17,24 @@ export function Sparkle({ className = '' }) {
   )
 }
 
+/** Small decorative heart. Purely ornamental — never used as UI feedback
+ * (favouriting etc. still uses the functional Lucide Heart icon). */
+export function DecorativeHeart({ className = '' }) {
+  return (
+    <svg
+      className={`ya-decor-heart ${className}`.trim()}
+      viewBox="0 0 24 24"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <path
+        d="M12 20.5c-.3 0-.6-.1-.8-.3C7.4 17 3.5 13.6 3.5 9.6 3.5 6.8 5.7 4.5 8.5 4.5c1.4 0 2.7.6 3.5 1.6.8-1 2.1-1.6 3.5-1.6 2.8 0 5 2.3 5 5.1 0 4-3.9 7.4-7.7 10.6-.2.2-.5.3-.8.3z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
 /** Simple cherry-blossom silhouette made from overlapping petal shapes. */
 export function Blossom({ className = '' }) {
   return (

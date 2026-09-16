@@ -2,6 +2,15 @@
    Theme overrides.
    Applying a theme only swaps these CSS variables — it must
    never touch application data, only presentation.
+
+   Each theme only needs to override the tokens that actually change hue —
+   --color-text-secondary, --color-pink-secondary, --color-lavender and
+   --color-pastel-blue are all derived from other tokens in global.css and
+   automatically follow the theme without repeating them here.
+   --color-focus is set explicitly per theme so the focus ring always has
+   enough contrast against that theme's own surfaces (this matters most
+   for Night Mode, where the decorative accent colours are too low-contrast
+   to double as an accessible focus indicator).
 --------------------------------------------------------- */
 
 [data-theme='sakura-pink'] {
@@ -15,6 +24,7 @@
   --color-text: #4a2f3b;
   --color-text-muted: #8f6f7c;
   --color-border: #f6d9e3;
+  --color-focus: #c9587f;
 }
 
 [data-theme='lavender-dream'] {
@@ -28,6 +38,7 @@
   --color-text: #3c3454;
   --color-text-muted: #85809e;
   --color-border: #e4dcf7;
+  --color-focus: #8a6fd1;
 }
 
 [data-theme='mint-breeze'] {
@@ -41,6 +52,7 @@
   --color-text: #2f4a42;
   --color-text-muted: #7c968c;
   --color-border: #dcf0e7;
+  --color-focus: #4a9d80;
 }
 
 [data-theme='night-mode'] {
@@ -56,6 +68,7 @@
   --color-border: #3d3750;
   --color-shadow: rgba(0, 0, 0, 0.35);
   --color-on-primary: #f1ecf5;
+  --color-focus: #e0aed6;
 }
 
 [data-theme='sunset-glow'] {
@@ -69,4 +82,5 @@
   --color-text: #4a352c;
   --color-text-muted: #93796c;
   --color-border: #f6ddc4;
+  --color-focus: #d97a4a;
 }

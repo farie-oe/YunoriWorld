@@ -12,6 +12,13 @@
   opacity: 0.7;
 }
 
+.ya-decor-heart {
+  width: 14px;
+  height: 14px;
+  color: var(--color-pink-secondary);
+  opacity: 0.9;
+}
+
 .ya-decor-blob {
   position: absolute;
   border-radius: 50%;

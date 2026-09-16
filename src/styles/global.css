@@ -1,24 +1,59 @@
 /* ---------------------------------------------------------
    YourAnime design tokens
-   Default theme: "Default White Kawaii"
-   Overridden per-theme in styles/themes.css via [data-theme]
+   Default theme: "Default White Kawaii" — the primary reference design.
+   Overridden per-theme in styles/themes.css via [data-theme].
+
+   Colour balance guideline for this design system (applies to how future
+   page layouts should use these tokens, not enforced by CSS itself):
+     ~70% white / very light neutral surfaces (--color-bg, --color-surface)
+     ~15% soft pink (--color-primary, --color-pink-secondary)
+     ~10% lavender / pastel blue (--color-lavender, --color-pastel-blue)
+     ~5%  decorative accents (sparkles, hearts, blossoms, etc.)
+   White/cream should always remain the dominant surface colour — pink and
+   lavender are accents, never backgrounds for large areas.
 --------------------------------------------------------- */
 :root {
-  /* colour tokens */
+  /* --- core surface & text tokens ------------------------------- */
   --color-bg: #fffbf6;
   --color-surface: #ffffff;
   --color-surface-secondary: #fdf3f7;
+  --color-text: #423b4d;
+  --color-text-secondary: color-mix(in srgb, var(--color-text) 70%, var(--color-text-muted));
+  --color-text-muted: #8a8296;
+  --color-border: #f0dce7;
+  --color-shadow: rgba(140, 110, 130, 0.14);
+  --color-on-primary: #4a2f3b;
+
+  /* --- accent tokens ---------------------------------------------
+     --color-primary / --color-secondary / --color-accent are the
+     original, still-used token names (primary pink / lavender / pastel
+     blue). The aliases below give every accent an explicit semantic name
+     per the design system, without renaming anything existing components
+     already depend on. */
   --color-primary: #f3b8cb;
   --color-primary-hover: #ec9fb8;
   --color-secondary: #d9cff0;
   --color-accent: #bfe0f2;
-  --color-text: #423b4d;
-  --color-text-muted: #8a8296;
-  --color-border: #f0dce7;
-  --color-shadow: rgba(140, 110, 130, 0.14);
+
+  --color-pink-primary: var(--color-primary);
+  --color-pink-secondary: color-mix(in srgb, var(--color-primary) 50%, var(--color-surface));
+  --color-lavender: var(--color-secondary);
+  --color-pastel-blue: var(--color-accent);
+
+  /* --- status / feedback tokens ------------------------------------ */
   --color-danger: #e08999;
   --color-danger-hover: #d5707e;
-  --color-on-primary: #4a2f3b;
+  --color-success: #74b587;
+  --color-success-hover: #5fa073;
+  --color-warning: #d9a441;
+  --color-warning-hover: #c8912e;
+
+  /* --- focus ------------------------------------------------------
+     A dedicated, per-theme-tunable token (see styles/themes.css) so the
+     focus ring always has enough contrast against that theme's surfaces —
+     Night Mode in particular needs a lighter, more saturated value than
+     the decorative accent colours provide. */
+  --color-focus: #c4658d;
 
   /* radius */
   --radius-sm: 8px;
@@ -98,6 +133,31 @@ a {
 
 /* ---------------- typography utilities ---------------- */
 
+.ya-logo {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+.ya-card-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-lg);
+  color: var(--color-text);
+  margin: 0;
+}
+
+.ya-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.03em;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+}
+
 .ya-page-title {
   font-family: var(--font-heading);
   font-weight: 600;
@@ -157,6 +217,6 @@ a {
 
 /* focus visibility for accessibility */
 :focus-visible {
-  outline: 2px solid var(--color-secondary);
+  outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }

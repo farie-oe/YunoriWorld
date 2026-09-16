@@ -31,3 +31,24 @@
   background: color-mix(in srgb, var(--color-accent) 40%, var(--color-surface));
   color: var(--color-text);
 }
+
+/* Status/feedback tones — for future use by status badges (e.g. Watching,
+   Completed, Want to Watch, Dropped) so meaning is carried by both label
+   text and colour, never colour alone. */
+.ya-badge--success {
+  background: color-mix(in srgb, var(--color-success) 30%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-success-hover) 70%, var(--color-text));
+  border-color: color-mix(in srgb, var(--color-success) 45%, transparent);
+}
+
+.ya-badge--warning {
+  background: color-mix(in srgb, var(--color-warning) 30%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-warning-hover) 70%, var(--color-text));
+  border-color: color-mix(in srgb, var(--color-warning) 45%, transparent);
+}
+
+.ya-badge--danger {
+  background: color-mix(in srgb, var(--color-danger) 18%, var(--color-surface));
+  color: var(--color-danger);
+  border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+}
