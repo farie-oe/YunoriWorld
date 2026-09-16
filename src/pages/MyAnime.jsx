@@ -1,20 +1,50 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Search, Plus, X, Clapperboard, SearchX } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
 import Card from '../components/Card'
 import EmptyState from '../components/EmptyState'
 import AnimeSearchResultCard from '../components/AnimeSearchResultCard'
+import SavedAnimeCard from '../components/SavedAnimeCard'
 import { searchAnime } from '../services/anilist'
+import { addAnimeEntry, getAnimeEntries } from '../services/animeEntries'
+import { useAuth } from '../hooks/useAuth'
 import './MyAnime.css'
 
 function MyAnime() {
+  const { user } = useAuth()
   const [query, setQuery] = useState('')
   const [hasSearched, setHasSearched] = useState(false)
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [addedIds, setAddedIds] = useState(() => new Set())
+  const [addState, setAddState] = useState({})
+
+  const [collection, setCollection] = useState([])
+  const [collectionLoading, setCollectionLoading] = useState(true)
+  const [collectionError, setCollectionError] = useState('')
+
+  useEffect(() => {
+    if (!user) return
+
+    let cancelled = false
+
+    getAnimeEntries(user.id)
+      .then((entries) => {
+        if (!cancelled) setCollection(entries)
+      })
+      .catch((err) => {
+        console.error('Failed to load anime collection:', err)
+        if (!cancelled) setCollectionError(err.message || 'We could not load your anime collection right now.')
+      })
+      .finally(() => {
+        if (!cancelled) setCollectionLoading(false)
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [user])
 
   async function runSearch(event) {
     event.preventDefault()
@@ -45,8 +75,29 @@ function MyAnime() {
     setHasSearched(false)
   }
 
-  function handleAdd(anime) {
-    setAddedIds((prev) => new Set(prev).add(anime.id))
+  async function handleAdd(anime) {
+    if (!user) return
+
+    const current = addState[anime.id]?.state
+    if (current === 'saving' || current === 'added' || current === 'duplicate') return
+
+    setAddState((prev) => ({ ...prev, [anime.id]: { state: 'saving' } }))
+
+    try {
+      const savedEntry = await addAnimeEntry(anime, user.id)
+      setAddState((prev) => ({ ...prev, [anime.id]: { state: 'added' } }))
+      setCollection((prev) =>
+        prev.some((entry) => entry.id === savedEntry.id) ? prev : [savedEntry, ...prev],
+      )
+    } catch (err) {
+      const isDuplicate = err.message === 'Already in My Anime'
+      setAddState((prev) => ({
+        ...prev,
+        [anime.id]: isDuplicate
+          ? { state: 'duplicate' }
+          : { state: 'error', error: err.message || 'We could not add this anime right now.' },
+      }))
+    }
   }
 
   return (
@@ -115,7 +166,8 @@ function MyAnime() {
                 <AnimeSearchResultCard
                   key={anime.id}
                   anime={anime}
-                  isAdded={addedIds.has(anime.id)}
+                  addState={addState[anime.id]?.state ?? 'idle'}
+                  addError={addState[anime.id]?.error ?? ''}
                   onAdd={handleAdd}
                 />
               ))}
@@ -137,12 +189,29 @@ function MyAnime() {
         <Button variant="outline">Filter</Button>
       </div>
 
-      <EmptyState
-        icon={Clapperboard}
-        title="Your collection is empty"
-        description="Anime you add will show up here, ready to track and organise."
-        action={<Button icon={Plus}>Add Your First Anime</Button>}
-      />
+      {collectionLoading && (
+        <p className="ya-text-muted" role="status">
+          Loading your anime collection...
+        </p>
+      )}
+
+      {!collectionLoading && collectionError && <p className="ya-field__error">{collectionError}</p>}
+
+      {!collectionLoading && !collectionError && collection.length === 0 && (
+        <EmptyState
+          icon={Clapperboard}
+          title="Your collection is empty"
+          description="Search for an anime above to add your first one."
+        />
+      )}
+
+      {!collectionLoading && !collectionError && collection.length > 0 && (
+        <div className="ya-anime-search__grid">
+          {collection.map((entry) => (
+            <SavedAnimeCard key={entry.id} entry={entry} />
+          ))}
+        </div>
+      )}
     </div>
   )
 }
