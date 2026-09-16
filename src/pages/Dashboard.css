@@ -10,6 +10,14 @@
   pointer-events: none;
 }
 
+.ya-dashboard__mascot {
+  width: 88px;
+  height: auto;
+  max-width: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
 .ya-dashboard__tagline {
   display: inline-flex;
   align-items: center;
@@ -132,6 +140,10 @@
   .ya-dashboard__stats {
     grid-template-columns: repeat(2, 1fr);
   }
+
+  .ya-dashboard__mascot {
+    width: 64px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -145,5 +157,9 @@
 
   .ya-dashboard__hero-decor {
     display: none;
+  }
+
+  .ya-dashboard__mascot {
+    width: 48px;
   }
 }

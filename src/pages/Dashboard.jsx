@@ -18,6 +18,7 @@ import { Sparkle, Blossom, DecorativeHeart } from '../components/Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
 import { getAnimeEntries } from '../services/animeEntries'
+import mascotImage from '../assets/mascot/yunori-mascot.png'
 import './Dashboard.css'
 
 const RECENTLY_ADDED_COUNT = 4
@@ -99,6 +100,13 @@ function Dashboard() {
             <span className="ya-dashboard__tagline">
               <Sparkle /> Here's a little look at your anime journey. <DecorativeHeart />
             </span>
+          }
+          action={
+            <img
+              src={mascotImage}
+              alt="Yunori mascot"
+              className="ya-dashboard__mascot"
+            />
           }
         />
       </div>
