@@ -4,29 +4,19 @@ import Badge from './Badge'
 import Button from './Button'
 import './AnimeSearchResultCard.css'
 
-function formatStatus(status) {
-  if (!status) return null
-  return status
-    .toLowerCase()
-    .split('_')
-    .map((word) => word[0].toUpperCase() + word.slice(1))
-    .join(' ')
-}
-
 function formatSeason(season, year) {
   if (!season && !year) return null
   const seasonLabel = season ? season[0].toUpperCase() + season.slice(1).toLowerCase() : ''
   return [seasonLabel, year].filter(Boolean).join(' ')
 }
 
-function AnimeSearchResultCard({ anime, addState = 'idle', addError = '', onAdd }) {
+function AnimeSearchResultCard({ anime, isAdded = false, onSelect }) {
   const title = anime.title?.english || anime.title?.romaji || 'Untitled'
   const secondaryTitle =
     anime.title?.english && anime.title?.romaji && anime.title.romaji !== anime.title.english
       ? anime.title.romaji
       : null
   const seasonLabel = formatSeason(anime.season, anime.seasonYear)
-  const statusLabel = formatStatus(anime.status)
   const genres = anime.genres?.slice(0, 3) ?? []
 
   return (
@@ -77,34 +67,18 @@ function AnimeSearchResultCard({ anime, addState = 'idle', addError = '', onAdd 
               </dd>
             </div>
           )}
-          {statusLabel && (
-            <div>
-              <dt className="ya-meta-text">Status</dt>
-              <dd className="ya-body-text">{statusLabel}</dd>
-            </div>
-          )}
         </dl>
 
         <Button
-          variant={addState === 'added' || addState === 'duplicate' ? 'secondary' : 'primary'}
-          icon={addState === 'added' || addState === 'duplicate' ? Check : Plus}
+          variant={isAdded ? 'secondary' : 'primary'}
+          icon={isAdded ? Check : Plus}
           className="ya-anime-card__add-btn"
-          onClick={() => onAdd?.(anime)}
-          disabled={addState === 'saving' || addState === 'added' || addState === 'duplicate'}
-          aria-label={
-            addState === 'added'
-              ? `${title} added to My Anime`
-              : addState === 'duplicate'
-                ? `${title} is already in My Anime`
-                : `Add ${title} to My Anime`
-          }
+          onClick={() => onSelect?.(anime)}
+          disabled={isAdded}
+          aria-label={isAdded ? `${title} is already in My Anime` : `Add ${title} to My Anime`}
         >
-          {addState === 'saving' && 'Adding...'}
-          {addState === 'added' && 'Added ✓'}
-          {addState === 'duplicate' && 'Already in My Anime'}
-          {(addState === 'idle' || addState === 'error') && 'Add to My Anime'}
+          {isAdded ? 'Added ✓' : 'Add to My Anime'}
         </Button>
-        {addState === 'error' && addError && <p className="ya-field__error">{addError}</p>}
       </div>
     </Card>
   )

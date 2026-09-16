@@ -4,10 +4,11 @@ const UNIQUE_VIOLATION = '23505'
 
 /**
  * Inserts a new anime_entries row for the given user, based on an AniList
- * search result. Throws a user-friendly Error on failure, including a
- * distinct message when the anime is already in the user's collection.
+ * search result plus the user's completed Add Anime form details. Throws
+ * a user-friendly Error on failure, including a distinct message when the
+ * anime is already in the user's collection.
  */
-export async function addAnimeEntry(anime, userId) {
+export async function addAnimeEntry(anime, userId, details = {}) {
   const title = anime.title?.english || anime.title?.romaji || 'Untitled'
 
   const { data, error } = await supabase
@@ -17,10 +18,10 @@ export async function addAnimeEntry(anime, userId) {
       anilist_id: anime.id,
       title,
       cover_image: anime.coverImage ?? null,
-      category: null,
-      rating: null,
-      description: null,
-      status: 'Want to Watch',
+      category: details.category || null,
+      rating: details.rating || null,
+      description: details.description || null,
+      status: details.status || 'Want to Watch',
       favourite: false,
     })
     .select()

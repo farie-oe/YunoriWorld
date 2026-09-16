@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Search, Plus, X, Clapperboard, SearchX } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
@@ -6,8 +6,9 @@ import Card from '../components/Card'
 import EmptyState from '../components/EmptyState'
 import AnimeSearchResultCard from '../components/AnimeSearchResultCard'
 import SavedAnimeCard from '../components/SavedAnimeCard'
+import AddAnimeModal from '../components/AddAnimeModal'
 import { searchAnime } from '../services/anilist'
-import { addAnimeEntry, getAnimeEntries } from '../services/animeEntries'
+import { getAnimeEntries } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
 import './MyAnime.css'
 
@@ -18,7 +19,7 @@ function MyAnime() {
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [addState, setAddState] = useState({})
+  const [selectedAnime, setSelectedAnime] = useState(null)
 
   const [collection, setCollection] = useState([])
   const [collectionLoading, setCollectionLoading] = useState(true)
@@ -75,29 +76,24 @@ function MyAnime() {
     setHasSearched(false)
   }
 
-  async function handleAdd(anime) {
-    if (!user) return
+  const collectionAnilistIds = useMemo(
+    () => new Set(collection.map((entry) => entry.anilist_id)),
+    [collection],
+  )
 
-    const current = addState[anime.id]?.state
-    if (current === 'saving' || current === 'added' || current === 'duplicate') return
+  function handleSelectAnime(anime) {
+    setSelectedAnime(anime)
+  }
 
-    setAddState((prev) => ({ ...prev, [anime.id]: { state: 'saving' } }))
+  function handleCancelAdd() {
+    setSelectedAnime(null)
+  }
 
-    try {
-      const savedEntry = await addAnimeEntry(anime, user.id)
-      setAddState((prev) => ({ ...prev, [anime.id]: { state: 'added' } }))
-      setCollection((prev) =>
-        prev.some((entry) => entry.id === savedEntry.id) ? prev : [savedEntry, ...prev],
-      )
-    } catch (err) {
-      const isDuplicate = err.message === 'Already in My Anime'
-      setAddState((prev) => ({
-        ...prev,
-        [anime.id]: isDuplicate
-          ? { state: 'duplicate' }
-          : { state: 'error', error: err.message || 'We could not add this anime right now.' },
-      }))
-    }
+  function handleAnimeSaved(savedEntry) {
+    setCollection((prev) =>
+      prev.some((entry) => entry.id === savedEntry.id) ? prev : [savedEntry, ...prev],
+    )
+    setSelectedAnime(null)
   }
 
   return (
@@ -166,9 +162,8 @@ function MyAnime() {
                 <AnimeSearchResultCard
                   key={anime.id}
                   anime={anime}
-                  addState={addState[anime.id]?.state ?? 'idle'}
-                  addError={addState[anime.id]?.error ?? ''}
-                  onAdd={handleAdd}
+                  isAdded={collectionAnilistIds.has(anime.id)}
+                  onSelect={handleSelectAnime}
                 />
               ))}
             </div>
@@ -211,6 +206,15 @@ function MyAnime() {
             <SavedAnimeCard key={entry.id} entry={entry} />
           ))}
         </div>
+      )}
+
+      {selectedAnime && user && (
+        <AddAnimeModal
+          anime={selectedAnime}
+          userId={user.id}
+          onCancel={handleCancelAdd}
+          onSaved={handleAnimeSaved}
+        />
       )}
     </div>
   )
