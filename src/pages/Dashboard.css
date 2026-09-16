@@ -1,3 +1,15 @@
+.ya-dashboard__hero {
+  position: relative;
+}
+
+.ya-dashboard__hero-decor {
+  position: absolute;
+  top: -4px;
+  right: 4px;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
 .ya-dashboard__tagline {
   display: inline-flex;
   align-items: center;
@@ -6,6 +18,16 @@
 
 .ya-dashboard__section {
   margin-bottom: var(--space-6);
+}
+
+.ya-dashboard__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.ya-dashboard__section-icon {
+  color: var(--color-pink-secondary);
 }
 
 .ya-dashboard__section-sub {
@@ -30,7 +52,9 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  justify-content: center;
   gap: var(--space-2);
+  min-height: 120px;
   text-decoration: none;
 }
 
@@ -41,9 +65,29 @@
   width: 40px;
   height: 40px;
   border-radius: var(--radius-md);
+  flex-shrink: 0;
   background: var(--color-surface-secondary);
   color: var(--color-primary-hover);
-  flex-shrink: 0;
+}
+
+.ya-stat-card__icon--lavender {
+  background: color-mix(in srgb, var(--color-lavender) 45%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-lavender) 75%, var(--color-text));
+}
+
+.ya-stat-card__icon--blue {
+  background: color-mix(in srgb, var(--color-pastel-blue) 45%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-pastel-blue) 70%, var(--color-text));
+}
+
+.ya-stat-card__icon--success {
+  background: color-mix(in srgb, var(--color-success) 30%, var(--color-surface));
+  color: color-mix(in srgb, var(--color-success-hover) 70%, var(--color-text));
+}
+
+.ya-stat-card__icon--pink {
+  background: color-mix(in srgb, var(--color-primary) 40%, var(--color-surface));
+  color: var(--color-primary-hover);
 }
 
 .ya-stat-card__value {
@@ -72,6 +116,18 @@
   flex: 1 1 200px;
 }
 
+.ya-dashboard__watchlist-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.ya-dashboard__anime-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--space-4);
+}
+
 @media (max-width: 900px) {
   .ya-dashboard__stats {
     grid-template-columns: repeat(2, 1fr);
@@ -81,5 +137,13 @@
 @media (max-width: 480px) {
   .ya-dashboard__stats {
     grid-template-columns: 1fr;
+  }
+
+  .ya-stat-card {
+    min-height: auto;
+  }
+
+  .ya-dashboard__hero-decor {
+    display: none;
   }
 }

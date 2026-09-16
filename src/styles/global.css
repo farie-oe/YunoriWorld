@@ -220,3 +220,16 @@ a {
   outline: 2px solid var(--color-focus);
   outline-offset: 2px;
 }
+
+/* respect the user's reduced-motion preference for hover lifts, image
+   scale effects, and other decorative micro-interactions */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
