@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import AppLayout from './layouts/AppLayout'
+import ProtectedRoute from './components/ProtectedRoute'
+import PublicOnlyRoute from './components/PublicOnlyRoute'
 import Login from './pages/Login'
 import CreateAccount from './pages/CreateAccount'
 import Dashboard from './pages/Dashboard'
@@ -13,15 +15,20 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<CreateAccount />} />
 
-        <Route element={<AppLayout />}>
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/anime" element={<MyAnime />} />
-          <Route path="/watchlist" element={<WatchList />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/themes" element={<Themes />} />
+        <Route element={<PublicOnlyRoute />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<CreateAccount />} />
+        </Route>
+
+        <Route element={<ProtectedRoute />}>
+          <Route element={<AppLayout />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/anime" element={<MyAnime />} />
+            <Route path="/watchlist" element={<WatchList />} />
+            <Route path="/profile" element={<Profile />} />
+            <Route path="/themes" element={<Themes />} />
+          </Route>
         </Route>
       </Routes>
     </BrowserRouter>

@@ -1,5 +1,8 @@
-import { LayoutDashboard, Clapperboard, Bookmark, UserCircle, Palette, Heart } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { LayoutDashboard, Clapperboard, Bookmark, UserCircle, Palette, Heart, LogOut } from 'lucide-react'
 import NavigationItem from './NavigationItem'
+import Button from './Button'
+import { useAuth } from '../hooks/useAuth'
 import './Sidebar.css'
 
 const NAV_ITEMS = [
@@ -11,6 +14,14 @@ const NAV_ITEMS = [
 ]
 
 function Sidebar() {
+  const { signOut } = useAuth()
+  const navigate = useNavigate()
+
+  const handleSignOut = async () => {
+    await signOut()
+    navigate('/login', { replace: true })
+  }
+
   return (
     <aside className="ya-sidebar">
       <div className="ya-sidebar__brand">
@@ -23,6 +34,17 @@ function Sidebar() {
           <NavigationItem key={item.to} {...item} />
         ))}
       </nav>
+
+      <div className="ya-sidebar__footer">
+        <Button
+          variant="outline"
+          icon={LogOut}
+          onClick={handleSignOut}
+          className="ya-sidebar__sign-out"
+        >
+          <span className="ya-sidebar__sign-out-label">Log Out</span>
+        </Button>
+      </div>
     </aside>
   )
 }
