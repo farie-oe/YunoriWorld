@@ -6,9 +6,11 @@ import Button from './Button'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './SavedAnimeCard.css'
 
-function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequest }) {
+function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDeleteRequest }) {
   const [favouriteSaving, setFavouriteSaving] = useState(false)
   const [favouriteError, setFavouriteError] = useState('')
+
+  const isViewable = Boolean(onView)
 
   async function handleToggleFavourite() {
     if (favouriteSaving) return
@@ -27,8 +29,29 @@ function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequ
     }
   }
 
+  function handleFavouriteClick(event) {
+    event.stopPropagation()
+    handleToggleFavourite()
+  }
+
+  function handleCardKeyDown(event) {
+    if (!isViewable) return
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onView(entry)
+    }
+  }
+
   return (
-    <Card className="ya-saved-card">
+    <Card
+      className="ya-saved-card"
+      hoverable={isViewable}
+      onClick={isViewable ? () => onView(entry) : undefined}
+      onKeyDown={isViewable ? handleCardKeyDown : undefined}
+      role={isViewable ? 'button' : undefined}
+      tabIndex={isViewable ? 0 : undefined}
+      aria-label={isViewable ? `View details for ${entry.title}` : undefined}
+    >
       <div className="ya-saved-card__cover">
         {entry.cover_image ? (
           <img src={entry.cover_image} alt="" loading="lazy" />
@@ -40,12 +63,12 @@ function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequ
         <button
           type="button"
           className="ya-saved-card__favourite"
-          onClick={handleToggleFavourite}
+          onClick={handleFavouriteClick}
           disabled={favouriteSaving}
           aria-pressed={entry.favourite}
           aria-label={entry.favourite ? `Remove ${entry.title} from favourites` : `Add ${entry.title} to favourites`}
         >
-          <Heart size={16} fill={entry.favourite ? 'currentColor' : 'none'} />
+          <Heart size={14} fill={entry.favourite ? 'currentColor' : 'none'} />
         </button>
       </div>
 
@@ -61,10 +84,6 @@ function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequ
             </Badge>
           )}
         </div>
-
-        <p className="ya-text-muted ya-saved-card__description">
-          {entry.description || 'No description added yet.'}
-        </p>
 
         {favouriteError && <p className="ya-field__error">{favouriteError}</p>}
 

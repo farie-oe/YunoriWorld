@@ -14,6 +14,9 @@
    --color-rating-star is intentionally NEVER overridden here: rating
    stars are always the same warm gold in every theme, by design.
 
+   --color-favourite is likewise intentionally NEVER overridden here: a
+   selected favourite heart is always the same warm red in every theme.
+
    --color-focus is set explicitly per theme so the focus ring always has
    enough contrast against that theme's own surfaces (this matters most
    for the two dark themes, where the decorative accent colours are too

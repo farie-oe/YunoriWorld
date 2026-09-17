@@ -1,22 +1,23 @@
-import { Heart } from 'lucide-react'
-import { Blossom, Sparkle } from '../components/Decorative'
+import { Orbit } from '../components/Decorative'
+import { BRAND } from '../lib/brand'
 import './AuthLayout.css'
+
+const [BRAND_FIRST_WORD, ...BRAND_REST_WORDS] = BRAND.name.split(' ')
+const BRAND_REST = BRAND_REST_WORDS.join(' ')
 
 function AuthLayout({ title, subtitle, children }) {
   return (
     <div className="ya-auth-layout">
-      <Blossom className="ya-auth-layout__blossom ya-auth-layout__blossom--top" />
-      <Blossom className="ya-auth-layout__blossom ya-auth-layout__blossom--bottom" />
-
       <div className="ya-auth-layout__panel">
         <div className="ya-auth-layout__brand">
-          <Heart size={26} className="ya-auth-layout__brand-icon" aria-hidden="true" />
-          <span>YourAnime</span>
+          <Orbit className="ya-auth-layout__brand-mark" />
+          <span className="ya-auth-layout__brand-name">
+            {BRAND_FIRST_WORD}
+            {BRAND_REST && <span className="ya-auth-layout__brand-name-rest">{BRAND_REST}</span>}
+          </span>
+          <span className="ya-auth-layout__brand-descriptor">{BRAND.descriptor}</span>
         </div>
-        <p className="ya-text-muted ya-auth-layout__tagline">
-          <Sparkle className="ya-auth-layout__tagline-sparkle" />
-          Your anime. Your journey. Your way. &hearts;
-        </p>
+        <p className="ya-auth-layout__tagline">{BRAND.tagline}</p>
 
         <div className="ya-card ya-auth-layout__card">
           <h1 className="ya-section-heading ya-auth-layout__title">{title}</h1>

@@ -11,6 +11,10 @@
   min-width: 0;
 }
 
+.ya-saved-card[role='button'] {
+  cursor: pointer;
+}
+
 .ya-saved-card__cover {
   position: relative;
   width: 100%;
@@ -40,15 +44,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-pill);
-  background: var(--color-surface);
-  color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
+  color: var(--color-text-muted);
   border: none;
   box-shadow: var(--shadow-sm);
   cursor: pointer;
-  transition: transform 0.12s ease, box-shadow 0.15s ease;
+  transition: color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
+}
+
+.ya-saved-card__favourite[aria-pressed='true'] {
+  color: var(--color-favourite);
 }
 
 .ya-saved-card__favourite:hover:not(:disabled) {
@@ -82,13 +90,6 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-1);
-}
-
-.ya-saved-card__description {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
 .ya-saved-card__actions {

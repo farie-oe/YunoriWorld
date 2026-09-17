@@ -4,6 +4,7 @@ import { CircleAlert } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout'
 import Button from '../components/Button'
 import { supabase } from '../lib/supabase'
+import { BRAND } from '../lib/brand'
 
 function validate({ email, password }) {
   const errors = {}
@@ -130,7 +131,7 @@ function Login() {
       </form>
 
       <p className="ya-form-footer ya-text-muted">
-        New to YourAnime?{' '}
+        New to {BRAND.name}?{' '}
         <Link to="/register" className="ya-form-link">
           Create an account
         </Link>

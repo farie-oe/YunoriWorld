@@ -81,11 +81,11 @@
 }
 
 .ya-dash-card__favourite:hover:not(:disabled) {
-  color: var(--color-primary);
+  color: var(--color-favourite);
 }
 
 .ya-dash-card__favourite[aria-pressed='true'] {
-  color: var(--color-primary);
+  color: var(--color-favourite);
 }
 
 .ya-dash-card__favourite:active:not(:disabled) {

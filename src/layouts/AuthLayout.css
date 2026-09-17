@@ -1,4 +1,23 @@
+/* Authentication pages (Login, Register) always use this fixed, neutral
+   Yunori presentation — never the signed-in user's saved theme. Re-declaring
+   the theme-able tokens here overrides whatever [data-theme] is currently
+   set on <html>, without touching ThemeProvider or profile persistence. */
 .ya-auth-layout {
+  --color-bg: #fcfaf5;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #f4ede2;
+  --color-text: #221c2c;
+  --color-text-muted: #93887c;
+  --color-border: #e8e0d2;
+  --color-shadow: rgba(34, 28, 44, 0.08);
+  --color-on-primary: var(--color-text);
+  --color-primary: #c9a66b;
+  --color-primary-hover: #b8924f;
+  --color-secondary: #e4dce6;
+  --color-accent: #f4e3e7;
+  --color-focus: #96742e;
+  --color-danger: #e08999;
+
   position: relative;
   min-height: 100svh;
   display: flex;
@@ -6,26 +25,6 @@
   justify-content: center;
   padding: var(--space-5);
   background: var(--color-bg);
-  overflow: hidden;
-}
-
-.ya-auth-layout__blossom {
-  position: absolute;
-  width: 90px;
-  height: 90px;
-}
-
-.ya-auth-layout__blossom--top {
-  top: -20px;
-  right: 8%;
-  opacity: 0.5;
-}
-
-.ya-auth-layout__blossom--bottom {
-  bottom: -24px;
-  left: 6%;
-  opacity: 0.4;
-  transform: rotate(30deg);
 }
 
 .ya-auth-layout__panel {
@@ -41,30 +40,53 @@
 
 .ya-auth-layout__brand {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-2);
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: var(--text-2xl);
-  color: var(--color-text);
+  gap: var(--space-1);
 }
 
-.ya-auth-layout__brand-icon {
+.ya-auth-layout__brand-mark {
+  width: 28px;
+  height: 28px;
   color: var(--color-primary-hover);
-  fill: var(--color-primary);
+  margin-bottom: var(--space-1);
+}
+
+.ya-auth-layout__brand-name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  line-height: 1.05;
+  color: var(--color-text);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.ya-auth-layout__brand-name-rest {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.ya-auth-layout__brand-descriptor {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .ya-auth-layout__tagline {
-  display: flex;
-  align-items: center;
-  gap: var(--space-1);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
   margin-top: var(--space-2);
   margin-bottom: var(--space-6);
-}
-
-.ya-auth-layout__tagline-sparkle {
-  width: 14px;
-  height: 14px;
 }
 
 .ya-auth-layout__card {
@@ -84,4 +106,14 @@
 .ya-auth-submit {
   width: 100%;
   margin-top: var(--space-2);
+}
+
+@media (max-width: 420px) {
+  .ya-auth-layout {
+    padding: var(--space-4);
+  }
+
+  .ya-auth-layout__card {
+    padding: var(--space-5) var(--space-4);
+  }
 }

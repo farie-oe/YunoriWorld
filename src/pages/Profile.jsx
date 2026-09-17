@@ -84,15 +84,16 @@ function Profile() {
 
   return (
     <div>
-      <PageHeader title="Profile" description="Your YourAnime identity, at a glance." />
+      <PageHeader title="Profile" description="Your identity, at a glance." />
 
       <Card className="ya-profile__card">
         <div className="ya-profile__avatar" aria-hidden="true">
-          <UserCircle size={48} />
+          <UserCircle size={40} strokeWidth={1.5} />
         </div>
         <div className="ya-profile__identity">
-          <h2 className="ya-section-heading">{displayName}</h2>
-          <Badge tone="secondary">ID: {uniqueId}</Badge>
+          <p className="ya-eyebrow ya-profile__eyebrow">Yunori Member</p>
+          <h2 className="ya-page-title ya-profile__name">{displayName}</h2>
+          <Badge tone="secondary">Yunori ID · {uniqueId}</Badge>
         </div>
       </Card>
 
@@ -105,10 +106,10 @@ function Profile() {
       )}
 
       <Card className="ya-profile__info">
-        <h3 className="ya-section-heading ya-profile__info-title">Profile Information</h3>
+        <h3 className="ya-eyebrow ya-profile__info-title">Profile Information</h3>
         <dl className="ya-profile__info-grid">
           <div>
-            <dt className="ya-text-muted">Display name</dt>
+            <dt className="ya-label">Display name</dt>
             {isEditingUsername ? (
               <form className="ya-profile__username-form" onSubmit={handleSaveUsername}>
                 <label htmlFor="profile-username" className="ya-visually-hidden">
@@ -154,11 +155,11 @@ function Profile() {
             )}
           </div>
           <div>
-            <dt className="ya-text-muted">Email</dt>
+            <dt className="ya-label">Email</dt>
             <dd className="ya-body-text">{user?.email || 'Not set yet'}</dd>
           </div>
           <div>
-            <dt className="ya-text-muted">Member since</dt>
+            <dt className="ya-label">Member since</dt>
             <dd className="ya-body-text">{formatDate(profile?.created_at)}</dd>
           </div>
         </dl>

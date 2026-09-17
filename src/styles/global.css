@@ -53,6 +53,15 @@
      never be overridden in styles/themes.css. */
   --color-rating-star: #cba135;
 
+  /* --- favourite heart -----------------------------------------------
+     Permanent Yunori World design rule: a selected/active favourite heart
+     is always this warm red, in every theme, everywhere favouriting
+     appears (Dashboard, My Anime, Watch List, anime details/edit views).
+     Intentionally NOT one of the per-theme accent tokens above — it must
+     never be overridden in styles/themes.css. Unselected hearts stay on
+     the neutral --color-text-muted token so red only appears once chosen. */
+  --color-favourite: #c0392b;
+
   /* --- status / feedback tokens ------------------------------------ */
   --color-danger: #e08999;
   --color-danger-hover: #d5707e;

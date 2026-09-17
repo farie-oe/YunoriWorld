@@ -1,4 +1,5 @@
 import { supabase } from '../lib/supabase'
+import { fetchGenresByAnilistIds } from './anilist'
 
 const UNIQUE_VIOLATION = '23505'
 
@@ -23,6 +24,7 @@ export async function addAnimeEntry(anime, userId, details = {}) {
       description: details.description || null,
       status: details.status || 'Want to Watch',
       favourite: false,
+      genres: Array.isArray(anime.genres) ? anime.genres : [],
     })
     .select()
     .single()
@@ -45,7 +47,7 @@ export async function addAnimeEntry(anime, userId, details = {}) {
 export async function getAnimeEntries(userId) {
   const { data, error } = await supabase
     .from('anime_entries')
-    .select('id, anilist_id, title, cover_image, category, rating, description, status, favourite, date_added')
+    .select('id, anilist_id, title, cover_image, category, rating, description, status, favourite, genres, date_added')
     .eq('user_id', userId)
     .order('date_added', { ascending: false })
 
@@ -54,6 +56,50 @@ export async function getAnimeEntries(userId) {
   }
 
   return data ?? []
+}
+
+/**
+ * Backfills the genres column for entries that were saved before that
+ * column existed (empty array), by looking their existing anilist_id up on
+ * AniList and writing the result back. Only ever updates rows scoped to
+ * userId — RLS additionally guarantees a user can only ever change their
+ * own rows, so this is safe to call from the client with no elevated
+ * credentials, the same way every other anime_entries write in this app
+ * works. Entries AniList has no genres for (or whose update fails) are
+ * left untouched rather than given an invented value. Returns the rows
+ * that were actually updated, so the caller can merge fresh genres into
+ * whatever list is already rendered without a full re-fetch.
+ */
+export async function backfillMissingGenres(entries, userId) {
+  const missingGenres = entries.filter((entry) => !entry.genres || entry.genres.length === 0)
+  if (missingGenres.length === 0) return []
+
+  let genresByAnilistId
+  try {
+    genresByAnilistId = await fetchGenresByAnilistIds(missingGenres.map((entry) => entry.anilist_id))
+  } catch (err) {
+    console.error('Failed to fetch genres from AniList for existing anime:', err)
+    return []
+  }
+
+  const results = await Promise.allSettled(
+    missingGenres
+      .filter((entry) => genresByAnilistId[entry.anilist_id]?.length > 0)
+      .map(async (entry) => {
+        const { data, error } = await supabase
+          .from('anime_entries')
+          .update({ genres: genresByAnilistId[entry.anilist_id] })
+          .eq('id', entry.id)
+          .eq('user_id', userId)
+          .select()
+          .single()
+
+        if (error) throw error
+        return data
+      }),
+  )
+
+  return results.filter((result) => result.status === 'fulfilled').map((result) => result.value)
 }
 
 /**
@@ -128,7 +174,7 @@ export async function deleteAnimeEntry(entryId, userId) {
 export async function getWatchList(userId) {
   const { data, error } = await supabase
     .from('anime_entries')
-    .select('id, anilist_id, title, cover_image, category, rating, description, status, favourite, date_added')
+    .select('id, anilist_id, title, cover_image, category, rating, description, status, favourite, genres, date_added')
     .eq('user_id', userId)
     .eq('status', 'Want to Watch')
     .order('date_added', { ascending: false })

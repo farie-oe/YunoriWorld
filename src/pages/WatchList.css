@@ -1,0 +1,8 @@
+/* Watch List cards don't render the edit/delete action row that My Anime's
+   cards do, so letting the shared grid stretch every card to match the
+   tallest one in its row left noticeable empty space below shorter cards.
+   Scoped to this page only — My Anime's grid keeps its default stretch
+   behaviour, which its action-row cards are designed around. */
+.ya-watchlist__grid {
+  align-items: start;
+}
