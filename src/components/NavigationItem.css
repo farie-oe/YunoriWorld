@@ -4,9 +4,10 @@
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-md);
-  color: var(--color-text-muted);
+  border: 1px solid transparent;
+  color: var(--color-text-secondary);
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 }
 
 .ya-nav-item:hover {
@@ -16,8 +17,9 @@
 
 .ya-nav-item--active {
   background: var(--color-surface-secondary);
+  border-color: var(--color-border);
   color: var(--color-text);
-  box-shadow: inset 3px 0 0 var(--color-primary);
+  font-weight: 700;
 }
 
 .ya-nav-item__label {

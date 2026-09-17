@@ -14,14 +14,29 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import EmptyState from '../components/EmptyState'
 import DashboardAnimeCard from '../components/DashboardAnimeCard'
-import { Sparkle, Blossom, DecorativeHeart } from '../components/Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
 import { getAnimeEntries } from '../services/animeEntries'
+import { BRAND } from '../lib/brand'
 import mascotImage from '../assets/mascot/yunori-mascot.png'
 import './Dashboard.css'
 
 const RECENTLY_ADDED_COUNT = 4
+
+function DashboardSectionHeading({ icon: Icon, children }) {
+  return (
+    <div className="ya-dashboard__section-header">
+      <h2 className="ya-section-heading ya-dashboard__section-title">
+        <Icon size={18} className="ya-dashboard__section-icon" aria-hidden="true" />
+        {children}
+      </h2>
+      <Link to="/anime" className="ya-dashboard__view-all">
+        View All
+        <ChevronRight size={14} aria-hidden="true" />
+      </Link>
+    </div>
+  )
+}
 
 function Dashboard() {
   const { user } = useAuth()
@@ -93,21 +108,19 @@ function Dashboard() {
   return (
     <div>
       <div className="ya-dashboard__hero">
-        <Blossom className="ya-dashboard__hero-decor" />
+        <p className="ya-eyebrow ya-dashboard__eyebrow">Welcome to {BRAND.name}</p>
         <PageHeader
-          title={displayName ? `Welcome back, ${displayName}! ♡` : 'Welcome back! ♡'}
-          description={
-            <span className="ya-dashboard__tagline">
-              <Sparkle /> Here's a little look at your anime journey. <DecorativeHeart />
-            </span>
+          title={
+            displayName ? (
+              <>
+                Welcome back, <span className="ya-dashboard__hero-name">{displayName}</span>.
+              </>
+            ) : (
+              'Welcome back.'
+            )
           }
-          action={
-            <img
-              src={mascotImage}
-              alt="Yunori mascot"
-              className="ya-dashboard__mascot"
-            />
-          }
+          description="Another day, another anime story."
+          action={<img src={mascotImage} alt="Yunori mascot" className="ya-dashboard__mascot" />}
         />
       </div>
 
@@ -129,7 +142,7 @@ function Dashboard() {
       {!loading && !error && entries.length === 0 && (
         <EmptyState
           icon={Sparkles}
-          title="Your anime journey starts here ♡"
+          title="Your anime journey starts here."
           description="Search AniList and add your first anime to start building your collection."
           action={
             <Link to="/anime" className="ya-btn ya-btn--primary">
@@ -149,32 +162,32 @@ function Dashboard() {
 
             <div className="ya-dashboard__stats">
               <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon ya-stat-card__icon--lavender" aria-hidden="true">
-                  <Clapperboard size={22} />
+                <div className="ya-stat-card__icon" aria-hidden="true">
+                  <Clapperboard size={20} />
                 </div>
                 <span className="ya-stat-card__value">{stats.total}</span>
                 <span className="ya-text-muted ya-stat-card__label">Total Anime</span>
               </Card>
 
               <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon ya-stat-card__icon--blue" aria-hidden="true">
-                  <PlayCircle size={22} />
+                <div className="ya-stat-card__icon" aria-hidden="true">
+                  <PlayCircle size={20} />
                 </div>
                 <span className="ya-stat-card__value">{stats.watching.length}</span>
                 <span className="ya-text-muted ya-stat-card__label">Watching</span>
               </Card>
 
               <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon ya-stat-card__icon--success" aria-hidden="true">
-                  <CheckCircle2 size={22} />
+                <div className="ya-stat-card__icon" aria-hidden="true">
+                  <CheckCircle2 size={20} />
                 </div>
                 <span className="ya-stat-card__value">{stats.completed.length}</span>
                 <span className="ya-text-muted ya-stat-card__label">Completed</span>
               </Card>
 
-              <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon ya-stat-card__icon--pink" aria-hidden="true">
-                  <Heart size={22} />
+              <Card as={Link} to="/anime" hoverable className="ya-stat-card ya-stat-card--gold">
+                <div className="ya-stat-card__icon ya-stat-card__icon--gold" aria-hidden="true">
+                  <Heart size={20} />
                 </div>
                 <span className="ya-stat-card__value">{stats.favourites.length}</span>
                 <span className="ya-text-muted ya-stat-card__label">Favourites</span>
@@ -184,25 +197,28 @@ function Dashboard() {
 
           <section className="ya-dashboard__section">
             <Card as={Link} to="/watchlist" hoverable className="ya-dashboard__watchlist-card">
-              <div className="ya-stat-card__icon ya-stat-card__icon--blue" aria-hidden="true">
-                <Bookmark size={22} />
+              <div className="ya-stat-card__icon" aria-hidden="true">
+                <Bookmark size={20} />
               </div>
               <div className="ya-dashboard__watchlist-info">
                 <span className="ya-section-heading">{stats.wantToWatch.length} on your Watch List</span>
                 <span className="ya-text-muted">Anime you're planning to watch next.</span>
               </div>
-              <span className="ya-form-link ya-dashboard__watchlist-link">
+              <span className="ya-btn ya-btn--outline ya-dashboard__watchlist-link">
                 View Watch List
                 <ChevronRight size={16} aria-hidden="true" />
+              </span>
+              <span className="ya-dashboard__watchlist-quote" aria-hidden="true">
+                <span className="ya-dashboard__watchlist-divider" />
+                <span className="ya-dashboard__watchlist-quote-text">
+                  &ldquo;Good stories always find you.&rdquo;
+                </span>
               </span>
             </Card>
           </section>
 
           <section className="ya-dashboard__section">
-            <h2 className="ya-section-heading ya-dashboard__section-title">
-              <Sparkles size={18} className="ya-dashboard__section-icon" aria-hidden="true" />
-              Recently Added
-            </h2>
+            <DashboardSectionHeading icon={Sparkles}>Recently Added</DashboardSectionHeading>
             <p className="ya-text-muted ya-dashboard__section-sub">Your newest additions to My Anime.</p>
             <div className="ya-dashboard__anime-grid">
               {recentlyAdded.map((entry) => (
@@ -217,15 +233,12 @@ function Dashboard() {
           </section>
 
           <section className="ya-dashboard__section">
-            <h2 className="ya-section-heading ya-dashboard__section-title">
-              <PlayCircle size={18} className="ya-dashboard__section-icon" aria-hidden="true" />
-              Currently Watching
-            </h2>
+            <DashboardSectionHeading icon={PlayCircle}>Currently Watching</DashboardSectionHeading>
             <p className="ya-text-muted ya-dashboard__section-sub">Pick up where you left off.</p>
             {stats.watching.length === 0 ? (
               <EmptyState
                 icon={PlayCircle}
-                title="Nothing in progress yet ♡"
+                title="Nothing in progress yet."
                 description="Anime you mark as “Watching” will show up here."
                 action={
                   <Link to="/anime" className="ya-btn ya-btn--outline">
@@ -248,15 +261,12 @@ function Dashboard() {
           </section>
 
           <section className="ya-dashboard__section">
-            <h2 className="ya-section-heading ya-dashboard__section-title">
-              <Heart size={18} className="ya-dashboard__section-icon" aria-hidden="true" />
-              Your Favourites
-            </h2>
+            <DashboardSectionHeading icon={Heart}>Your Favourites</DashboardSectionHeading>
             <p className="ya-text-muted ya-dashboard__section-sub">The anime closest to your heart.</p>
             {stats.favourites.length === 0 ? (
               <EmptyState
                 icon={Heart}
-                title="Nothing favourited yet ♡"
+                title="Nothing favourited yet."
                 description="Tap the heart on any saved anime to add it here."
                 action={
                   <Link to="/anime" className="ya-btn ya-btn--outline">

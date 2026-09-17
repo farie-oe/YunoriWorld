@@ -337,93 +337,87 @@ function MyAnime() {
       {exportStatus === 'error' && exportError && <p className="ya-field__error">{exportError}</p>}
 
       {!collectionLoading && !collectionError && collection.length > 0 && (
-        <div className="ya-collection-controls">
-          <div className="ya-my-anime__search">
-            <Search size={18} aria-hidden="true" />
-            <label htmlFor="my-anime-search-input" className="ya-visually-hidden">
-              Search your saved anime
+        <div className="ya-collection-toolbar">
+          <p className="ya-label ya-collection-toolbar__label">Your Collection</p>
+
+          <div className="ya-collection-toolbar__row">
+            <div className="ya-collection-toolbar__search">
+              <Search size={16} aria-hidden="true" />
+              <label htmlFor="my-anime-search-input" className="ya-visually-hidden">
+                Search your saved anime
+              </label>
+              <input
+                id="my-anime-search-input"
+                type="search"
+                className="ya-collection-toolbar__search-input"
+                placeholder="Search your collection..."
+                value={collectionSearch}
+                onChange={(event) => setCollectionSearch(event.target.value)}
+              />
+            </div>
+
+            <label htmlFor="status-filter" className="ya-visually-hidden">
+              Filter by status
             </label>
-            <input
-              id="my-anime-search-input"
-              type="search"
-              className="ya-input ya-my-anime__search-input"
-              placeholder="Search My Anime..."
-              value={collectionSearch}
-              onChange={(event) => setCollectionSearch(event.target.value)}
-            />
-          </div>
+            <select
+              id="status-filter"
+              className="ya-input ya-collection-toolbar__select"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
+              <option value={DEFAULT_STATUS_FILTER}>All statuses</option>
+              {STATUS_OPTIONS.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
 
-          <div className="ya-collection-controls__filters">
-            <div className="ya-collection-controls__field">
-              <label htmlFor="status-filter" className="ya-visually-hidden">
-                Filter by status
-              </label>
-              <select
-                id="status-filter"
-                className="ya-input"
-                value={statusFilter}
-                onChange={(event) => setStatusFilter(event.target.value)}
-              >
-                <option value={DEFAULT_STATUS_FILTER}>All statuses</option>
-                {STATUS_OPTIONS.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label htmlFor="category-filter" className="ya-visually-hidden">
+              Filter by category
+            </label>
+            <select
+              id="category-filter"
+              className="ya-input ya-collection-toolbar__select"
+              value={categoryFilter}
+              onChange={(event) => setCategoryFilter(event.target.value)}
+            >
+              <option value={DEFAULT_CATEGORY_FILTER}>All categories</option>
+              {CATEGORIES.map((option) => (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              ))}
+            </select>
 
-            <div className="ya-collection-controls__field">
-              <label htmlFor="category-filter" className="ya-visually-hidden">
-                Filter by category
-              </label>
-              <select
-                id="category-filter"
-                className="ya-input"
-                value={categoryFilter}
-                onChange={(event) => setCategoryFilter(event.target.value)}
-              >
-                <option value={DEFAULT_CATEGORY_FILTER}>All categories</option>
-                {CATEGORIES.map((option) => (
-                  <option key={option} value={option}>
-                    {option}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label htmlFor="favourite-filter" className="ya-visually-hidden">
+              Filter by favourite
+            </label>
+            <select
+              id="favourite-filter"
+              className="ya-input ya-collection-toolbar__select"
+              value={favouriteOnly ? 'favourites' : 'all'}
+              onChange={(event) => setFavouriteOnly(event.target.value === 'favourites')}
+            >
+              <option value="all">All anime</option>
+              <option value="favourites">Favourites only</option>
+            </select>
 
-            <div className="ya-collection-controls__field">
-              <label htmlFor="favourite-filter" className="ya-visually-hidden">
-                Filter by favourite
-              </label>
-              <select
-                id="favourite-filter"
-                className="ya-input"
-                value={favouriteOnly ? 'favourites' : 'all'}
-                onChange={(event) => setFavouriteOnly(event.target.value === 'favourites')}
-              >
-                <option value="all">All anime</option>
-                <option value="favourites">Favourites only</option>
-              </select>
-            </div>
-
-            <div className="ya-collection-controls__field">
-              <label htmlFor="sort-by" className="ya-visually-hidden">
-                Sort collection
-              </label>
-              <select
-                id="sort-by"
-                className="ya-input"
-                value={sortBy}
-                onChange={(event) => setSortBy(event.target.value)}
-              >
-                {SORT_OPTIONS.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+            <label htmlFor="sort-by" className="ya-visually-hidden">
+              Sort collection
+            </label>
+            <select
+              id="sort-by"
+              className="ya-input ya-collection-toolbar__select"
+              value={sortBy}
+              onChange={(event) => setSortBy(event.target.value)}
+            >
+              {SORT_OPTIONS.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
+                </option>
+              ))}
+            </select>
 
             {hasActiveControls && (
               <Button
@@ -433,12 +427,12 @@ function MyAnime() {
                 onClick={handleResetControls}
                 aria-label="Reset search, filters, and sorting"
               >
-                Clear Filters
+                Clear
               </Button>
             )}
           </div>
 
-          <p className="ya-meta-text ya-collection-controls__count">
+          <p className="ya-meta-text ya-collection-toolbar__count">
             Showing {filteredCollection.length} of {collection.length} anime
           </p>
         </div>

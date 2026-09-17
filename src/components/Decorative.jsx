@@ -17,6 +17,26 @@ export function Sparkle({ className = '' }) {
   )
 }
 
+/** Thin celestial orbit ring with a small star riding it — used sparingly
+ * as an editorial brand mark (e.g. beside the Yunori wordmark), never as
+ * a large illustration. */
+export function Orbit({ className = '' }) {
+  return (
+    <svg
+      className={`ya-decor-orbit ${className}`.trim()}
+      viewBox="0 0 32 32"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <ellipse cx="16" cy="16" rx="14" ry="6" fill="none" stroke="currentColor" strokeWidth="1" />
+      <path
+        d="M27 8c.3 1.7 1.1 2.5 2.8 2.8-1.7.3-2.5 1.1-2.8 2.8-.3-1.7-1.1-2.5-2.8-2.8 1.7-.3 2.5-1.1 2.8-2.8z"
+        fill="currentColor"
+      />
+    </svg>
+  )
+}
+
 /** Small decorative heart. Purely ornamental — never used as UI feedback
  * (favouriting etc. still uses the functional Lucide Heart icon). */
 export function DecorativeHeart({ className = '' }) {

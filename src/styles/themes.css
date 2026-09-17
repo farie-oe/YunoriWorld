@@ -3,14 +3,28 @@
    Applying a theme only swaps these CSS variables — it must
    never touch application data, only presentation.
 
+   Six themes: Ivory White (default, defined in global.css), Sakura Pink,
+   Lavender Dream, Royal Forest, Night Mode, Midnight Luxe.
+
    Each theme only needs to override the tokens that actually change hue —
-   --color-text-secondary, --color-pink-secondary, --color-lavender and
-   --color-pastel-blue are all derived from other tokens in global.css and
-   automatically follow the theme without repeating them here.
+   --color-text-secondary and --color-lavender are derived from other
+   tokens in global.css and automatically follow the theme without
+   repeating them here.
+
+   --color-rating-star is intentionally NEVER overridden here: rating
+   stars are always the same warm gold in every theme, by design.
+
    --color-focus is set explicitly per theme so the focus ring always has
    enough contrast against that theme's own surfaces (this matters most
-   for Night Mode, where the decorative accent colours are too low-contrast
-   to double as an accessible focus indicator).
+   for the two dark themes, where the decorative accent colours are too
+   low-contrast to double as an accessible focus indicator).
+
+   --color-on-primary is also set explicitly per theme: the default
+   theme's root value is a dark near-black (right for its light champagne
+   gold primary), but a theme whose primary is itself dark or saturated
+   (Royal Forest's deep green, Midnight Luxe's near-black background)
+   needs the opposite — a light on-primary colour — so each theme below
+   sets whichever is correct for its own primary.
 --------------------------------------------------------- */
 
 [data-theme='sakura-pink'] {
@@ -20,11 +34,12 @@
   --color-primary: #f2a4c1;
   --color-primary-hover: #e888a9;
   --color-secondary: #f7cede;
-  --color-accent: #e6b8d1;
+  --color-accent: #d9b789; /* champagne gold, per Sakura's refined palette */
   --color-text: #4a2f3b;
   --color-text-muted: #8f6f7c;
   --color-border: #f6d9e3;
   --color-focus: #c9587f;
+  --color-on-primary: var(--color-text);
 }
 
 [data-theme='lavender-dream'] {
@@ -34,25 +49,30 @@
   --color-primary: #c9b8f0;
   --color-primary-hover: #b39ce8;
   --color-secondary: #ded4f7;
-  --color-accent: #b8c9f0;
+  --color-accent: #b8c9f0; /* soft celestial blue-violet */
   --color-text: #3c3454;
   --color-text-muted: #85809e;
   --color-border: #e4dcf7;
   --color-focus: #8a6fd1;
+  --color-on-primary: var(--color-text);
 }
 
-[data-theme='mint-breeze'] {
-  --color-bg: #f5fbf8;
+[data-theme='royal-forest'] {
+  --color-bg: #f7f5ee;
   --color-surface: #ffffff;
-  --color-surface-secondary: #e7f7f0;
-  --color-primary: #a8dfc9;
-  --color-primary-hover: #8ccdb2;
-  --color-secondary: #cdeee1;
-  --color-accent: #bfe0f2;
-  --color-text: #2f4a42;
-  --color-text-muted: #7c968c;
-  --color-border: #dcf0e7;
-  --color-focus: #4a9d80;
+  --color-surface-secondary: #e9eee6;
+  --color-primary: #1f4a3a;
+  --color-primary-hover: #163a2d;
+  --color-secondary: #b9c9b0;
+  --color-accent: #c9a66b; /* champagne gold */
+  --color-text: #1c231f;
+  --color-text-muted: #6e7a6c;
+  --color-border: #dde3d6;
+  --color-focus: #16332a;
+  /* Unlike the other light themes, Royal Forest's primary is a deep,
+     saturated green rather than a pale pastel, so it needs light
+     (ivory) text on top of it instead of the theme's own dark text. */
+  --color-on-primary: #f7f5ee;
 }
 
 [data-theme='night-mode'] {
@@ -71,16 +91,21 @@
   --color-focus: #e0aed6;
 }
 
-[data-theme='sunset-glow'] {
-  --color-bg: #fff6ee;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #fbe7d6;
-  --color-primary: #f2b088;
-  --color-primary-hover: #e8975f;
-  --color-secondary: #f6cf9c;
-  --color-accent: #e8a3a3;
-  --color-text: #4a352c;
-  --color-text-muted: #93796c;
-  --color-border: #f6ddc4;
-  --color-focus: #d97a4a;
+[data-theme='midnight-luxe'] {
+  --color-bg: #100d0a;
+  --color-surface: #1b1714;
+  --color-surface-secondary: #241f1b;
+  --color-primary: #c9a66b; /* champagne gold */
+  --color-primary-hover: #b8924f;
+  --color-secondary: #2e2530; /* extremely restrained, barely-there plum */
+  --color-accent: #e8d5b0; /* paler champagne highlight */
+  --color-text: #f5f0e8; /* ivory */
+  --color-text-muted: #a79c8c;
+  --color-border: #332c26;
+  --color-shadow: rgba(0, 0, 0, 0.5);
+  --color-focus: #e8c87a;
+  /* Gold primary is light/mid-tone against this theme's near-black
+     surfaces, so on-primary text needs to be dark, not the theme's own
+     ivory body text. */
+  --color-on-primary: #100d0a;
 }

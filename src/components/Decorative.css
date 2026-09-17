@@ -12,10 +12,20 @@
   opacity: 0.7;
 }
 
+.ya-decor-orbit {
+  width: 28px;
+  height: 28px;
+  color: var(--color-text-muted);
+}
+
+.ya-decor-orbit path {
+  color: var(--color-primary);
+}
+
 .ya-decor-heart {
   width: 14px;
   height: 14px;
-  color: var(--color-pink-secondary);
+  color: color-mix(in srgb, var(--color-primary) 55%, var(--color-blush));
   opacity: 0.9;
 }
 

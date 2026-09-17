@@ -1,44 +1,57 @@
 /* ---------------------------------------------------------
-   YourAnime design tokens
-   Default theme: "Default White Kawaii" — the primary reference design.
-   Overridden per-theme in styles/themes.css via [data-theme].
+   Yunori World design tokens
+   Default theme ("Ivory White") — the primary reference design: a
+   genuinely white/near-white foundation with champagne gold as the one
+   accent used with any confidence, and purple/lavender kept deliberately
+   restrained (never the dominant colour). Overridden per-theme in
+   styles/themes.css via [data-theme]; the other five themes (Sakura Pink,
+   Lavender Dream, Royal Forest, Night Mode, Midnight Luxe) are unaffected
+   by the palette below except where noted.
 
-   Colour balance guideline for this design system (applies to how future
-   page layouts should use these tokens, not enforced by CSS itself):
-     ~70% white / very light neutral surfaces (--color-bg, --color-surface)
-     ~15% soft pink (--color-primary, --color-pink-secondary)
-     ~10% lavender / pastel blue (--color-lavender, --color-pastel-blue)
-     ~5%  decorative accents (sparkles, hearts, blossoms, etc.)
-   White/cream should always remain the dominant surface colour — pink and
-   lavender are accents, never backgrounds for large areas.
+   Colour balance guideline (applies to how page layouts should use these
+   tokens, not enforced by CSS itself):
+     ~60-70% white/ivory surfaces (--color-bg, --color-surface)
+     ~20-25% deep near-black text (--color-text)
+     ~5-10%  gold / blush / lavender accents, used sparingly
+   White must always remain the dominant surface colour — purple is a
+   restrained secondary tone, never a background.
 --------------------------------------------------------- */
 :root {
   /* --- core surface & text tokens ------------------------------- */
-  --color-bg: #fffbf6;
+  --color-bg: #fcfaf5; /* genuinely white, only the barest warmth */
   --color-surface: #ffffff;
-  --color-surface-secondary: #fdf3f7;
-  --color-text: #423b4d;
+  --color-surface-secondary: #f4ede2; /* soft neutral taupe/blush, not lavender */
+  --color-surface-elevated: #ffffff;
+  --color-text: #221c2c; /* deep near-black, warm undertone */
   --color-text-secondary: color-mix(in srgb, var(--color-text) 70%, var(--color-text-muted));
-  --color-text-muted: #8a8296;
-  --color-border: #f0dce7;
-  --color-shadow: rgba(140, 110, 130, 0.14);
-  --color-on-primary: #4a2f3b;
+  --color-text-muted: #93887c; /* soft taupe */
+  --color-border: #e8e0d2;
+  --color-shadow: rgba(34, 28, 44, 0.08);
+  --color-on-primary: var(--color-text);
 
   /* --- accent tokens ---------------------------------------------
      --color-primary / --color-secondary / --color-accent are the
-     original, still-used token names (primary pink / lavender / pastel
-     blue). The aliases below give every accent an explicit semantic name
-     per the design system, without renaming anything existing components
-     already depend on. */
-  --color-primary: #f3b8cb;
-  --color-primary-hover: #ec9fb8;
-  --color-secondary: #d9cff0;
-  --color-accent: #bfe0f2;
+     original, still-used token names (primary accent / secondary accent /
+     tertiary accent). The aliases below give each an explicit semantic
+     name matching the Yunori World palette, without renaming anything
+     existing components already depend on. Gold is the primary accent;
+     lavender and blush are intentionally kept soft and used sparingly. */
+  --color-primary: #c9a66b; /* champagne gold */
+  --color-primary-hover: #b8924f;
+  --color-secondary: #e4dce6; /* restrained, dusty lavender */
+  --color-accent: #f4e3e7; /* very subtle blush */
 
-  --color-pink-primary: var(--color-primary);
-  --color-pink-secondary: color-mix(in srgb, var(--color-primary) 50%, var(--color-surface));
+  --color-gold: var(--color-primary);
   --color-lavender: var(--color-secondary);
-  --color-pastel-blue: var(--color-accent);
+  --color-blush: var(--color-accent);
+
+  /* --- rating stars -------------------------------------------------
+     Permanent Yunori World design rule: a selected rating star is always
+     this warm gold, in every theme, everywhere ratings appear (Dashboard,
+     My Anime, Watch List, Add/Edit forms, PDF export). This is
+     intentionally NOT one of the per-theme accent tokens above — it must
+     never be overridden in styles/themes.css. */
+  --color-rating-star: #cba135;
 
   /* --- status / feedback tokens ------------------------------------ */
   --color-danger: #e08999;
@@ -52,13 +65,16 @@
      A dedicated, per-theme-tunable token (see styles/themes.css) so the
      focus ring always has enough contrast against that theme's surfaces —
      Night Mode in particular needs a lighter, more saturated value than
-     the decorative accent colours provide. */
-  --color-focus: #c4658d;
+     the decorative accent colours provide. The default theme's gold/
+     lavender accents are too pale to double as an accessible focus ring,
+     so this uses a deeper warm gold-brown instead. */
+  --color-focus: #96742e;
 
-  /* radius */
-  --radius-sm: 8px;
-  --radius-md: 14px;
-  --radius-lg: 22px;
+  /* radius — restrained, refined corners rather than the previous
+     rounder "kawaii bubble" feel; still soft, never sharp. */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
   --radius-pill: 999px;
 
   /* spacing scale */
@@ -75,8 +91,10 @@
   --shadow-md: 0 8px 24px var(--color-shadow);
   --shadow-lg: 0 16px 40px var(--color-shadow);
 
-  /* typography */
-  --font-heading: 'Fredoka', system-ui, 'Segoe UI', sans-serif;
+  /* typography — an elegant editorial serif for branding and major
+     headings, paired with a clean modern sans for functional UI text
+     (navigation, buttons, labels, metadata, body copy). */
+  --font-heading: 'Playfair Display', Georgia, 'Times New Roman', serif;
   --font-body: 'Nunito', system-ui, 'Segoe UI', sans-serif;
 
   --text-xs: 0.75rem;
@@ -135,10 +153,10 @@ a {
 
 .ya-logo {
   font-family: var(--font-heading);
-  font-weight: 600;
+  font-weight: 700;
   font-size: var(--text-lg);
   color: var(--color-text);
-  letter-spacing: -0.01em;
+  letter-spacing: 0.06em;
 }
 
 .ya-card-title {
@@ -147,6 +165,17 @@ a {
   font-size: var(--text-lg);
   color: var(--color-text);
   margin: 0;
+}
+
+/* Small tracked eyebrow/kicker text — the functional-UI equivalent of a
+   caption above an editorial heading (e.g. "WELCOME TO YUNORI WORLD"). */
+.ya-eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-xs);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
 }
 
 .ya-label {
@@ -181,6 +210,12 @@ a {
   line-height: 1.6;
   color: var(--color-text);
   margin: 0;
+}
+
+/* A rating display (e.g. a Badge showing filled-star text) that must
+   always read in the permanent Yunori gold, regardless of theme. */
+.ya-rating-badge {
+  color: var(--color-rating-star);
 }
 
 .ya-text-muted {

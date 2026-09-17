@@ -3,6 +3,12 @@
   flex-direction: column;
   padding: 0;
   overflow: hidden;
+  /* Grid/flex items default to a minimum width equal to their content's
+     intrinsic width, which lets a wide child (e.g. the action button row)
+     force this card's grid track wider than its minmax() floor — the
+     root cause of the awkward column/gap behaviour across breakpoints.
+     This override lets the card actually shrink to the track width. */
+  min-width: 0;
 }
 
 .ya-saved-card__cover {
@@ -63,10 +69,13 @@
   flex-direction: column;
   gap: var(--space-2);
   padding: var(--space-4);
+  flex: 1;
+  min-width: 0;
 }
 
 .ya-saved-card__title {
   font-size: var(--text-lg);
+  overflow-wrap: break-word;
 }
 
 .ya-saved-card__badges {
@@ -85,10 +94,29 @@
 .ya-saved-card__actions {
   display: flex;
   gap: var(--space-2);
-  margin-top: var(--space-2);
+  /* Push the action row to the bottom of the card even when a grid row's
+     tallest sibling stretches this card taller than its own content. */
+  margin-top: auto;
+  padding-top: var(--space-2);
 }
 
 .ya-saved-card__edit-btn,
 .ya-saved-card__delete-btn {
-  flex: 1;
+  flex: 1 1 0;
+  min-width: 0;
+  padding: var(--space-2) var(--space-3);
+  border-radius: 9px;
+}
+
+.ya-saved-card__edit-btn span,
+.ya-saved-card__delete-btn span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.ya-saved-card__edit-btn svg,
+.ya-saved-card__delete-btn svg {
+  flex-shrink: 0;
 }

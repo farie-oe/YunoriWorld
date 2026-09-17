@@ -10,6 +10,10 @@ const COLOR_PINK = [243, 184, 203]
 const COLOR_PINK_DARK = [176, 92, 130]
 const COLOR_LAVENDER = [214, 203, 238]
 const COLOR_DIVIDER = [236, 223, 232]
+// Permanent Yunori World rule: rating stars are always this warm gold in
+// the PDF too, matching --color-rating-star in the app's CSS — never tied
+// to the theme-ish pink/lavender palette used elsewhere in this document.
+const COLOR_RATING_GOLD = [203, 161, 53]
 
 const PAGE_MARGIN = 50
 const PAGE_WIDTH = 595.28 // A4 in pt
@@ -79,7 +83,8 @@ function drawSparkle(doc, cx, cy, size, color) {
 function drawRatingStars(doc, x, y, rating) {
   const spacing = 9
   for (let i = 0; i < 5; i += 1) {
-    drawStar(doc, x + i * spacing + 4, y - 3, 4, i < rating, COLOR_PINK_DARK)
+    const filled = i < rating
+    drawStar(doc, x + i * spacing + 4, y - 3, 4, filled, filled ? COLOR_RATING_GOLD : COLOR_TEXT_MUTED)
   }
   return spacing * 5
 }

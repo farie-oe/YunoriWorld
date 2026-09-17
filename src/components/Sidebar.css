@@ -3,33 +3,80 @@
   top: 0;
   left: 0;
   bottom: 0;
-  width: 240px;
+  width: 260px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
-  padding: var(--space-5) var(--space-3);
-  background: var(--color-surface);
+  gap: var(--space-4);
+  padding: var(--space-6) var(--space-4) var(--space-4);
+  background: var(--color-bg);
   border-right: 1px solid var(--color-border);
   z-index: 10;
+  overflow-y: auto;
 }
 
 .ya-sidebar__brand {
   display: flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-2) var(--space-3);
+  align-items: flex-start;
+  gap: var(--space-3);
+  padding: 0 var(--space-2);
 }
 
-.ya-sidebar__brand-icon {
-  color: var(--color-primary-hover);
-  fill: var(--color-primary);
+.ya-sidebar__brand-mark {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.ya-sidebar__brand-lockup {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
 }
 
 .ya-sidebar__brand-name {
   font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: var(--text-lg);
+  font-weight: 700;
+  font-size: var(--text-2xl);
+  line-height: 1.05;
   color: var(--color-text);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.ya-sidebar__brand-name-rest {
+  display: block;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  letter-spacing: 0.3em;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+.ya-sidebar__brand-tagline {
+  margin-top: var(--space-2);
+  font-family: var(--font-heading);
+  font-style: italic;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+}
+
+.ya-sidebar__divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-2);
+  color: var(--color-border);
+}
+
+.ya-sidebar__divider span {
+  flex: 1;
+  height: 1px;
+  background: currentColor;
+}
+
+.ya-sidebar__divider-mark {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .ya-sidebar__nav {
@@ -38,9 +85,68 @@
   gap: var(--space-1);
 }
 
+.ya-sidebar__spacer {
+  flex: 1;
+}
+
+.ya-sidebar__profile {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-radius: var(--radius-md);
+  text-decoration: none;
+  color: inherit;
+  transition: background-color 0.15s ease;
+}
+
+.ya-sidebar__profile:hover {
+  background: var(--color-surface-secondary);
+}
+
+.ya-sidebar__profile-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-secondary);
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.ya-sidebar__profile-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+}
+
+.ya-sidebar__profile-name {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: var(--text-sm);
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.ya-sidebar__profile-id {
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  letter-spacing: 0.03em;
+}
+
+.ya-sidebar__profile-chevron {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
 .ya-sidebar__footer {
-  margin-top: auto;
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-2);
 }
 
 .ya-sidebar__sign-out {
@@ -55,8 +161,16 @@
     padding: var(--space-5) var(--space-2);
   }
 
-  .ya-sidebar__brand-name {
+  .ya-sidebar__brand-lockup,
+  .ya-sidebar__divider,
+  .ya-sidebar__profile-info,
+  .ya-sidebar__profile-chevron {
     display: none;
+  }
+
+  .ya-sidebar__brand {
+    padding: 0;
+    justify-content: center;
   }
 
   .ya-sidebar__nav {
@@ -73,9 +187,14 @@
     display: none;
   }
 
+  .ya-sidebar__profile {
+    justify-content: center;
+    padding: var(--space-2);
+  }
+
   .ya-sidebar__footer {
     width: 100%;
-    padding: 0 var(--space-2);
+    padding: 0;
   }
 
   .ya-sidebar__sign-out-label {
@@ -99,10 +218,21 @@
     padding: 0 var(--space-4);
     border-right: none;
     border-bottom: 1px solid var(--color-border);
+    overflow: visible;
   }
 
   .ya-sidebar__brand {
     padding: 0;
+  }
+
+  .ya-sidebar__brand-name {
+    font-size: var(--text-lg);
+  }
+
+  .ya-sidebar__divider,
+  .ya-sidebar__spacer,
+  .ya-sidebar__profile {
+    display: none;
   }
 
   .ya-sidebar__nav {
@@ -121,7 +251,6 @@
   }
 
   .ya-sidebar__footer {
-    margin-top: 0;
     padding: 0;
     width: auto;
   }

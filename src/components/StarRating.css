@@ -11,8 +11,8 @@
 }
 
 .ya-star-rating__star--filled {
-  color: var(--color-primary-hover);
-  fill: var(--color-primary);
+  color: var(--color-rating-star);
+  fill: var(--color-rating-star);
 }
 
 .ya-star-rating__button {
@@ -25,6 +25,6 @@
 }
 
 .ya-star-rating--interactive .ya-star-rating__button:hover .ya-star-rating__star {
-  color: var(--color-primary-hover);
-  fill: var(--color-primary);
+  color: var(--color-rating-star);
+  fill: var(--color-rating-star);
 }

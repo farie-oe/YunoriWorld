@@ -55,7 +55,11 @@ function SavedAnimeCard({ entry, userId, onEdit, onFavouriteChange, onDeleteRequ
         <div className="ya-saved-card__badges">
           <Badge tone="primary">{entry.status || 'Want to Watch'}</Badge>
           {entry.category && <Badge tone="neutral">{entry.category}</Badge>}
-          {entry.rating != null && <Badge tone="secondary">{'★'.repeat(entry.rating)}</Badge>}
+          {entry.rating != null && (
+            <Badge tone="neutral" className="ya-rating-badge">
+              {'★'.repeat(entry.rating)}
+            </Badge>
+          )}
         </div>
 
         <p className="ya-text-muted ya-saved-card__description">

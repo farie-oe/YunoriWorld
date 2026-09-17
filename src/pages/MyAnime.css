@@ -44,7 +44,7 @@
 
 .ya-anime-search__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: var(--space-4);
 }
 
@@ -61,53 +61,73 @@
   margin: 0;
 }
 
-.ya-collection-controls {
+.ya-collection-toolbar {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-2);
   margin-bottom: var(--space-5);
 }
 
-.ya-collection-controls__filters {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  flex-wrap: wrap;
-}
-
-.ya-collection-controls__field {
-  flex: 1 1 160px;
-  min-width: 140px;
-}
-
-.ya-collection-controls__field .ya-input {
-  width: 100%;
-}
-
-.ya-collection-controls__count {
+.ya-collection-toolbar__label {
   margin: 0;
 }
 
-.ya-my-anime__search {
+.ya-collection-toolbar__row {
   display: flex;
   align-items: center;
   gap: var(--space-2);
-  flex: 1 1 260px;
+  flex-wrap: wrap;
+}
+
+.ya-collection-toolbar__search {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 1 1 280px;
+  max-width: 380px;
+  min-width: 220px;
+  height: 38px;
   background: var(--color-surface-secondary);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
-  padding: 0 var(--space-4);
+  padding: 0 var(--space-3);
   color: var(--color-text-muted);
 }
 
-.ya-my-anime__search-input {
+.ya-collection-toolbar__search-input {
   flex: 1;
+  min-width: 0;
   background: transparent;
   border: none;
-  padding: var(--space-3) 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  color: var(--color-text);
 }
 
-.ya-my-anime__search-input:focus {
+.ya-collection-toolbar__search-input:focus {
   outline: none;
   box-shadow: none;
+}
+
+.ya-collection-toolbar__select {
+  flex: 0 0 auto;
+  width: auto;
+  height: 38px;
+  padding: 0 var(--space-3);
+  font-size: var(--text-sm);
+}
+
+.ya-collection-toolbar__count {
+  margin: 0;
+}
+
+@media (max-width: 600px) {
+  .ya-collection-toolbar__search {
+    flex: 1 1 100%;
+    max-width: none;
+  }
+
+  .ya-collection-toolbar__select {
+    flex: 1 1 auto;
+  }
 }
