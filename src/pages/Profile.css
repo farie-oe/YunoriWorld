@@ -5,17 +5,35 @@
   margin-bottom: var(--space-5);
 }
 
-.ya-profile__avatar {
+.ya-profile__avatar-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ya-profile__avatar-edit {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 80px;
-  height: 80px;
+  width: 26px;
+  height: 26px;
   border-radius: var(--radius-pill);
-  background: var(--color-surface-secondary);
-  border: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
   color: var(--color-primary-hover);
-  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease, transform 0.12s ease;
+}
+
+.ya-profile__avatar-edit:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.ya-profile__avatar-edit:active {
+  transform: scale(0.94);
 }
 
 .ya-profile__identity {

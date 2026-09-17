@@ -104,16 +104,11 @@
   background: var(--color-surface-secondary);
 }
 
-.ya-sidebar__profile-avatar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: var(--radius-pill);
-  background: var(--color-surface-secondary);
+/* Sizing/shape/background come from the shared Avatar component (see
+   src/components/Avatar.css) — this only tweaks the sidebar-specific
+   placeholder tint. */
+.ya-sidebar__profile-avatar.ya-avatar--placeholder {
   color: var(--color-text-muted);
-  flex-shrink: 0;
 }
 
 .ya-sidebar__profile-info {

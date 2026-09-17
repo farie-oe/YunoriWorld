@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { UserCircle, Pencil } from 'lucide-react'
+import { Pencil } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
+import Avatar from '../components/Avatar'
+import AvatarPickerModal from '../components/AvatarPickerModal'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile, updateProfileUsername } from '../services/profiles'
 import './Profile.css'
@@ -27,6 +29,8 @@ function Profile() {
   const [usernameInput, setUsernameInput] = useState('')
   const [usernameSaving, setUsernameSaving] = useState(false)
   const [usernameError, setUsernameError] = useState('')
+
+  const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false)
 
   useEffect(() => {
     if (!user) return
@@ -82,13 +86,26 @@ function Profile() {
     }
   }
 
+  function handleAvatarSaved(updatedProfile) {
+    setProfile(updatedProfile)
+    setIsAvatarPickerOpen(false)
+  }
+
   return (
     <div>
       <PageHeader title="Profile" description="Your identity, at a glance." />
 
       <Card className="ya-profile__card">
-        <div className="ya-profile__avatar" aria-hidden="true">
-          <UserCircle size={40} strokeWidth={1.5} />
+        <div className="ya-profile__avatar-wrap">
+          <Avatar avatarType={profile?.avatar_type} avatarValue={profile?.avatar_value} size={80} />
+          <button
+            type="button"
+            className="ya-profile__avatar-edit"
+            onClick={() => setIsAvatarPickerOpen(true)}
+            aria-label="Change avatar"
+          >
+            <Pencil size={13} />
+          </button>
         </div>
         <div className="ya-profile__identity">
           <p className="ya-eyebrow ya-profile__eyebrow">Yunori Member</p>
@@ -164,6 +181,16 @@ function Profile() {
           </div>
         </dl>
       </Card>
+
+      {isAvatarPickerOpen && user && (
+        <AvatarPickerModal
+          userId={user.id}
+          currentAvatarType={profile?.avatar_type}
+          currentAvatarValue={profile?.avatar_value}
+          onCancel={() => setIsAvatarPickerOpen(false)}
+          onSaved={handleAvatarSaved}
+        />
+      )}
     </div>
   )
 }

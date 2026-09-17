@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Clapperboard, Bookmark, UserCircle, Palette, LogOut, ChevronRight } from 'lucide-react'
 import NavigationItem from './NavigationItem'
 import Button from './Button'
+import Avatar from './Avatar'
 import { Orbit } from './Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
@@ -76,9 +77,12 @@ function Sidebar() {
       <div className="ya-sidebar__spacer" />
 
       <Link to="/profile" className="ya-sidebar__profile">
-        <span className="ya-sidebar__profile-avatar" aria-hidden="true">
-          <UserCircle size={22} />
-        </span>
+        <Avatar
+          avatarType={profile?.avatar_type}
+          avatarValue={profile?.avatar_value}
+          size={36}
+          className="ya-sidebar__profile-avatar"
+        />
         <span className="ya-sidebar__profile-info">
           <span className="ya-sidebar__profile-name">{profile?.username || 'Your Profile'}</span>
           {profile?.unique_id && <span className="ya-sidebar__profile-id">{profile.unique_id}</span>}
