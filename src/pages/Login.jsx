@@ -98,9 +98,14 @@ function Login() {
         </div>
 
         <div className={`ya-field ${fieldErrors.password ? 'ya-field--invalid' : ''}`}>
-          <label className="ya-field__label" htmlFor="login-password">
-            Password
-          </label>
+          <div className="ya-field__label-row">
+            <label className="ya-field__label" htmlFor="login-password">
+              Password
+            </label>
+            <Link to="/forgot-password" className="ya-form-link ya-form-link--subtle">
+              Forgot password?
+            </Link>
+          </div>
           <input
             id="login-password"
             name="password"

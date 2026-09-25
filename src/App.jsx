@@ -4,6 +4,8 @@ import ProtectedRoute from './components/ProtectedRoute'
 import PublicOnlyRoute from './components/PublicOnlyRoute'
 import Login from './pages/Login'
 import CreateAccount from './pages/CreateAccount'
+import ForgotPassword from './pages/ForgotPassword'
+import ResetPassword from './pages/ResetPassword'
 import Dashboard from './pages/Dashboard'
 import MyAnime from './pages/MyAnime'
 import WatchList from './pages/WatchList'
@@ -19,7 +21,13 @@ function App() {
         <Route element={<PublicOnlyRoute />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<CreateAccount />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Route>
+
+        {/* Not gated by PublicOnlyRoute: Supabase establishes a session when
+            the user follows the recovery email link, so a session-based
+            redirect here would bounce them away before they can reset it. */}
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route element={<ProtectedRoute />}>
           <Route element={<AppLayout />}>

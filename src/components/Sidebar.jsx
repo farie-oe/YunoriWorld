@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { LayoutDashboard, Clapperboard, Bookmark, UserCircle, Palette, LogOut, ChevronRight } from 'lucide-react'
 import NavigationItem from './NavigationItem'
@@ -6,7 +5,7 @@ import Button from './Button'
 import Avatar from './Avatar'
 import { Orbit } from './Decorative'
 import { useAuth } from '../hooks/useAuth'
-import { getProfile } from '../services/profiles'
+import { useProfile } from '../hooks/useProfile'
 import { BRAND } from '../lib/brand'
 import './Sidebar.css'
 
@@ -22,27 +21,9 @@ const [BRAND_FIRST_WORD, ...BRAND_REST_WORDS] = BRAND.name.split(' ')
 const BRAND_REST = BRAND_REST_WORDS.join(' ')
 
 function Sidebar() {
-  const { user, signOut } = useAuth()
+  const { signOut } = useAuth()
+  const { profile } = useProfile()
   const navigate = useNavigate()
-  const [profile, setProfile] = useState(null)
-
-  useEffect(() => {
-    if (!user) return
-
-    let cancelled = false
-
-    getProfile(user.id)
-      .then((result) => {
-        if (!cancelled) setProfile(result)
-      })
-      .catch((err) => {
-        console.error('Failed to load profile for sidebar:', err)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [user])
 
   const handleSignOut = async () => {
     await signOut()

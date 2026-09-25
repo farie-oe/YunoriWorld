@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Pencil } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
@@ -7,7 +7,8 @@ import Button from '../components/Button'
 import Avatar from '../components/Avatar'
 import AvatarPickerModal from '../components/AvatarPickerModal'
 import { useAuth } from '../hooks/useAuth'
-import { getProfile, updateProfileUsername } from '../services/profiles'
+import { useProfile } from '../hooks/useProfile'
+import { updateProfileUsername } from '../services/profiles'
 import './Profile.css'
 
 function formatDate(value) {
@@ -21,9 +22,7 @@ function formatDate(value) {
 
 function Profile() {
   const { user } = useAuth()
-  const [profile, setProfile] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const { profile, loading, setProfile } = useProfile()
 
   const [isEditingUsername, setIsEditingUsername] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
@@ -31,28 +30,6 @@ function Profile() {
   const [usernameError, setUsernameError] = useState('')
 
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false)
-
-  useEffect(() => {
-    if (!user) return
-
-    let cancelled = false
-
-    getProfile(user.id)
-      .then((result) => {
-        if (!cancelled) setProfile(result)
-      })
-      .catch((err) => {
-        console.error('Failed to load profile:', err)
-        if (!cancelled) setError('We could not load your profile right now.')
-      })
-      .finally(() => {
-        if (!cancelled) setLoading(false)
-      })
-
-    return () => {
-      cancelled = true
-    }
-  }, [user])
 
   const displayName = profile?.username || 'Setting up your profile...'
   const uniqueId = profile?.unique_id || '—————'
@@ -114,9 +91,7 @@ function Profile() {
         </div>
       </Card>
 
-      {error && <p className="ya-field__error">{error}</p>}
-
-      {!error && !loading && !profile && (
+      {!loading && !profile && (
         <p className="ya-text-muted">
           Your profile is still being set up. Try refreshing this page in a moment.
         </p>
