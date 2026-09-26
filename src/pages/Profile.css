@@ -128,3 +128,9 @@
     align-items: flex-start;
   }
 }
+
+@media (max-width: 768px) {
+  .ya-profile__name {
+    font-size: 1.375rem; /* 22px */
+  }
+}

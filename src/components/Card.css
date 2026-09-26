@@ -11,3 +11,12 @@
   box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
+
+/* Mobile: less internal padding so cards feel lightweight rather than
+   large empty blocks — the gaps BETWEEN cards/sections are controlled
+   separately (by each page's own layout) and stay generous. */
+@media (max-width: 768px) {
+  .ya-card {
+    padding: var(--space-4);
+  }
+}

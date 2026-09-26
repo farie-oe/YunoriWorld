@@ -120,8 +120,25 @@
   color: var(--color-border);
 }
 
-@media (max-width: 480px) {
+@media (max-width: 768px) {
+  .ya-dash-card {
+    gap: var(--space-3);
+    padding: var(--space-2);
+  }
+
   .ya-dash-card__cover {
     width: 76px;
+  }
+
+  .ya-dash-card__body {
+    gap: var(--space-1);
+  }
+
+  .ya-dash-card__title {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .ya-dash-card__rating {
+    font-size: var(--text-xs);
   }
 }

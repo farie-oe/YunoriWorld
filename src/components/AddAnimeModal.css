@@ -141,3 +141,19 @@
   gap: var(--space-3);
   margin-top: var(--space-2);
 }
+
+@media (max-width: 768px) {
+  .ya-modal {
+    padding: var(--space-4);
+  }
+
+  .ya-modal__preview {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .ya-modal__preview-cover {
+    flex: 0 0 68px;
+    width: 68px;
+  }
+}

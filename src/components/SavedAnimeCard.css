@@ -138,15 +138,21 @@
   }
 }
 
-/* Phone: the grid narrows further still, so title and body padding also
-   scale down a step. */
-@media (max-width: 480px) {
+/* Mobile: less internal padding, a slightly smaller title, and a tighter
+   gap between title/badges/rating — the card gets naturally shorter
+   without the cover shrinking or the card feeling cramped. */
+@media (max-width: 768px) {
   .ya-saved-card__body {
     padding: var(--space-3);
-    gap: var(--space-1);
+    gap: 6px;
   }
 
   .ya-saved-card__title {
     font-size: var(--text-base);
+  }
+
+  .ya-saved-card__favourite {
+    width: 26px;
+    height: 26px;
   }
 }

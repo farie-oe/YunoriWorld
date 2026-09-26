@@ -33,6 +33,13 @@
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus) 30%, transparent);
 }
 
+@media (max-width: 768px) {
+  .ya-input {
+    font-size: 0.875rem; /* 14px */
+    padding: 9px var(--space-3);
+  }
+}
+
 .ya-field--invalid .ya-input {
   border-color: var(--color-danger);
 }

@@ -11,6 +11,17 @@
   border: 1px solid transparent;
 }
 
+/* Mobile: status/genre pills should read as compact metadata tags, not
+   buttons — every Badge in the app (status, category, genre, rating text)
+   shares this one class, so this single rule keeps them uniformly small. */
+@media (max-width: 768px) {
+  .ya-badge {
+    gap: 3px;
+    font-size: 0.6875rem; /* 11px */
+    padding: 2px 8px;
+  }
+}
+
 .ya-badge--neutral {
   background: var(--color-surface-secondary);
   color: var(--color-text-muted);

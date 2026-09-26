@@ -118,6 +118,16 @@
   flex-wrap: wrap;
 }
 
+@media (max-width: 768px) {
+  .ya-dashboard__watchlist-card {
+    gap: var(--space-3);
+  }
+
+  .ya-dashboard__watchlist-info {
+    gap: 2px;
+  }
+}
+
 .ya-dashboard__watchlist-info {
   display: flex;
   flex-direction: column;
@@ -172,7 +182,10 @@
   }
 }
 
-@media (max-width: 480px) {
+/* Mobile: compact statistic tiles — smaller icon circle, smaller number,
+   smaller label, less internal padding — while the grid itself (and the
+   gap before the next section) stays exactly as it is. */
+@media (max-width: 768px) {
   .ya-dashboard__stats {
     gap: var(--space-2);
   }
@@ -188,14 +201,21 @@
     height: 30px;
   }
 
+  .ya-stat-card__icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
   .ya-stat-card__value {
-    font-size: var(--text-xl);
+    font-size: var(--text-lg);
   }
 
   .ya-stat-card__label {
-    font-size: var(--text-xs);
+    font-size: 0.6875rem; /* 11px */
   }
+}
 
+@media (max-width: 480px) {
   .ya-dashboard__mascot {
     width: 52px;
   }

@@ -10,11 +10,11 @@ import { BRAND } from '../lib/brand'
 import './Sidebar.css'
 
 const NAV_ITEMS = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { to: '/anime', label: 'My Anime', icon: Clapperboard },
-  { to: '/watchlist', label: 'Watch List', icon: Bookmark },
+  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tourId: 'nav-dashboard' },
+  { to: '/anime', label: 'My Anime', icon: Clapperboard, tourId: 'nav-anime' },
+  { to: '/watchlist', label: 'Watch List', icon: Bookmark, tourId: 'nav-watchlist' },
   { to: '/profile', label: 'Profile', icon: UserCircle },
-  { to: '/themes', label: 'Themes', icon: Palette },
+  { to: '/themes', label: 'Themes', icon: Palette, tourId: 'nav-themes' },
 ]
 
 const [BRAND_FIRST_WORD, ...BRAND_REST_WORDS] = BRAND.name.split(' ')

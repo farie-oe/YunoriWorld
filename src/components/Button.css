@@ -80,3 +80,23 @@
   background: var(--color-surface-secondary);
   color: var(--color-text);
 }
+
+/* Mobile: a compact UI control rather than a large tappable block — still
+   comfortably tappable (~36px tall), just not oversized. Applies to every
+   button in the app, since they all share this one class. */
+@media (max-width: 768px) {
+  .ya-btn {
+    gap: 6px;
+    font-size: 0.8125rem; /* 13px */
+    padding: 9px 14px;
+  }
+
+  .ya-btn--icon {
+    padding: 7px;
+  }
+
+  .ya-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+}

@@ -247,6 +247,33 @@ a {
   letter-spacing: 0.02em;
 }
 
+/* Mobile typography scale — the single source of truth for "smaller
+   components, generous whitespace between sections" across every page.
+   Because ya-page-title/ya-section-heading/ya-body-text/ya-text-muted are
+   the shared classes every page already builds headings and copy from,
+   scaling them down once here (rather than per-page) is what keeps sizing
+   consistent everywhere instead of drifting page to page. Margins/gaps
+   (the --space-* scale) are deliberately left alone — they control spacing
+   BETWEEN sections, which should stay generous even as text/components
+   shrink. */
+@media (max-width: 768px) {
+  .ya-page-title {
+    font-size: 1.875rem; /* ~30px */
+  }
+
+  .ya-section-heading {
+    font-size: 1.125rem; /* 18px */
+  }
+
+  .ya-body-text {
+    font-size: 0.875rem; /* 14px */
+  }
+
+  .ya-text-muted {
+    font-size: 0.8125rem; /* 13px */
+  }
+}
+
 .ya-visually-hidden {
   position: absolute;
   width: 1px;

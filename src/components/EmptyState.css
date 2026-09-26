@@ -26,3 +26,19 @@
 .ya-empty-state__action {
   margin-top: var(--space-3);
 }
+
+@media (max-width: 768px) {
+  .ya-empty-state {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .ya-empty-state__icon {
+    width: 44px;
+    height: 44px;
+  }
+
+  .ya-empty-state__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+}

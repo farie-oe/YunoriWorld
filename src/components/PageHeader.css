@@ -15,3 +15,9 @@
 .ya-page-header__action {
   flex-shrink: 0;
 }
+
+@media (max-width: 768px) {
+  .ya-page-header {
+    margin-bottom: var(--space-5);
+  }
+}
