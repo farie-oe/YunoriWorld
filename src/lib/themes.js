@@ -26,4 +26,4 @@ export const THEMES = [
   { id: 'crimson-night', name: 'Crimson Night', avatarId: 'kage', glow: '#b3384a' },
 ]
 
-export const DEFAULT_THEME_ID = 'warm-ivory'
+export const DEFAULT_THEME_ID = 'sakura-pink'

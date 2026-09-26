@@ -18,6 +18,11 @@ export async function deleteAccount() {
   })
 
   if (error || !data?.success) {
+    // Logged (not shown to the user) so a real cause — e.g. the Edge
+    // Function itself missing/undeployed, a 401 from an expired session,
+    // vs. an actual in-function failure — is visible in the console
+    // instead of every failure looking identical from the UI alone.
+    console.error('Delete account failed:', error ?? data)
     throw new Error('We could not delete your account right now. Please try again.')
   }
 
