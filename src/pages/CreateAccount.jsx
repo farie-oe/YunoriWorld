@@ -99,7 +99,12 @@ function CreateAccount() {
 
   if (successState) {
     return (
-      <AuthLayout title="Check your inbox" subtitle="You're almost ready to start your journey.">
+      <AuthLayout
+        title="Check your inbox"
+        subtitle="You're almost ready to start your journey."
+        variant="register"
+        hideBrand
+      >
         <div className="ya-form-alert ya-form-alert--success" role="status">
           <MailCheck size={20} aria-hidden="true" />
           <span>
@@ -119,7 +124,12 @@ function CreateAccount() {
   }
 
   return (
-    <AuthLayout title="Create your account" subtitle="Start organising the anime you love.">
+    <AuthLayout
+      title="Create your account"
+      subtitle="Start organising the anime you love."
+      variant="register"
+      hideBrand
+    >
       {formError && (
         <div className="ya-form-alert ya-form-alert--error" role="alert">
           <CircleAlert size={18} aria-hidden="true" />
@@ -225,7 +235,7 @@ function CreateAccount() {
         <Button
           type="submit"
           variant="primary"
-          className="ya-auth-submit"
+          className="ya-auth-submit ya-auth-submit--minimal"
           disabled={isSubmitting}
         >
           {isSubmitting ? 'Creating account...' : 'Create Account'}

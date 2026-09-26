@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { CircleAlert } from 'lucide-react'
+import { ArrowRight, CircleAlert } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout'
 import Button from '../components/Button'
 import LoginTransition from '../components/LoginTransition'
@@ -108,7 +108,16 @@ function Login() {
 
   return (
     <>
-      <AuthLayout title="Welcome back" subtitle="Log in to pick up your anime journey.">
+      <AuthLayout
+        title={
+          <>
+            Welcome back, <span className="ya-auth-highlight">Fari.</span>
+          </>
+        }
+        subtitle="Log in to pick up your anime journey."
+        variant="login"
+        hideBrand
+      >
         {formError && (
           <div className="ya-form-alert ya-form-alert--error" role="alert">
             <CircleAlert size={18} aria-hidden="true" />
@@ -171,12 +180,18 @@ function Login() {
           <Button
             type="submit"
             variant="primary"
-            className="ya-auth-submit"
+            className="ya-auth-submit ya-auth-submit--minimal"
             disabled={isSubmitting || isEnteringYunori}
+            icon={ArrowRight}
+            iconPosition="right"
           >
             {isEnteringYunori ? 'Entering Yunori...' : isSubmitting ? 'Logging in...' : 'Log In'}
           </Button>
         </form>
+
+        <div className="ya-auth-divider" role="separator" aria-hidden="true">
+          <span>OR</span>
+        </div>
 
         <p className="ya-form-footer ya-text-muted">
           New to {BRAND.name}?{' '}

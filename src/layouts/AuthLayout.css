@@ -166,3 +166,137 @@
     padding: var(--space-5) var(--space-4);
   }
 }
+
+/* ---------------------------------------------------------------------
+   Login / Register shared minimal visual variant.
+
+   Everything above this point still governs Forgot Password and Reset
+   Password exactly as before. This block layers a minimal redesign on
+   top, scoped to `.ya-auth-layout--login` and `.ya-auth-layout--register`
+   (Login.jsx and CreateAccount.jsx pass `variant="login"`/`variant=
+   "register"` plus `hideBrand`), so those other two auth pages, the auth
+   logic, and the LoginTransition animation are completely untouched.
+   There is deliberately no separate branding block here — the card is
+   the only content, sitting directly in the centre of the photo. */
+.ya-auth-layout--login,
+.ya-auth-layout--register {
+  /* Warm-white and only lightly translucent (not heavily blurred) — the
+     card needs to read clearly on its own against a bright, detailed
+     photo without leaning on a blur to do the work. */
+  --color-surface: rgba(255, 252, 250, 0.94);
+  --color-surface-secondary: rgba(255, 255, 255, 0.7);
+  --color-border: rgba(255, 255, 255, 0.7);
+  --color-shadow: rgba(35, 30, 26, 0.12);
+
+  /* The photo is used exactly as supplied — no filter, tint, or gradient
+     layered over it. */
+  background-image: url('/images/yunori-login-background.png');
+  background-size: cover;
+  background-position: center 42%;
+  justify-content: center;
+}
+
+.ya-auth-layout--login .ya-auth-layout__panel,
+.ya-auth-layout--register .ya-auth-layout__panel {
+  max-width: 340px;
+}
+
+.ya-auth-layout--login .ya-auth-layout__card,
+.ya-auth-layout--register .ya-auth-layout__card {
+  padding: var(--space-6);
+  box-shadow: 0 8px 24px rgba(35, 30, 26, 0.1);
+}
+
+/* Desktop/tablet only: the 340px card reads a little small against the
+   full desktop photo, so it's sized up slightly here — mobile keeps the
+   sizing above untouched via the existing 420px breakpoint below. */
+@media (min-width: 421px) {
+  .ya-auth-layout--login .ya-auth-layout__panel {
+    max-width: 380px;
+  }
+
+  /* Register carries two more fields than Login, so its card gets a
+     little more room to stay comfortable rather than cramped. */
+  .ya-auth-layout--register .ya-auth-layout__panel {
+    max-width: 420px;
+  }
+
+  .ya-auth-layout--login .ya-auth-layout__card,
+  .ya-auth-layout--register .ya-auth-layout__card {
+    padding: var(--space-7);
+  }
+
+  .ya-auth-layout--login .ya-auth-layout__title,
+  .ya-auth-layout--register .ya-auth-layout__title {
+    font-size: 1.5rem;
+  }
+
+  .ya-auth-layout--login .ya-input,
+  .ya-auth-layout--register .ya-input {
+    padding: var(--space-4);
+  }
+
+  .ya-auth-layout--login .ya-auth-submit,
+  .ya-auth-layout--register .ya-auth-submit {
+    padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+  }
+}
+
+/* "Fari." in the existing rosy-plum accent already used for input focus
+   rings elsewhere in this file — deliberately not the pale button-fill
+   pink, which would be too low-contrast for heading text on a light card. */
+.ya-auth-highlight {
+  color: var(--color-focus);
+}
+
+/* Small "OR" divider between the submit button and the sign-up link —
+   plain text and two hairlines, no extra decoration. */
+.ya-auth-divider {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: var(--space-4) 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+
+.ya-auth-divider::before,
+.ya-auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
+}
+
+/* The shared Button component is deliberately left alone (it's used
+   everywhere in the app) — this compacts the corner radius for the login
+   submit button only, via the extra class Login.jsx adds. */
+.ya-auth-submit--minimal {
+  border-radius: var(--radius-md);
+}
+
+@media (max-width: 420px) {
+  /* ~88-90% of the viewport width (not the already-padded parent, hence
+     `vw` rather than `%`) so the card doesn't stretch to within a few
+     pixels of the phone edges — width is set (not just max-width)
+     because the base rule above sets an explicit 100% width on
+     `.ya-auth-layout__panel` that this needs to override. Capped so it
+     doesn't keep growing on larger mobile/tablet widths. */
+  .ya-auth-layout--login .ya-auth-layout__panel,
+  .ya-auth-layout--register .ya-auth-layout__panel {
+    width: min(89vw, 360px);
+  }
+
+  .ya-auth-layout--login .ya-auth-layout__card,
+  .ya-auth-layout--register .ya-auth-layout__card {
+    padding: var(--space-5) var(--space-4);
+  }
+
+  .ya-auth-divider {
+    margin: var(--space-3) 0;
+  }
+}
