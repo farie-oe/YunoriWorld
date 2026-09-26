@@ -109,11 +109,7 @@ function Login() {
   return (
     <>
       <AuthLayout
-        title={
-          <>
-            Welcome back, <span className="ya-auth-highlight">Fari.</span>
-          </>
-        }
+        title="Welcome back."
         subtitle="Log in to pick up your anime journey."
         variant="login"
         hideBrand
