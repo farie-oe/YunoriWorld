@@ -105,3 +105,39 @@
   font-weight: 600;
   color: var(--color-text-muted);
 }
+
+/* "Didn't receive the email? / Resend verification email" on the
+   post-signup confirmation screen. */
+.ya-auth-resend {
+  margin-top: var(--space-3);
+  text-align: center;
+}
+
+.ya-auth-resend__prompt {
+  margin: 0 0 var(--space-1);
+  font-size: var(--text-sm);
+}
+
+.ya-auth-resend__button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  cursor: pointer;
+}
+
+.ya-auth-resend__button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  text-decoration: none;
+}
+
+.ya-auth-resend__message {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+}
+
+.ya-auth-resend__message--success {
+  color: var(--color-text-muted);
+}

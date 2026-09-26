@@ -51,6 +51,8 @@ function CreateAccount() {
   const [formError, setFormError] = useState('')
   const [successState, setSuccessState] = useState(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isResending, setIsResending] = useState(false)
+  const [resendMessage, setResendMessage] = useState(null)
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -103,6 +105,33 @@ function CreateAccount() {
     setFormValues({ username: '', email: '', password: '', confirmPassword: '' })
   }
 
+  const handleResend = async () => {
+    if (isResending || !successState) return
+
+    setIsResending(true)
+    setResendMessage(null)
+
+    const { error } = await supabase.auth.resend({
+      type: 'signup',
+      email: successState.email,
+      options: {
+        // Same dynamic-origin redirect as the original signUp() call above
+        // — this must stay in step with that fix rather than hardcoding
+        // localhost or drifting from it.
+        emailRedirectTo: `${window.location.origin}/login`,
+      },
+    })
+
+    setIsResending(false)
+
+    if (error) {
+      setResendMessage({ type: 'error', text: error.message })
+      return
+    }
+
+    setResendMessage({ type: 'success', text: 'Verification email sent!' })
+  }
+
   if (successState) {
     return (
       <AuthLayout
@@ -119,6 +148,32 @@ function CreateAccount() {
               : `Your account for ${successState.email} has been created successfully.`}
           </span>
         </div>
+
+        {successState.needsEmailConfirmation && (
+          <div className="ya-auth-resend">
+            <p className="ya-text-muted ya-auth-resend__prompt">Didn't receive the email?</p>
+            <button
+              type="button"
+              className="ya-form-link ya-auth-resend__button"
+              onClick={handleResend}
+              disabled={isResending}
+            >
+              {isResending ? 'Sending...' : 'Resend verification email'}
+            </button>
+            {resendMessage && (
+              <p
+                className={
+                  resendMessage.type === 'error'
+                    ? 'ya-field__error ya-auth-resend__message'
+                    : 'ya-auth-resend__message ya-auth-resend__message--success'
+                }
+                role={resendMessage.type === 'error' ? 'alert' : 'status'}
+              >
+                {resendMessage.text}
+              </p>
+            )}
+          </div>
+        )}
 
         <p className="ya-form-footer ya-text-muted">
           <Link to="/login" className="ya-form-link">
