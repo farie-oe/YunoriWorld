@@ -72,38 +72,65 @@ function drawRatingStars(doc, x, y, rating) {
 /**
  * Loads a remote cover image and normalises it to a JPEG data URL so it can
  * be embedded regardless of its original format. Resolves to null (never
- * throws) if the image can't be loaded or the canvas is cross-origin
- * tainted — callers fall back to a plain placeholder in that case rather
- * than leaving a broken image or failing the whole export.
+ * throws) if the image can't be fetched or decoded — callers fall back to a
+ * plain placeholder in that case rather than leaving a broken image or
+ * failing the whole export.
+ *
+ * This fetches the image bytes directly (with `cache: 'no-store'`) instead
+ * of loading the URL through an `<img crossOrigin="anonymous">` element.
+ * Every cover is already displayed elsewhere in the app as a plain <img>
+ * with no crossOrigin attribute (SavedAnimeCard, DashboardAnimeCard), which
+ * caches an "opaque" response for that URL; the browser then reuses that
+ * cached opaque response for a later crossOrigin="anonymous" request to the
+ * same URL instead of re-fetching it, and an opaque response can never be
+ * read into a canvas — so the exact same cover that renders fine on-screen
+ * silently fails to embed once it's already been shown on the page. Fetching
+ * separately with `cache: 'no-store'` always forces a fresh, real network
+ * request, which correctly receives AniList's CORS headers.
  */
-function loadCoverImage(url) {
-  return new Promise((resolve) => {
-    if (!url) {
-      resolve(null)
-      return
-    }
+async function loadCoverImage(url) {
+  if (!url) return null
 
-    const img = new Image()
-    img.crossOrigin = 'anonymous'
+  let blob
+  try {
+    const response = await fetch(url, { cache: 'no-store' })
+    if (!response.ok) return null
+    blob = await response.blob()
+  } catch (err) {
+    console.error('Failed to fetch anime cover for PDF export:', err)
+    return null
+  }
 
-    img.onload = () => {
-      try {
-        const canvas = document.createElement('canvas')
-        canvas.width = img.naturalWidth
-        canvas.height = img.naturalHeight
-        const ctx = canvas.getContext('2d')
-        ctx.fillStyle = '#ffffff'
-        ctx.fillRect(0, 0, canvas.width, canvas.height)
-        ctx.drawImage(img, 0, 0)
-        resolve(canvas.toDataURL('image/jpeg', 0.92))
-      } catch (err) {
-        console.error('Failed to process anime cover for PDF export:', err)
-        resolve(null)
+  // Decoded from a local blob: URL (always same-origin) rather than the
+  // original remote URL, so this can never be canvas-tainted regardless of
+  // how the image was fetched.
+  const objectUrl = URL.createObjectURL(blob)
+  try {
+    return await new Promise((resolve, reject) => {
+      const img = new Image()
+      img.onload = () => {
+        try {
+          const canvas = document.createElement('canvas')
+          canvas.width = img.naturalWidth
+          canvas.height = img.naturalHeight
+          const ctx = canvas.getContext('2d')
+          ctx.fillStyle = '#ffffff'
+          ctx.fillRect(0, 0, canvas.width, canvas.height)
+          ctx.drawImage(img, 0, 0)
+          resolve(canvas.toDataURL('image/jpeg', 0.92))
+        } catch (err) {
+          reject(err)
+        }
       }
-    }
-    img.onerror = () => resolve(null)
-    img.src = url
-  })
+      img.onerror = () => reject(new Error('Failed to decode anime cover image data.'))
+      img.src = objectUrl
+    })
+  } catch (err) {
+    console.error('Failed to process anime cover for PDF export:', err)
+    return null
+  } finally {
+    URL.revokeObjectURL(objectUrl)
+  }
 }
 
 function drawCoverPlaceholder(doc, x, y) {
