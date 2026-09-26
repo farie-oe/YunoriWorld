@@ -75,6 +75,12 @@ function CreateAccount() {
       email: formValues.email.trim(),
       password: formValues.password,
       options: {
+        // Without this, Supabase falls back to the project's configured
+        // Site URL for the confirmation link — computing it from the
+        // actual origin (the same pattern ForgotPassword.jsx already uses
+        // for its reset link) means it's correct on both localhost and
+        // whatever domain the app is actually deployed to.
+        emailRedirectTo: `${window.location.origin}/login`,
         data: {
           username: formValues.username.trim(),
         },
