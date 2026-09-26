@@ -174,11 +174,26 @@
 
 @media (max-width: 480px) {
   .ya-dashboard__stats {
-    grid-template-columns: 1fr;
+    gap: var(--space-2);
   }
 
   .ya-stat-card {
     min-height: auto;
+    padding: var(--space-3);
+    gap: var(--space-1);
+  }
+
+  .ya-stat-card__icon {
+    width: 30px;
+    height: 30px;
+  }
+
+  .ya-stat-card__value {
+    font-size: var(--text-xl);
+  }
+
+  .ya-stat-card__label {
+    font-size: var(--text-xs);
   }
 
   .ya-dashboard__mascot {

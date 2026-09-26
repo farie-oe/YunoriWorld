@@ -121,3 +121,32 @@
 .ya-saved-card__delete-btn svg {
   flex-shrink: 0;
 }
+
+/* At the narrow end of the tablet 3-column grid (and throughout the phone
+   2-column grid) a side-by-side Edit/Delete row gets too tight for both
+   labels to stay fully readable — "Delete" truncates to "D…" rather than
+   actually shrinking to fit. Stacking them keeps both labels whole instead
+   of cropping text, which is never an acceptable way to "scale down". */
+@media (max-width: 900px) {
+  .ya-saved-card__actions {
+    flex-direction: column;
+  }
+
+  .ya-saved-card__edit-btn,
+  .ya-saved-card__delete-btn {
+    width: 100%;
+  }
+}
+
+/* Phone: the grid narrows further still, so title and body padding also
+   scale down a step. */
+@media (max-width: 480px) {
+  .ya-saved-card__body {
+    padding: var(--space-3);
+    gap: var(--space-1);
+  }
+
+  .ya-saved-card__title {
+    font-size: var(--text-base);
+  }
+}

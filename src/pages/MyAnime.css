@@ -40,8 +40,23 @@
 
 .ya-anime-search__grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(4, 1fr);
   gap: var(--space-4);
+}
+
+/* Tablet: three columns rather than the desktop card simply shrinking. */
+@media (max-width: 1024px) {
+  .ya-anime-search__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* Phone: two columns, with a tighter gap to match. */
+@media (max-width: 767px) {
+  .ya-anime-search__grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
 }
 
 .ya-export-bar {
