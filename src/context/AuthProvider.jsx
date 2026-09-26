@@ -5,6 +5,7 @@ import { supabase } from '../lib/supabase'
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
+  const [holdPublicRedirect, setHoldPublicRedirect] = useState(false)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -31,6 +32,8 @@ export function AuthProvider({ children }) {
     user: session?.user ?? null,
     loading,
     signOut,
+    holdPublicRedirect,
+    setHoldPublicRedirect,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>

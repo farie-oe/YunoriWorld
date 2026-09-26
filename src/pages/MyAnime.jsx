@@ -9,6 +9,7 @@ import SavedAnimeCard from '../components/SavedAnimeCard'
 import AddAnimeModal from '../components/AddAnimeModal'
 import EditAnimeModal from '../components/EditAnimeModal'
 import DeleteAnimeModal from '../components/DeleteAnimeModal'
+import AnimeDetailsModal from '../components/AnimeDetailsModal'
 import { searchAnime } from '../services/anilist'
 import { getAnimeEntries } from '../services/animeEntries'
 import { getProfile } from '../services/profiles'
@@ -60,6 +61,7 @@ function MyAnime() {
   const [selectedAnime, setSelectedAnime] = useState(null)
   const [editingEntry, setEditingEntry] = useState(null)
   const [deletingEntry, setDeletingEntry] = useState(null)
+  const [viewingEntry, setViewingEntry] = useState(null)
 
   const [collection, setCollection] = useState([])
   const [collectionLoading, setCollectionLoading] = useState(true)
@@ -248,9 +250,6 @@ function MyAnime() {
 
       <Card className="ya-anime-search">
         <h2 className="ya-section-heading">Add Anime</h2>
-        <p className="ya-text-muted ya-anime-search__hint">
-          Search AniList to find anime you'd like to add to your collection.
-        </p>
 
         <form className="ya-anime-search__form" onSubmit={runSearch} role="search">
           <label htmlFor="anilist-search-input" className="ya-visually-hidden">
@@ -474,6 +473,7 @@ function MyAnime() {
               key={entry.id}
               entry={entry}
               userId={user?.id}
+              onView={setViewingEntry}
               onEdit={handleEditSelect}
               onFavouriteChange={handleFavouriteChange}
               onDeleteRequest={handleDeleteRequest}
@@ -508,6 +508,8 @@ function MyAnime() {
           onDeleted={handleDeleted}
         />
       )}
+
+      {viewingEntry && <AnimeDetailsModal entry={viewingEntry} onClose={() => setViewingEntry(null)} />}
     </div>
   )
 }

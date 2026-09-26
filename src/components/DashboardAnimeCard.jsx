@@ -12,9 +12,24 @@ import './DashboardAnimeCard.css'
  * on My Anime and Watch List. Kept as its own component so this Dashboard
  * redesign never changes how those other pages look.
  */
-function DashboardAnimeCard({ entry, userId, onFavouriteChange }) {
+function DashboardAnimeCard({ entry, userId, onFavouriteChange, onView }) {
   const [favouriteSaving, setFavouriteSaving] = useState(false)
   const [favouriteError, setFavouriteError] = useState('')
+
+  const isViewable = Boolean(onView)
+
+  function handleFavouriteClick(event) {
+    event.stopPropagation()
+    handleToggleFavourite()
+  }
+
+  function handleCardKeyDown(event) {
+    if (!isViewable) return
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault()
+      onView(entry)
+    }
+  }
 
   async function handleToggleFavourite() {
     if (favouriteSaving) return
@@ -34,7 +49,15 @@ function DashboardAnimeCard({ entry, userId, onFavouriteChange }) {
   }
 
   return (
-    <Card hoverable className="ya-dash-card">
+    <Card
+      hoverable
+      className="ya-dash-card"
+      onClick={isViewable ? () => onView(entry) : undefined}
+      onKeyDown={isViewable ? handleCardKeyDown : undefined}
+      role={isViewable ? 'button' : undefined}
+      tabIndex={isViewable ? 0 : undefined}
+      aria-label={isViewable ? `View details for ${entry.title}` : undefined}
+    >
       <div className="ya-dash-card__cover">
         {entry.cover_image ? (
           <img src={entry.cover_image} alt={`${entry.title} cover`} loading="lazy" />
@@ -51,7 +74,7 @@ function DashboardAnimeCard({ entry, userId, onFavouriteChange }) {
           <button
             type="button"
             className="ya-dash-card__favourite"
-            onClick={handleToggleFavourite}
+            onClick={handleFavouriteClick}
             disabled={favouriteSaving}
             aria-pressed={entry.favourite}
             aria-label={entry.favourite ? `Remove ${entry.title} from favourites` : `Add ${entry.title} to favourites`}

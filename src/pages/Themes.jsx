@@ -1,8 +1,7 @@
-import { Check } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
-import Card from '../components/Card'
-import Badge from '../components/Badge'
+import Avatar from '../components/Avatar'
 import { useTheme } from '../hooks/useTheme'
+import { getBuiltInAvatar } from '../lib/avatars'
 import './Themes.css'
 
 function Themes() {
@@ -10,47 +9,32 @@ function Themes() {
 
   return (
     <div>
-      <PageHeader
-        title="Themes"
-        description="Choose the look and feel of your YourAnime space. Themes only change presentation — your anime data stays exactly the same."
-      />
+      <PageHeader title="Themes" description="Choose the atmosphere of your Yunori World." />
 
       {themeError && <p className="ya-form-alert ya-form-alert--error">{themeError}</p>}
 
       <div className="ya-themes__grid">
         {themes.map((theme) => {
           const isActive = theme.id === themeId
+          const avatar = getBuiltInAvatar(theme.avatarId)
+
           return (
-            <Card
+            <button
               key={theme.id}
-              as="button"
               type="button"
+              className={`ya-theme-option ${isActive ? 'ya-theme-option--active' : ''}`}
               onClick={() => setThemeId(theme.id)}
-              hoverable
-              className={`ya-theme-card ${isActive ? 'ya-theme-card--active' : ''}`}
               aria-pressed={isActive}
             >
-              <div className="ya-theme-card__swatches" aria-hidden="true">
-                {theme.swatches.map((colour, index) => (
-                  <span
-                    key={index}
-                    className="ya-theme-card__swatch"
-                    style={{ background: colour }}
-                  />
-                ))}
-              </div>
-
-              <div className="ya-theme-card__body">
-                <h3 className="ya-section-heading ya-theme-card__name">{theme.name}</h3>
-                <p className="ya-text-muted ya-theme-card__description">{theme.description}</p>
-              </div>
-
-              {isActive && (
-                <Badge tone="primary" className="ya-theme-card__badge">
-                  <Check size={12} aria-hidden="true" /> Active
-                </Badge>
-              )}
-            </Card>
+              <Avatar
+                avatarType="builtin"
+                avatarValue={theme.avatarId}
+                size={84}
+                className="ya-theme-option__avatar"
+              />
+              <span className="ya-theme-option__avatar-name">{avatar?.name}</span>
+              <span className="ya-meta-text ya-theme-option__theme-name">{theme.name}</span>
+            </button>
           )
         })}
       </div>

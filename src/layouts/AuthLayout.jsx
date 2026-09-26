@@ -9,15 +9,17 @@ function AuthLayout({ title, subtitle, children }) {
   return (
     <div className="ya-auth-layout">
       <div className="ya-auth-layout__panel">
-        <div className="ya-auth-layout__brand">
-          <Orbit className="ya-auth-layout__brand-mark" />
-          <span className="ya-auth-layout__brand-name">
-            {BRAND_FIRST_WORD}
-            {BRAND_REST && <span className="ya-auth-layout__brand-name-rest">{BRAND_REST}</span>}
-          </span>
-          <span className="ya-auth-layout__brand-descriptor">{BRAND.descriptor}</span>
+        <div className="ya-auth-layout__brand-wrap">
+          <div className="ya-auth-layout__brand">
+            <Orbit className="ya-auth-layout__brand-mark" />
+            <span className="ya-auth-layout__brand-name">
+              {BRAND_FIRST_WORD}
+              {BRAND_REST && <span className="ya-auth-layout__brand-name-rest">{BRAND_REST}</span>}
+            </span>
+            <span className="ya-auth-layout__brand-descriptor">{BRAND.descriptor}</span>
+          </div>
+          <p className="ya-auth-layout__tagline">{BRAND.tagline}</p>
         </div>
-        <p className="ya-auth-layout__tagline">{BRAND.tagline}</p>
 
         <div className="ya-card ya-auth-layout__card">
           <h1 className="ya-section-heading ya-auth-layout__title">{title}</h1>

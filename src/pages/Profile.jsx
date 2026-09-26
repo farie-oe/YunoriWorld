@@ -1,11 +1,13 @@
 import { useState } from 'react'
-import { Pencil } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
+import { Pencil, Trash2 } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Card from '../components/Card'
 import Badge from '../components/Badge'
 import Button from '../components/Button'
 import Avatar from '../components/Avatar'
 import AvatarPickerModal from '../components/AvatarPickerModal'
+import DeleteAccountModal from '../components/DeleteAccountModal'
 import { useAuth } from '../hooks/useAuth'
 import { useProfile } from '../hooks/useProfile'
 import { updateProfileUsername } from '../services/profiles'
@@ -21,8 +23,9 @@ function formatDate(value) {
 }
 
 function Profile() {
-  const { user } = useAuth()
+  const { user, signOut } = useAuth()
   const { profile, loading, setProfile } = useProfile()
+  const navigate = useNavigate()
 
   const [isEditingUsername, setIsEditingUsername] = useState(false)
   const [usernameInput, setUsernameInput] = useState('')
@@ -30,6 +33,7 @@ function Profile() {
   const [usernameError, setUsernameError] = useState('')
 
   const [isAvatarPickerOpen, setIsAvatarPickerOpen] = useState(false)
+  const [isDeleteAccountOpen, setIsDeleteAccountOpen] = useState(false)
 
   const displayName = profile?.username || 'Setting up your profile...'
   const uniqueId = profile?.unique_id || '—————'
@@ -66,6 +70,19 @@ function Profile() {
   function handleAvatarSaved(updatedProfile) {
     setProfile(updatedProfile)
     setIsAvatarPickerOpen(false)
+  }
+
+  async function handleAccountDeleted() {
+    setIsDeleteAccountOpen(false)
+    try {
+      await signOut()
+    } catch (err) {
+      // The account (and its session) is already gone server-side at this
+      // point — ignore a failed remote sign-out and clear the client
+      // forward regardless, so the user always ends up back at Login.
+      console.error('Sign-out after account deletion failed:', err)
+    }
+    navigate('/login', { replace: true })
   }
 
   return (
@@ -157,6 +174,26 @@ function Profile() {
         </dl>
       </Card>
 
+      <Card className="ya-profile__danger-zone">
+        <p className="ya-eyebrow ya-profile__danger-zone-label">Danger Zone</p>
+        <div className="ya-profile__danger-zone-row">
+          <div>
+            <h3 className="ya-section-heading ya-profile__danger-zone-title">Delete Account</h3>
+            <p className="ya-text-muted">
+              Permanently delete your Yunori account and all associated data.
+            </p>
+          </div>
+          <Button
+            type="button"
+            variant="danger"
+            icon={Trash2}
+            onClick={() => setIsDeleteAccountOpen(true)}
+          >
+            Delete Account
+          </Button>
+        </div>
+      </Card>
+
       {isAvatarPickerOpen && user && (
         <AvatarPickerModal
           userId={user.id}
@@ -164,6 +201,13 @@ function Profile() {
           currentAvatarValue={profile?.avatar_value}
           onCancel={() => setIsAvatarPickerOpen(false)}
           onSaved={handleAvatarSaved}
+        />
+      )}
+
+      {isDeleteAccountOpen && (
+        <DeleteAccountModal
+          onCancel={() => setIsDeleteAccountOpen(false)}
+          onDeleted={handleAccountDeleted}
         />
       )}
     </div>

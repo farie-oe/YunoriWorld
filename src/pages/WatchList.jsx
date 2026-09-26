@@ -5,6 +5,7 @@ import PageHeader from '../components/PageHeader'
 import EmptyState from '../components/EmptyState'
 import SavedAnimeCard from '../components/SavedAnimeCard'
 import EditAnimeModal from '../components/EditAnimeModal'
+import AnimeDetailsModal from '../components/AnimeDetailsModal'
 import Button from '../components/Button'
 import { getWatchList, backfillMissingGenres } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
@@ -80,6 +81,7 @@ function WatchList() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [editingEntry, setEditingEntry] = useState(null)
+  const [viewingEntry, setViewingEntry] = useState(null)
 
   const [genreFilter, setGenreFilter] = useState(GENRE_FILTER_ALL)
   const [dateFilter, setDateFilter] = useState(DATE_FILTER_ALL)
@@ -284,7 +286,8 @@ function WatchList() {
                   key={entry.id}
                   entry={entry}
                   userId={user?.id}
-                  onView={setEditingEntry}
+                  onView={setViewingEntry}
+                  onEdit={setEditingEntry}
                   onFavouriteChange={(updated) =>
                     setEntries((prev) => prev.map((item) => (item.id === updated.id ? updated : item)))
                   }
@@ -303,6 +306,8 @@ function WatchList() {
           onSaved={handleEditSaved}
         />
       )}
+
+      {viewingEntry && <AnimeDetailsModal entry={viewingEntry} onClose={() => setViewingEntry(null)} />}
     </div>
   )
 }

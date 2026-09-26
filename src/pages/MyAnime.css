@@ -2,16 +2,12 @@
   margin-bottom: var(--space-6);
 }
 
-.ya-anime-search__hint {
-  margin-top: var(--space-1);
-  margin-bottom: var(--space-4);
-}
-
 .ya-anime-search__form {
   display: flex;
   align-items: center;
   gap: var(--space-3);
   flex-wrap: wrap;
+  margin-top: var(--space-4);
 }
 
 .ya-anime-search__input-wrap {

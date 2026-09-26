@@ -34,6 +34,16 @@ function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDe
     handleToggleFavourite()
   }
 
+  function handleEditClick(event) {
+    event.stopPropagation()
+    onEdit(entry)
+  }
+
+  function handleDeleteClick(event) {
+    event.stopPropagation()
+    onDeleteRequest(entry)
+  }
+
   function handleCardKeyDown(event) {
     if (!isViewable) return
     if (event.key === 'Enter' || event.key === ' ') {
@@ -94,7 +104,7 @@ function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDe
                 variant="outline"
                 icon={Pencil}
                 className="ya-saved-card__edit-btn"
-                onClick={() => onEdit(entry)}
+                onClick={handleEditClick}
                 aria-label={`Edit ${entry.title}`}
               >
                 Edit
@@ -105,7 +115,7 @@ function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDe
                 variant="danger"
                 icon={Trash2}
                 className="ya-saved-card__delete-btn"
-                onClick={() => onDeleteRequest(entry)}
+                onClick={handleDeleteClick}
                 aria-label={`Delete ${entry.title} from My Anime`}
               >
                 Delete

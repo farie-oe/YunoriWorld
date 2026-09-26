@@ -3,8 +3,11 @@
    Applying a theme only swaps these CSS variables — it must
    never touch application data, only presentation.
 
-   Six themes: Ivory White (default, defined in global.css), Sakura Pink,
-   Lavender Dream, Royal Forest, Night Mode, Midnight Luxe.
+   Eight themes, one per built-in Yunori avatar (see src/lib/themes.js):
+   Soft White (Yunori), Midnight Lavender (Luna), Blossom Pink (Hana),
+   Forest Green (Mori), Neon Play (Pixel), Celestial Blue (Cosmo),
+   Warm Ivory (Sora, the default — defined in global.css, no override
+   block needed here), and Crimson Night (Kage).
 
    Each theme only needs to override the tokens that actually change hue —
    --color-text-secondary and --color-lavender are derived from other
@@ -19,48 +22,70 @@
 
    --color-focus is set explicitly per theme so the focus ring always has
    enough contrast against that theme's own surfaces (this matters most
-   for the two dark themes, where the decorative accent colours are too
+   for the dark themes, where the decorative accent colours are too
    low-contrast to double as an accessible focus indicator).
 
-   --color-on-primary is also set explicitly per theme: the default
-   theme's root value is a dark near-black (right for its light champagne
-   gold primary), but a theme whose primary is itself dark or saturated
-   (Royal Forest's deep green, Midnight Luxe's near-black background)
-   needs the opposite — a light on-primary colour — so each theme below
-   sets whichever is correct for its own primary.
+   --color-on-primary is also set explicitly per theme: a theme whose
+   primary is itself dark or deeply saturated needs light on-primary text,
+   while a pale/pastel primary needs the theme's own dark text instead —
+   each block below sets whichever is correct for its own primary.
 --------------------------------------------------------- */
 
+/* Yunori's own theme — deliberately soft white/neutral rather than pink,
+   since Hana already owns the saturated Blossom Pink identity below. Only
+   a dusty-rose accent carries any pink at all; the surfaces stay a clean,
+   airy white/neutral so the two themes read as clearly distinct. */
 [data-theme='sakura-pink'] {
-  --color-bg: #fff5f7;
+  --color-bg: #faf9f7;
   --color-surface: #ffffff;
-  --color-surface-secondary: #fdeaf0;
-  --color-primary: #f2a4c1;
-  --color-primary-hover: #e888a9;
-  --color-secondary: #f7cede;
-  --color-accent: #d9b789; /* champagne gold, per Sakura's refined palette */
-  --color-text: #4a2f3b;
-  --color-text-muted: #8f6f7c;
-  --color-border: #f6d9e3;
-  --color-focus: #c9587f;
+  --color-surface-secondary: #f2eff0;
+  --color-primary: #c98fa7;
+  --color-primary-hover: #b97891;
+  --color-secondary: #ebd9e0;
+  --color-accent: #e4c9d3; /* very light dusty rose, used sparingly */
+  --color-text: #33243a;
+  --color-text-muted: #8a7a8c;
+  --color-border: #e9e3e6;
+  --color-focus: #8c4f68;
   --color-on-primary: var(--color-text);
 }
 
-[data-theme='lavender-dream'] {
-  --color-bg: #f8f6ff;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #efe9fc;
-  --color-primary: #c9b8f0;
-  --color-primary-hover: #b39ce8;
-  --color-secondary: #ded4f7;
-  --color-accent: #b8c9f0; /* soft celestial blue-violet */
-  --color-text: #3c3454;
-  --color-text-muted: #85809e;
-  --color-border: #e4dcf7;
-  --color-focus: #8a6fd1;
-  --color-on-primary: var(--color-text);
+[data-theme='midnight-lavender'] {
+  --color-bg: #201d29;
+  --color-surface: #2a2635;
+  --color-surface-secondary: #322d40;
+  --color-primary: #a78bd6;
+  --color-primary-hover: #bfa6e6;
+  --color-secondary: #4a4460;
+  --color-accent: #6f7fc9;
+  --color-text: #f1ecf5;
+  --color-text-muted: #a89fb5;
+  --color-border: #3d3750;
+  --color-shadow: rgba(0, 0, 0, 0.35);
+  --color-focus: #d6c2ff;
+  /* Primary is a mid-light lavender — dark text reads better on it than
+     the theme's own pale body text. */
+  --color-on-primary: #201d29;
 }
 
-[data-theme='royal-forest'] {
+[data-theme='blossom-pink'] {
+  --color-bg: #fff0f3;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #ffe1e8;
+  --color-primary: #e8779b;
+  --color-primary-hover: #d85f85;
+  --color-secondary: #f7b8c9;
+  --color-accent: #f0c987; /* soft rose gold */
+  --color-text: #4a2430;
+  --color-text-muted: #99707d;
+  --color-border: #f7ccd6;
+  --color-focus: #c23f68;
+  /* A fuller, more saturated pink than Sakura's pastel blush — needs
+     light text rather than the theme's own dark body text. */
+  --color-on-primary: #fff8fa;
+}
+
+[data-theme='forest-green'] {
   --color-bg: #f7f5ee;
   --color-surface: #ffffff;
   --color-surface-secondary: #e9eee6;
@@ -72,43 +97,84 @@
   --color-text-muted: #6e7a6c;
   --color-border: #dde3d6;
   --color-focus: #16332a;
-  /* Unlike the other light themes, Royal Forest's primary is a deep,
-     saturated green rather than a pale pastel, so it needs light
-     (ivory) text on top of it instead of the theme's own dark text. */
+  /* Primary is a deep, saturated green rather than a pale pastel, so it
+     needs light (ivory) text on top of it instead of the theme's own
+     dark text. */
   --color-on-primary: #f7f5ee;
 }
 
-[data-theme='night-mode'] {
-  --color-bg: #201d29;
-  --color-surface: #2a2635;
-  --color-surface-secondary: #322d40;
-  --color-primary: #7a5c74;
-  --color-primary-hover: #91709a;
-  --color-secondary: #4a4460;
-  --color-accent: #3d5570;
-  --color-text: #f1ecf5;
-  --color-text-muted: #a89fb5;
-  --color-border: #3d3750;
-  --color-shadow: rgba(0, 0, 0, 0.35);
-  --color-on-primary: #f1ecf5;
-  --color-focus: #e0aed6;
+[data-theme='neon-play'] {
+  --color-bg: #f5f7fb;
+  --color-surface: #ffffff;
+  --color-surface-secondary: #eaf0fb;
+  --color-primary: #34b8a6;
+  --color-primary-hover: #2a9d8d;
+  --color-secondary: #d6c9fb;
+  --color-accent: #ff7ac6; /* playful accent, used sparingly */
+  --color-text: #1f2430;
+  --color-text-muted: #6d7488;
+  --color-border: #dbe3f5;
+  --color-focus: #7a5cf0;
+  --color-on-primary: #f5fbfa;
 }
 
-[data-theme='midnight-luxe'] {
-  --color-bg: #100d0a;
-  --color-surface: #1b1714;
-  --color-surface-secondary: #241f1b;
-  --color-primary: #c9a66b; /* champagne gold */
-  --color-primary-hover: #b8924f;
-  --color-secondary: #2e2530; /* extremely restrained, barely-there plum */
-  --color-accent: #e8d5b0; /* paler champagne highlight */
-  --color-text: #f5f0e8; /* ivory */
-  --color-text-muted: #a79c8c;
-  --color-border: #332c26;
+[data-theme='celestial-blue'] {
+  --color-bg: #0d1730;
+  --color-surface: #142140;
+  --color-surface-secondary: #1b2c52;
+  --color-primary: #6f9ce8;
+  --color-primary-hover: #8fb4f2;
+  --color-secondary: #2c3f6e;
+  --color-accent: #cdd8f5; /* pale starlight */
+  --color-text: #eef2fb;
+  --color-text-muted: #9aa8cc;
+  --color-border: #24345c;
+  --color-shadow: rgba(0, 0, 0, 0.45);
+  --color-focus: #b7c9ff;
+  /* Primary is a mid-light sky blue against this theme's near-navy
+     surfaces, so on-primary text needs to be dark. */
+  --color-on-primary: #0d1730;
+}
+
+[data-theme='crimson-night'] {
+  --color-bg: #170f11;
+  --color-surface: #221619;
+  --color-surface-secondary: #2b1c20;
+  --color-primary: #b3384a;
+  --color-primary-hover: #d1495d;
+  --color-secondary: #3a2529;
+  --color-accent: #e0687a;
+  --color-text: #f5e9ea;
+  --color-text-muted: #b09499;
+  --color-border: #352326;
   --color-shadow: rgba(0, 0, 0, 0.5);
-  --color-focus: #e8c87a;
-  /* Gold primary is light/mid-tone against this theme's near-black
-     surfaces, so on-primary text needs to be dark, not the theme's own
-     ivory body text. */
-  --color-on-primary: #100d0a;
+  --color-focus: #ff8fa3;
+  --color-on-primary: #f5e9ea;
+}
+
+/* ---------------------------------------------------------
+   Theme transition.
+   ThemeProvider briefly adds .ya-theme-transitioning to <html> whenever
+   the active theme changes (never on first load, so there's no
+   colour-fade-in on ordinary page loads). While present, every themed
+   colour property cross-fades smoothly instead of snapping instantly —
+   this alone is enough to make the whole app feel like it's gently
+   changing atmosphere, with no JS colour interpolation needed.
+--------------------------------------------------------- */
+html.ya-theme-transitioning,
+html.ya-theme-transitioning *,
+html.ya-theme-transitioning *::before,
+html.ya-theme-transitioning *::after {
+  transition-property: background-color, border-color, color, box-shadow, fill, stroke !important;
+  transition-duration: 900ms !important;
+  transition-timing-function: ease !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.ya-theme-transitioning,
+  html.ya-theme-transitioning *,
+  html.ya-theme-transitioning *::before,
+  html.ya-theme-transitioning *::after {
+    transition-duration: 0.01ms !important;
+  }
 }

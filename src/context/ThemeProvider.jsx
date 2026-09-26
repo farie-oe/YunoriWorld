@@ -1,10 +1,14 @@
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { ThemeContext } from './ThemeContext'
 import { DEFAULT_THEME_ID, THEMES } from '../lib/themes'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile, updateProfileTheme } from '../services/profiles'
 
 const STORAGE_KEY = 'youranime-theme'
+
+// Kept in step with the transition-duration set on .ya-theme-transitioning
+// in styles/themes.css.
+const THEME_TRANSITION_MS = 900
 
 function isValidTheme(id) {
   return THEMES.some((theme) => theme.id === id)
@@ -28,15 +32,36 @@ export function ThemeProvider({ children }) {
   const { user } = useAuth()
   const [themeId, setThemeIdState] = useState(readCachedTheme)
   const [themeError, setThemeError] = useState('')
+  const [isTransitioning, setIsTransitioning] = useState(false)
+  const isFirstRender = useRef(true)
 
   useEffect(() => {
-    document.documentElement.setAttribute('data-theme', themeId)
+    const root = document.documentElement
+    let transitionTimer
+
+    // Never fade in on the very first paint — only genuine subsequent
+    // theme changes (a user's own pick, or the Supabase-loaded profile
+    // theme replacing the cached guess) get the soft cross-fade.
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+    } else {
+      root.classList.add('ya-theme-transitioning')
+      setIsTransitioning(true)
+      transitionTimer = setTimeout(() => {
+        root.classList.remove('ya-theme-transitioning')
+        setIsTransitioning(false)
+      }, THEME_TRANSITION_MS)
+    }
+
+    root.setAttribute('data-theme', themeId)
     try {
       window.localStorage.setItem(STORAGE_KEY, themeId)
     } catch {
       // Ignore storage errors (e.g. private browsing) — Supabase remains
       // the persistent source of truth for authenticated users.
     }
+
+    return () => clearTimeout(transitionTimer)
   }, [themeId])
 
   useEffect(() => {
@@ -77,8 +102,19 @@ export function ThemeProvider({ children }) {
     [user],
   )
 
+  const activeTheme = THEMES.find((theme) => theme.id === themeId)
+
   return (
-    <ThemeContext.Provider value={{ themeId, setThemeId, themes: THEMES, themeError }}>
+    <ThemeContext.Provider
+      value={{
+        themeId,
+        setThemeId,
+        themes: THEMES,
+        themeError,
+        isTransitioning,
+        transitionColor: activeTheme?.glow ?? null,
+      }}
+    >
       {children}
     </ThemeContext.Provider>
   )

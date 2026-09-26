@@ -1,10 +1,16 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CircleAlert } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout'
 import Button from '../components/Button'
+import LoginTransition from '../components/LoginTransition'
+import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 import { BRAND } from '../lib/brand'
+
+// Kept in step with the glow/fade animation durations in LoginTransition.css
+// (both 1.3s) so navigation lands right as the screen has settled to white.
+const TRANSITION_DURATION_MS = 1300
 
 function validate({ email, password }) {
   const errors = {}
@@ -22,10 +28,28 @@ function validate({ email, password }) {
 
 function Login() {
   const navigate = useNavigate()
+  const { setHoldPublicRedirect } = useAuth()
   const [formValues, setFormValues] = useState({ email: '', password: '' })
   const [fieldErrors, setFieldErrors] = useState({})
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [isEnteringYunori, setIsEnteringYunori] = useState(false)
+
+  // Once the magical transition starts playing, hand navigation off to
+  // this effect rather than firing it straight from handleSubmit, so an
+  // early unmount (e.g. the user navigates away themselves) cancels the
+  // pending navigation instead of leaving a dangling timer. The cleanup
+  // also releases holdPublicRedirect, set in handleSubmit below, right as
+  // we navigate ourselves.
+  useEffect(() => {
+    if (!isEnteringYunori) return
+
+    const timer = setTimeout(() => navigate('/dashboard'), TRANSITION_DURATION_MS)
+    return () => {
+      clearTimeout(timer)
+      setHoldPublicRedirect(false)
+    }
+  }, [isEnteringYunori, navigate, setHoldPublicRedirect])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -35,7 +59,7 @@ function Login() {
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (isSubmitting) return
+    if (isSubmitting || isEnteringYunori) return
 
     setFormError('')
 
@@ -45,6 +69,14 @@ function Login() {
 
     setIsSubmitting(true)
 
+    // Supabase updates its session (and fires onAuthStateChange) as soon
+    // as sign-in succeeds — before this function gets to react to it —
+    // which would otherwise let PublicOnlyRoute redirect to /dashboard on
+    // its own, immediately, skipping the transition below entirely. Set
+    // this before the request so it's already in place the moment the
+    // session lands, regardless of exactly how that race resolves.
+    setHoldPublicRedirect(true)
+
     const { error } = await supabase.auth.signInWithPassword({
       email: formValues.email.trim(),
       password: formValues.password,
@@ -53,6 +85,7 @@ function Login() {
     setIsSubmitting(false)
 
     if (error) {
+      setHoldPublicRedirect(false)
       setFormError(
         error.status === 400
           ? 'Incorrect email or password. Please try again.'
@@ -61,87 +94,100 @@ function Login() {
       return
     }
 
-    navigate('/dashboard')
+    // Success: play the short "entering Yunori" transition before leaving
+    // the login page. Anyone who has asked for reduced motion skips the
+    // visual and moves on immediately instead.
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setHoldPublicRedirect(false)
+      navigate('/dashboard')
+      return
+    }
+
+    setIsEnteringYunori(true)
   }
 
   return (
-    <AuthLayout title="Welcome back" subtitle="Log in to pick up your anime journey.">
-      {formError && (
-        <div className="ya-form-alert ya-form-alert--error" role="alert">
-          <CircleAlert size={18} aria-hidden="true" />
-          <span>{formError}</span>
-        </div>
-      )}
-
-      <form onSubmit={handleSubmit} noValidate>
-        <div className={`ya-field ${fieldErrors.email ? 'ya-field--invalid' : ''}`}>
-          <label className="ya-field__label" htmlFor="login-email">
-            Email
-          </label>
-          <input
-            id="login-email"
-            name="email"
-            type="email"
-            className="ya-input"
-            placeholder="you@example.com"
-            autoComplete="email"
-            value={formValues.email}
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.email)}
-            aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
-          />
-          {fieldErrors.email && (
-            <p className="ya-field__error" id="login-email-error">
-              {fieldErrors.email}
-            </p>
-          )}
-        </div>
-
-        <div className={`ya-field ${fieldErrors.password ? 'ya-field--invalid' : ''}`}>
-          <div className="ya-field__label-row">
-            <label className="ya-field__label" htmlFor="login-password">
-              Password
-            </label>
-            <Link to="/forgot-password" className="ya-form-link ya-form-link--subtle">
-              Forgot password?
-            </Link>
+    <>
+      <AuthLayout title="Welcome back" subtitle="Log in to pick up your anime journey.">
+        {formError && (
+          <div className="ya-form-alert ya-form-alert--error" role="alert">
+            <CircleAlert size={18} aria-hidden="true" />
+            <span>{formError}</span>
           </div>
-          <input
-            id="login-password"
-            name="password"
-            type="password"
-            className="ya-input"
-            placeholder="••••••••"
-            autoComplete="current-password"
-            value={formValues.password}
-            onChange={handleChange}
-            aria-invalid={Boolean(fieldErrors.password)}
-            aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
-          />
-          {fieldErrors.password && (
-            <p className="ya-field__error" id="login-password-error">
-              {fieldErrors.password}
-            </p>
-          )}
-        </div>
+        )}
 
-        <Button
-          type="submit"
-          variant="primary"
-          className="ya-auth-submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? 'Logging in...' : 'Log In'}
-        </Button>
-      </form>
+        <form onSubmit={handleSubmit} noValidate>
+          <div className={`ya-field ${fieldErrors.email ? 'ya-field--invalid' : ''}`}>
+            <label className="ya-field__label" htmlFor="login-email">
+              Email
+            </label>
+            <input
+              id="login-email"
+              name="email"
+              type="email"
+              className="ya-input"
+              placeholder="you@example.com"
+              autoComplete="email"
+              value={formValues.email}
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.email)}
+              aria-describedby={fieldErrors.email ? 'login-email-error' : undefined}
+            />
+            {fieldErrors.email && (
+              <p className="ya-field__error" id="login-email-error">
+                {fieldErrors.email}
+              </p>
+            )}
+          </div>
 
-      <p className="ya-form-footer ya-text-muted">
-        New to {BRAND.name}?{' '}
-        <Link to="/register" className="ya-form-link">
-          Create an account
-        </Link>
-      </p>
-    </AuthLayout>
+          <div className={`ya-field ${fieldErrors.password ? 'ya-field--invalid' : ''}`}>
+            <div className="ya-field__label-row">
+              <label className="ya-field__label" htmlFor="login-password">
+                Password
+              </label>
+              <Link to="/forgot-password" className="ya-form-link ya-form-link--subtle">
+                Forgot password?
+              </Link>
+            </div>
+            <input
+              id="login-password"
+              name="password"
+              type="password"
+              className="ya-input"
+              placeholder="••••••••"
+              autoComplete="current-password"
+              value={formValues.password}
+              onChange={handleChange}
+              aria-invalid={Boolean(fieldErrors.password)}
+              aria-describedby={fieldErrors.password ? 'login-password-error' : undefined}
+            />
+            {fieldErrors.password && (
+              <p className="ya-field__error" id="login-password-error">
+                {fieldErrors.password}
+              </p>
+            )}
+          </div>
+
+          <Button
+            type="submit"
+            variant="primary"
+            className="ya-auth-submit"
+            disabled={isSubmitting || isEnteringYunori}
+          >
+            {isEnteringYunori ? 'Entering Yunori...' : isSubmitting ? 'Logging in...' : 'Log In'}
+          </Button>
+        </form>
+
+        <p className="ya-form-footer ya-text-muted">
+          New to {BRAND.name}?{' '}
+          <Link to="/register" className="ya-form-link">
+            Create an account
+          </Link>
+        </p>
+      </AuthLayout>
+
+      {isEnteringYunori && <LoginTransition />}
+    </>
   )
 }
 

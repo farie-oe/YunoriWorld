@@ -1,21 +1,33 @@
-/* Authentication pages (Login, Register) always use this fixed, neutral
-   Yunori presentation — never the signed-in user's saved theme. Re-declaring
-   the theme-able tokens here overrides whatever [data-theme] is currently
-   set on <html>, without touching ThemeProvider or profile persistence. */
+/* Authentication pages (Login, Register, Forgot/Reset Password) always use
+   this fixed, neutral Yunori presentation — never the signed-in user's
+   saved theme. Re-declaring the theme-able tokens here overrides whatever
+   [data-theme] is currently set on <html>, without touching ThemeProvider
+   or profile persistence.
+
+   The background is the supplied yunori-login-bg.png photo (a cosy anime
+   bedroom), used exactly as provided — no CSS filter, blur, or full-page
+   overlay is applied to it. --color-bg is only a fallback fill shown
+   before the image paints; every other token below is a soft neutral
+   white / warm grey / muted taupe / brown accent pulled from that image,
+   replacing the previous beige/gold palette. */
 .ya-auth-layout {
-  --color-bg: #fcfaf5;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #f4ede2;
-  --color-text: #221c2c;
-  --color-text-muted: #93887c;
-  --color-border: #e8e0d2;
-  --color-shadow: rgba(34, 28, 44, 0.08);
-  --color-on-primary: var(--color-text);
-  --color-primary: #c9a66b;
-  --color-primary-hover: #b8924f;
-  --color-secondary: #e4dce6;
-  --color-accent: #f4e3e7;
-  --color-focus: #96742e;
+  --color-bg: #f6f3ee;
+  --color-surface: rgba(255, 253, 250, 0.94);
+  --color-surface-secondary: rgba(236, 231, 223, 0.9);
+  --color-text: #2b2521;
+  --color-text-muted: #8a8079;
+  --color-border: #d9d2c7;
+  --color-shadow: rgba(43, 37, 33, 0.18);
+  /* Soft dusty rose accent (cherry-blossom-inspired), replacing the
+     previous brown/gold — used for the Log In button, links, and the
+     Orbit brand mark. Dark plum-brown text keeps the button readable
+     against the pastel fill. */
+  --color-on-primary: #3d2830;
+  --color-primary: #d9aab3;
+  --color-primary-hover: #c6919c;
+  --color-secondary: #e7e1d8;
+  --color-accent: #efe1de;
+  --color-focus: #8c4f5e;
   --color-danger: #e08999;
 
   position: relative;
@@ -24,7 +36,12 @@
   align-items: center;
   justify-content: center;
   padding: var(--space-5);
-  background: var(--color-bg);
+  background-color: var(--color-bg);
+  background-image: url('/images/yunori-login-bg.png');
+  background-size: cover;
+  background-position: center 42%;
+  background-repeat: no-repeat;
+  overflow: hidden;
 }
 
 .ya-auth-layout__panel {
@@ -36,6 +53,32 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
+}
+
+/* Wraps the brand mark/wordmark and the tagline together so a single soft
+   haze can sit behind the whole lockup, lifting it off the busy photo
+   without ever looking like a visible box. */
+.ya-auth-layout__brand-wrap {
+  position: relative;
+}
+
+.ya-auth-layout__brand-wrap::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 340px;
+  height: 210px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.55) 0%,
+    rgba(255, 255, 255, 0.28) 45%,
+    rgba(255, 255, 255, 0) 75%
+  );
+  filter: blur(10px);
+  z-index: -1;
+  pointer-events: none;
 }
 
 .ya-auth-layout__brand {
@@ -50,6 +93,7 @@
   height: 28px;
   color: var(--color-primary-hover);
   margin-bottom: var(--space-1);
+  filter: drop-shadow(0 1px 6px rgba(255, 255, 255, 0.55));
 }
 
 .ya-auth-layout__brand-name {
@@ -60,6 +104,7 @@
   color: var(--color-text);
   letter-spacing: 0.02em;
   text-transform: uppercase;
+  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.7);
 }
 
 .ya-auth-layout__brand-name-rest {
@@ -78,6 +123,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-text-muted);
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
 }
 
 .ya-auth-layout__tagline {
@@ -87,12 +133,14 @@
   color: var(--color-text-muted);
   margin-top: var(--space-2);
   margin-bottom: var(--space-6);
+  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
 }
 
 .ya-auth-layout__card {
   width: 100%;
   text-align: left;
   padding: var(--space-6);
+  box-shadow: var(--shadow-lg);
 }
 
 .ya-auth-layout__title {
@@ -111,6 +159,7 @@
 @media (max-width: 420px) {
   .ya-auth-layout {
     padding: var(--space-4);
+    background-position: 60% 42%;
   }
 
   .ya-auth-layout__card {

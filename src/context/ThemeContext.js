@@ -6,4 +6,11 @@ export const ThemeContext = createContext({
   setThemeId: () => {},
   themes: THEMES,
   themeError: '',
+  // True for the brief window (see ThemeProvider's THEME_TRANSITION_MS)
+  // right after the user picks a new theme, while colours are still
+  // cross-fading; transitionColor is that incoming theme's glow colour,
+  // for anything (e.g. ThemeTransitionOverlay) that wants to tint itself
+  // to match.
+  isTransitioning: false,
+  transitionColor: null,
 })

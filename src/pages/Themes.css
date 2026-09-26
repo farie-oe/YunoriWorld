@@ -1,53 +1,69 @@
 .ya-themes__grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--space-4);
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: var(--space-6);
+  column-gap: var(--space-4);
+  margin-top: var(--space-2);
 }
 
-.ya-theme-card {
-  position: relative;
-  text-align: left;
-  cursor: pointer;
-  font: inherit;
-  color: inherit;
+.ya-theme-option {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-}
-
-.ya-theme-card--active {
-  border-color: var(--color-primary);
-  box-shadow: var(--shadow-md);
-}
-
-.ya-theme-card__swatches {
-  display: flex;
+  align-items: center;
   gap: var(--space-1);
+  background: none;
+  border: none;
+  padding: var(--space-3) var(--space-2);
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  border-radius: var(--radius-lg);
 }
 
-.ya-theme-card__swatch {
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--color-border);
-}
-
-.ya-theme-card__name {
+.ya-theme-option__avatar {
   margin-bottom: var(--space-1);
+  box-shadow: 0 0 0 3px transparent, var(--shadow-sm);
+  transition: transform 0.25s ease, box-shadow 0.3s ease;
 }
 
-.ya-theme-card__badge {
-  align-self: flex-start;
+.ya-theme-option:hover .ya-theme-option__avatar,
+.ya-theme-option:focus-visible .ya-theme-option__avatar {
+  transform: translateY(-4px) scale(1.05);
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--color-primary) 40%, transparent),
+    0 10px 24px color-mix(in srgb, var(--color-primary) 25%, transparent);
+}
+
+.ya-theme-option--active .ya-theme-option__avatar {
+  box-shadow:
+    0 0 0 3px var(--color-primary),
+    0 0 20px color-mix(in srgb, var(--color-primary) 55%, transparent);
+}
+
+.ya-theme-option--active:hover .ya-theme-option__avatar,
+.ya-theme-option--active:focus-visible .ya-theme-option__avatar {
+  transform: translateY(-4px) scale(1.05);
+}
+
+.ya-theme-option__avatar-name {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.ya-theme-option__theme-name {
+  text-align: center;
+}
+
+.ya-theme-option--active .ya-theme-option__theme-name {
+  color: var(--color-primary-hover);
+  font-weight: 700;
 }
 
 @media (max-width: 900px) {
   .ya-themes__grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 560px) {
-  .ya-themes__grid {
-    grid-template-columns: 1fr;
+    row-gap: var(--space-5);
   }
 }

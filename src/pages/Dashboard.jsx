@@ -14,6 +14,7 @@ import Card from '../components/Card'
 import Button from '../components/Button'
 import EmptyState from '../components/EmptyState'
 import DashboardAnimeCard from '../components/DashboardAnimeCard'
+import AnimeDetailsModal from '../components/AnimeDetailsModal'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
 import { getAnimeEntries } from '../services/animeEntries'
@@ -45,6 +46,7 @@ function Dashboard() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retryToken, setRetryToken] = useState(0)
+  const [viewingEntry, setViewingEntry] = useState(null)
 
   useEffect(() => {
     if (!user) return
@@ -119,7 +121,6 @@ function Dashboard() {
               'Welcome back.'
             )
           }
-          description="Another day, another anime story."
           action={<img src={mascotImage} alt="Yunori mascot" className="ya-dashboard__mascot" />}
         />
       </div>
@@ -157,7 +158,7 @@ function Dashboard() {
           <section className="ya-dashboard__section">
             <h2 className="ya-section-heading">Your Anime Journey</h2>
             <p className="ya-text-muted ya-dashboard__section-sub">
-              A quick snapshot of your collection.
+              A summary of your collection.
             </p>
 
             <div className="ya-dashboard__stats">
@@ -208,18 +209,11 @@ function Dashboard() {
                 View Watch List
                 <ChevronRight size={16} aria-hidden="true" />
               </span>
-              <span className="ya-dashboard__watchlist-quote" aria-hidden="true">
-                <span className="ya-dashboard__watchlist-divider" />
-                <span className="ya-dashboard__watchlist-quote-text">
-                  &ldquo;Good stories always find you.&rdquo;
-                </span>
-              </span>
             </Card>
           </section>
 
           <section className="ya-dashboard__section">
             <DashboardSectionHeading icon={Sparkles}>Recently Added</DashboardSectionHeading>
-            <p className="ya-text-muted ya-dashboard__section-sub">Your newest additions to My Anime.</p>
             <div className="ya-dashboard__anime-grid">
               {recentlyAdded.map((entry) => (
                 <DashboardAnimeCard
@@ -227,6 +221,7 @@ function Dashboard() {
                   entry={entry}
                   userId={user?.id}
                   onFavouriteChange={handleFavouriteChange}
+                  onView={setViewingEntry}
                 />
               ))}
             </div>
@@ -254,6 +249,7 @@ function Dashboard() {
                     entry={entry}
                     userId={user?.id}
                     onFavouriteChange={handleFavouriteChange}
+                    onView={setViewingEntry}
                   />
                 ))}
               </div>
@@ -262,7 +258,6 @@ function Dashboard() {
 
           <section className="ya-dashboard__section">
             <DashboardSectionHeading icon={Heart}>Your Favourites</DashboardSectionHeading>
-            <p className="ya-text-muted ya-dashboard__section-sub">The anime closest to your heart.</p>
             {stats.favourites.length === 0 ? (
               <EmptyState
                 icon={Heart}
@@ -282,6 +277,7 @@ function Dashboard() {
                     entry={entry}
                     userId={user?.id}
                     onFavouriteChange={handleFavouriteChange}
+                    onView={setViewingEntry}
                   />
                 ))}
               </div>
@@ -289,6 +285,8 @@ function Dashboard() {
           </section>
         </>
       )}
+
+      {viewingEntry && <AnimeDetailsModal entry={viewingEntry} onClose={() => setViewingEntry(null)} />}
     </div>
   )
 }

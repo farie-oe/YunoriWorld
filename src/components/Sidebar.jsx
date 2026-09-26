@@ -33,7 +33,6 @@ function Sidebar() {
   return (
     <aside className="ya-sidebar">
       <div className="ya-sidebar__brand">
-        <Orbit className="ya-sidebar__brand-mark" />
         <div className="ya-sidebar__brand-lockup">
           <span className="ya-sidebar__brand-name">
             {BRAND_FIRST_WORD}

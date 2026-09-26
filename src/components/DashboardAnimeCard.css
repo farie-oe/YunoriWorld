@@ -6,6 +6,10 @@
   padding: var(--space-3);
 }
 
+.ya-dash-card[role='button'] {
+  cursor: pointer;
+}
+
 .ya-dash-card__cover {
   position: relative;
   width: 96px;

@@ -1,0 +1,27 @@
+.ya-theme-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  pointer-events: none;
+  background: radial-gradient(circle at 50% 38%, var(--ya-transition-color) 0%, transparent 65%);
+  opacity: 0;
+  animation: ya-theme-glow 0.9s ease-out forwards;
+}
+
+@keyframes ya-theme-glow {
+  0% {
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.22;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ya-theme-transition-overlay {
+    display: none;
+  }
+}
