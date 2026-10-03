@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { useSearchParams } from 'react-router-dom'
 import { Search, Plus, X, RotateCcw, FileDown } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
@@ -70,9 +69,7 @@ function MyAnime() {
   const [collectionLoading, setCollectionLoading] = useState(true)
   const [collectionError, setCollectionError] = useState('')
 
-  // The Dashboard search box links here with ?q=<text> to pre-fill this filter.
-  const [searchParams] = useSearchParams()
-  const [collectionSearch, setCollectionSearch] = useState(searchParams.get('q') ?? '')
+  const [collectionSearch, setCollectionSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState(DEFAULT_STATUS_FILTER)
   const [categoryFilter, setCategoryFilter] = useState(DEFAULT_CATEGORY_FILTER)
   const [favouriteOnly, setFavouriteOnly] = useState(false)

@@ -22,7 +22,7 @@
   aspect-ratio: 2 / 3;
   overflow: hidden;
   border: var(--outline);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-sketch-sm);
   background: var(--color-surface-secondary);
 }
 

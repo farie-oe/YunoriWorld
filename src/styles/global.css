@@ -86,7 +86,7 @@
      tints are mixed into --color-surface, so they stay readable on light
      AND dark themes without any per-theme overrides. */
   --color-outline: color-mix(in srgb, var(--color-text) 90%, var(--color-bg));
-  --outline-width: 2px;
+  --outline-width: 2.5px;
   --outline: var(--outline-width) solid var(--color-outline);
   --color-sidebar: color-mix(in srgb, var(--color-primary) 9%, var(--color-bg));
   --color-tile-pink: color-mix(in srgb, #f4a3bd 34%, var(--color-surface));
@@ -100,6 +100,12 @@
   --radius-md: 14px;
   --radius-lg: 18px;
   --radius-pill: 999px;
+
+  /* Slightly uneven corners so boxes read as hand-drawn rather than
+     machine-perfect. Same sizes as --radius-sm/md/lg, just not mirrored. */
+  --radius-sketch-sm: 9px 11px 8px 12px / 11px 8px 12px 9px;
+  --radius-sketch-md: 14px 17px 13px 18px / 17px 13px 18px 14px;
+  --radius-sketch-lg: 18px 22px 17px 23px / 22px 17px 23px 18px;
 
   /* spacing scale */
   --space-1: 4px;

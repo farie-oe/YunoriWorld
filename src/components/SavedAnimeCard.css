@@ -144,6 +144,12 @@
    gap between title/badges/rating — the card gets naturally shorter
    without the cover shrinking or the card feeling cramped. */
 @media (max-width: 768px) {
+  /* Squarer crop than the 2:3 desktop cover so cards feel shorter on a
+     phone; object-fit: cover keeps the artwork centred. */
+  .ya-saved-card__cover {
+    aspect-ratio: 4 / 5;
+  }
+
   .ya-saved-card__body {
     padding: var(--space-3);
     gap: 6px;

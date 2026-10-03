@@ -38,7 +38,7 @@
 .ya-empty-state--dashed {
   background: transparent;
   border: 2px dashed color-mix(in srgb, var(--color-outline) 28%, transparent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sketch-md);
 }
 
 .ya-empty-state__description {

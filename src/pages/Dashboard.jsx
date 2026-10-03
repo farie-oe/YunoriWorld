@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Heart, ArrowRight, Search } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import { ArrowRight } from 'lucide-react'
 import Button from '../components/Button'
 import EmptyState from '../components/EmptyState'
 import DashboardAnimeCard from '../components/DashboardAnimeCard'
@@ -50,14 +50,12 @@ function StatTile({ tone, icon, value, label }) {
 
 function Dashboard() {
   const { user } = useAuth()
-  const navigate = useNavigate()
   const [profile, setProfile] = useState(null)
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retryToken, setRetryToken] = useState(0)
   const [viewingEntry, setViewingEntry] = useState(null)
-  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     if (!user) return
@@ -116,15 +114,14 @@ function Dashboard() {
     setRetryToken((token) => token + 1)
   }
 
-  // The dashboard search hands off to My Anime, which filters the saved
-  // collection by the same text (see the `q` param read in MyAnime).
-  function handleSearch(event) {
-    event.preventDefault()
-    const trimmed = searchText.trim()
-    navigate(trimmed ? `/anime?q=${encodeURIComponent(trimmed)}` : '/anime')
-  }
-
   const displayName = profile?.username
+
+  // A plain, factual line once there is something to count; a casual prompt
+  // while loading or when the collection is still empty.
+  const tagline =
+    !loading && !error && stats.total > 0
+      ? `${stats.total} anime saved · ${stats.watching.length} in progress`
+      : 'What are we watching tonight?'
 
   function renderCards(list) {
     return list.map((entry) => (
@@ -140,21 +137,6 @@ function Dashboard() {
 
   return (
     <div className="ya-dash">
-      <form className="ya-dash__search" onSubmit={handleSearch} role="search">
-        <label htmlFor="dashboard-search" className="ya-visually-hidden">
-          Search your anime
-        </label>
-        <Search size={22} aria-hidden="true" />
-        <input
-          id="dashboard-search"
-          type="search"
-          className="ya-dash__search-input"
-          placeholder="Search anime..."
-          value={searchText}
-          onChange={(event) => setSearchText(event.target.value)}
-        />
-      </form>
-
       <header className="ya-dash__hero">
         <div className="ya-dash__greeting">
           {displayName && <p className="ya-eyebrow ya-dash__eyebrow">Welcome back,</p>}
@@ -162,10 +144,7 @@ function Dashboard() {
             {displayName ? `${displayName}!` : 'Welcome back!'}
             <Sparkle className="ya-dash__name-sparkle" />
           </h1>
-          <p className="ya-dash__tagline">
-            Your anime journey continues
-            <Heart size={16} aria-hidden="true" />
-          </p>
+          <p className="ya-dash__tagline">{tagline}</p>
         </div>
         <img src={catImage} alt="Yunori mascot" className="ya-dash__cat" />
       </header>

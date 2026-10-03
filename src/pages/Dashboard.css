@@ -16,44 +16,6 @@
   min-width: 0;
 }
 
-/* ---- search ---- */
-.ya-dash__search {
-  align-self: flex-end;
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  width: min(100%, 400px);
-  height: 56px;
-  padding: 0 var(--space-5);
-  background: var(--color-surface);
-  border: var(--outline);
-  border-radius: var(--radius-pill);
-  color: var(--color-text);
-}
-
-.ya-dash__search:focus-within {
-  border-color: var(--color-focus);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus) 25%, transparent);
-}
-
-.ya-dash__search-input {
-  flex: 1;
-  min-width: 0;
-  background: transparent;
-  border: none;
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  color: var(--color-text);
-}
-
-.ya-dash__search-input::placeholder {
-  color: var(--color-text-muted);
-}
-
-.ya-dash__search-input:focus {
-  outline: none;
-}
-
 /* ---- hero ---- */
 .ya-dash__hero {
   position: relative;
@@ -61,7 +23,6 @@
   align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-4);
-  margin-top: calc(var(--space-2) * -1);
   /* the cat sits on top of the stats panel, as in the reference */
   margin-bottom: calc(var(--space-6) * -1);
   z-index: 1;
@@ -132,7 +93,7 @@
   position: relative;
   background: var(--color-surface);
   border: var(--outline);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sketch-lg);
   padding: var(--space-4);
 }
 
@@ -162,7 +123,7 @@
   min-height: 112px;
   padding: var(--space-3) var(--space-4);
   border: var(--outline);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sketch-md);
   color: var(--color-text);
   text-decoration: none;
   transition: transform 0.15s ease, box-shadow 0.15s ease;
@@ -367,13 +328,6 @@
 @media (max-width: 767px) {
   .ya-dash {
     gap: var(--space-4);
-  }
-
-  .ya-dash__search {
-    align-self: stretch;
-    width: 100%;
-    height: 48px;
-    padding: 0 var(--space-4);
   }
 
   .ya-dash__hero {

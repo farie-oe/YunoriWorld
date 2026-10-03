@@ -16,7 +16,7 @@
   overflow-y: auto;
   background: var(--color-surface);
   border: var(--outline);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-sketch-lg);
   box-shadow: var(--shadow-lg);
   padding: var(--space-5);
 }

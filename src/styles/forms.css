@@ -19,7 +19,7 @@
   color: var(--color-text);
   background: var(--color-surface);
   border: var(--outline);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-sketch-md);
   padding: var(--space-3) var(--space-4);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
