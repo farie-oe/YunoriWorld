@@ -5,7 +5,7 @@ import Button from '../components/Button'
 import EmptyState from '../components/EmptyState'
 import DashboardAnimeCard from '../components/DashboardAnimeCard'
 import AnimeDetailsModal from '../components/AnimeDetailsModal'
-import { Bow, Sparkle } from '../components/Decorative'
+import { Sparkle } from '../components/Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
 import { getAnimeEntries } from '../services/animeEntries'
@@ -16,6 +16,7 @@ import watchingIcon from '../assets/ui/watching.png'
 import completedIcon from '../assets/ui/completed.png'
 import favouritesIcon from '../assets/ui/favourites.png'
 import watchListIcon from '../assets/ui/watch-list.png'
+import recentlyAddedIcon from '../assets/ui/recently-added.png'
 import './Dashboard.css'
 
 const RECENTLY_ADDED_COUNT = 3
@@ -201,7 +202,9 @@ function Dashboard() {
           </Link>
 
           <section className="ya-dash__section">
-            <SectionHeading icon={<Bow />}>Recently Added</SectionHeading>
+            <SectionHeading icon={<img src={recentlyAddedIcon} alt="" className="ya-dash__heading-icon" />}>
+              Recently Added
+            </SectionHeading>
             <div className="ya-dash__recent-grid">{renderCards(recentlyAdded)}</div>
           </section>
 
