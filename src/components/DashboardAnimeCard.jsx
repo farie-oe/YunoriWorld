@@ -3,6 +3,7 @@ import { Heart, Tv, Ellipsis } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
 import { statusTone } from '../lib/statusTone'
+import { parseCategories } from '../lib/categories'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './DashboardAnimeCard.css'
 
@@ -86,7 +87,11 @@ function DashboardAnimeCard({ entry, userId, onFavouriteChange, onView }) {
 
         <div className="ya-dash-card__meta">
           <Badge tone={statusTone(entry.status || 'Want to Watch')}>{entry.status || 'Want to Watch'}</Badge>
-          {entry.category && <Badge tone="neutral">{entry.category}</Badge>}
+          {parseCategories(entry.category).map((name) => (
+            <Badge key={name} tone="neutral">
+              {name}
+            </Badge>
+          ))}
         </div>
 
         {entry.rating != null && (

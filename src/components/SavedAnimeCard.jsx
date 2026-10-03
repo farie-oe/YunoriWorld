@@ -3,6 +3,7 @@ import { Heart, Pencil, Trash2, Tv } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
 import { statusTone } from '../lib/statusTone'
+import { parseCategories } from '../lib/categories'
 import Button from './Button'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './SavedAnimeCard.css'
@@ -88,7 +89,11 @@ function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDe
 
         <div className="ya-saved-card__badges">
           <Badge tone={statusTone(entry.status || 'Want to Watch')}>{entry.status || 'Want to Watch'}</Badge>
-          {entry.category && <Badge tone="neutral">{entry.category}</Badge>}
+          {parseCategories(entry.category).map((name) => (
+            <Badge key={name} tone="neutral">
+              {name}
+            </Badge>
+          ))}
           {entry.rating != null && (
             <Badge tone="neutral" className="ya-rating-badge">
               {'★'.repeat(entry.rating)}

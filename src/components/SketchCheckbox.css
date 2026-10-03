@@ -1,0 +1,79 @@
+.ya-check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  cursor: pointer;
+  user-select: none;
+  min-width: 0;
+}
+
+.ya-check--disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* The native input stays in the page for keyboard + assistive tech, just
+   visually replaced by the drawn box. */
+.ya-check__input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  margin: 0;
+}
+
+.ya-check__box {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 26px;
+  height: 26px;
+  background: var(--color-surface);
+  border: var(--outline);
+  border-radius: var(--radius-sketch-sm);
+  /* a hair off-square, like a box drawn freehand */
+  transform: rotate(-2deg);
+  transition: background-color 0.12s ease, transform 0.12s ease;
+}
+
+.ya-check:hover .ya-check__box {
+  background: var(--color-tile-pink);
+}
+
+.ya-check__input:checked + .ya-check__box {
+  background: var(--color-tile-pink);
+  transform: rotate(1.5deg);
+}
+
+.ya-check__input:focus-visible + .ya-check__box {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* The tick "draws itself" by animating the stroke offset. */
+.ya-check__tick {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--color-outline);
+  stroke-width: 3.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 40;
+  stroke-dashoffset: 40;
+  transition: stroke-dashoffset 0.2s ease;
+}
+
+.ya-check__input:checked + .ya-check__box .ya-check__tick {
+  stroke-dashoffset: 0;
+}
+
+.ya-check__label {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  letter-spacing: 0.02em;
+  color: var(--color-text);
+  min-width: 0;
+}

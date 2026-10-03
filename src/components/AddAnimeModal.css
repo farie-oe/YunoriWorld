@@ -158,3 +158,21 @@
     width: 68px;
   }
 }
+
+/* Category tick boxes in the Add / Edit forms */
+.ya-category-fieldset {
+  border: none;
+  padding: 0;
+  min-inline-size: 0;
+}
+
+.ya-category-fieldset legend {
+  padding: 0;
+}
+
+.ya-category-fieldset__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(135px, 1fr));
+  gap: var(--space-3) var(--space-3);
+  margin-top: var(--space-2);
+}

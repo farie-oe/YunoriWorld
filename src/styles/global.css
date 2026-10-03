@@ -124,15 +124,18 @@
   /* typography — an elegant editorial serif for branding and major
      headings, paired with a clean modern sans for functional UI text
      (navigation, buttons, labels, metadata, body copy). */
-  --font-heading: 'Jua', 'Nunito', system-ui, 'Segoe UI', sans-serif;
+  --font-heading: 'Jua', system-ui, 'Segoe UI', sans-serif;
   /* Bouncier face reserved for the logo and the big dashboard greeting. */
-  --font-display: 'DynaPuff', 'Jua', 'Nunito', system-ui, sans-serif;
-  --font-body: 'Nunito', system-ui, 'Segoe UI', sans-serif;
+  --font-display: 'DynaPuff', 'Jua', system-ui, sans-serif;
+  /* Body text uses the same neat, rounded Jua as the headings so the whole
+     app reads as one handwritten voice. Single weight: hierarchy comes from
+     size and colour rather than bold. */
+  --font-body: 'Jua', system-ui, 'Segoe UI', sans-serif;
 
-  --text-xs: 0.75rem;
-  --text-sm: 0.875rem;
-  --text-base: 1rem;
-  --text-lg: 1.125rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-base: 1.0625rem;
+  --text-lg: 1.1875rem;
   --text-xl: 1.375rem;
   --text-2xl: 1.75rem;
   --text-3xl: 2.25rem;
@@ -294,11 +297,11 @@ a {
   }
 
   .ya-body-text {
-    font-size: 0.875rem; /* 14px */
+    font-size: 0.9375rem; /* 15px */
   }
 
   .ya-text-muted {
-    font-size: 0.8125rem; /* 13px */
+    font-size: 0.875rem; /* 14px */
   }
 }
 

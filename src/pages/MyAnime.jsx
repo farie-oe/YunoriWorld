@@ -15,7 +15,9 @@ import { getAnimeEntries } from '../services/animeEntries'
 import { getProfile } from '../services/profiles'
 import { exportCollectionToPdf } from '../services/pdfExport'
 import { useAuth } from '../hooks/useAuth'
-import { CATEGORIES, STATUS_OPTIONS } from '../constants/animeOptions'
+import { STATUS_OPTIONS } from '../constants/animeOptions'
+import CategoryFilter from '../components/CategoryFilter'
+import { parseCategories } from '../lib/categories'
 import emptyCollectionImage from '../assets/ui/empty-collection.png'
 import noResultsImage from '../assets/ui/no-results.png'
 import './MyAnime.css'
@@ -29,7 +31,6 @@ const SORT_OPTIONS = [
 ]
 
 const DEFAULT_STATUS_FILTER = 'All'
-const DEFAULT_CATEGORY_FILTER = 'All'
 const DEFAULT_SORT = 'recent'
 
 function sortCollection(entries, sortBy) {
@@ -71,7 +72,7 @@ function MyAnime() {
 
   const [collectionSearch, setCollectionSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState(DEFAULT_STATUS_FILTER)
-  const [categoryFilter, setCategoryFilter] = useState(DEFAULT_CATEGORY_FILTER)
+  const [categoryFilters, setCategoryFilters] = useState([])
   const [favouriteOnly, setFavouriteOnly] = useState(false)
   const [sortBy, setSortBy] = useState(DEFAULT_SORT)
 
@@ -182,14 +183,14 @@ function MyAnime() {
   const hasActiveControls =
     collectionSearch.trim() !== '' ||
     statusFilter !== DEFAULT_STATUS_FILTER ||
-    categoryFilter !== DEFAULT_CATEGORY_FILTER ||
+    categoryFilters.length > 0 ||
     favouriteOnly ||
     sortBy !== DEFAULT_SORT
 
   function handleResetControls() {
     setCollectionSearch('')
     setStatusFilter(DEFAULT_STATUS_FILTER)
-    setCategoryFilter(DEFAULT_CATEGORY_FILTER)
+    setCategoryFilters([])
     setFavouriteOnly(false)
     setSortBy(DEFAULT_SORT)
   }
@@ -204,13 +205,16 @@ function MyAnime() {
         if (!matchesTitle && !matchesDescription) return false
       }
       if (statusFilter !== DEFAULT_STATUS_FILTER && entry.status !== statusFilter) return false
-      if (categoryFilter !== DEFAULT_CATEGORY_FILTER && entry.category !== categoryFilter) return false
+      if (categoryFilters.length > 0) {
+        const entryCategories = parseCategories(entry.category)
+        if (!categoryFilters.every((name) => entryCategories.includes(name))) return false
+      }
       if (favouriteOnly && !entry.favourite) return false
       return true
     })
 
     return sortCollection(filtered, sortBy)
-  }, [collection, collectionSearch, statusFilter, categoryFilter, favouriteOnly, sortBy])
+  }, [collection, collectionSearch, statusFilter, categoryFilters, favouriteOnly, sortBy])
 
   const isFilteredView = filteredCollection.length !== collection.length
 
@@ -374,22 +378,7 @@ function MyAnime() {
               ))}
             </select>
 
-            <label htmlFor="category-filter" className="ya-visually-hidden">
-              Filter by category
-            </label>
-            <select
-              id="category-filter"
-              className="ya-input ya-collection-toolbar__select"
-              value={categoryFilter}
-              onChange={(event) => setCategoryFilter(event.target.value)}
-            >
-              <option value={DEFAULT_CATEGORY_FILTER}>All categories</option>
-              {CATEGORIES.map((option) => (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              ))}
-            </select>
+            <CategoryFilter selected={categoryFilters} onChange={setCategoryFilters} />
 
             <label htmlFor="favourite-filter" className="ya-visually-hidden">
               Filter by favourite

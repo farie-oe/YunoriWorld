@@ -1,4 +1,6 @@
 import StarRating from './StarRating'
+import SketchCheckbox from './SketchCheckbox'
+import { parseCategories, toggleCategory } from '../lib/categories'
 import { CATEGORIES, STATUS_OPTIONS, DESCRIPTION_LIMIT } from '../constants/animeOptions'
 
 /**
@@ -16,27 +18,25 @@ function AnimeDetailsFields({
   onStatusChange,
   firstFieldRef,
 }) {
+  const selectedCategories = parseCategories(category)
+
   return (
     <>
-      <div className="ya-field">
-        <label htmlFor="anime-category" className="ya-field__label">
-          Category
-        </label>
-        <select
-          id="anime-category"
-          ref={firstFieldRef}
-          className="ya-input"
-          value={category}
-          onChange={(event) => onCategoryChange(event.target.value)}
-        >
-          <option value="">No category</option>
-          {CATEGORIES.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
+      <fieldset className="ya-field ya-category-fieldset">
+        <legend className="ya-field__label">Categories</legend>
+        <p className="ya-meta-text ya-modal__rating-hint">Tick every category that fits. Optional.</p>
+        <div className="ya-category-fieldset__grid">
+          {CATEGORIES.map((option, index) => (
+            <SketchCheckbox
+              key={option}
+              ref={index === 0 ? firstFieldRef : undefined}
+              label={option}
+              checked={selectedCategories.includes(option)}
+              onChange={() => onCategoryChange(toggleCategory(category, option))}
+            />
           ))}
-        </select>
-      </div>
+        </div>
+      </fieldset>
 
       <div className="ya-field">
         <span className="ya-field__label">Your rating</span>
