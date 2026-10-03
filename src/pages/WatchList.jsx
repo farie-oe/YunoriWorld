@@ -9,6 +9,7 @@ import AnimeDetailsModal from '../components/AnimeDetailsModal'
 import Button from '../components/Button'
 import { getWatchList, backfillMissingGenres } from '../services/animeEntries'
 import { useAuth } from '../hooks/useAuth'
+import sleepingCatImage from '../assets/ui/cat-sleeping.png'
 import './MyAnime.css'
 import './WatchList.css'
 
@@ -186,7 +187,7 @@ function WatchList() {
 
       {!loading && !error && entries.length === 0 && (
         <EmptyState
-          icon={Bookmark}
+          image={sleepingCatImage}
           title="Nothing on your watch list yet"
           description="Anime you add with a “Want to Watch” status will appear here."
           action={

@@ -5,7 +5,7 @@
 }
 
 .ya-star-rating__star {
-  color: var(--color-border);
+  color: color-mix(in srgb, var(--color-text-muted) 55%, var(--color-surface));
   fill: transparent;
   transition: color 0.15s ease, fill 0.15s ease;
 }

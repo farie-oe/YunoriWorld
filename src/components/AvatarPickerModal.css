@@ -14,13 +14,14 @@
 }
 
 .ya-avatar-picker__option {
+  width: 76px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-1);
   padding: var(--space-2);
   background: none;
-  border: 1px solid transparent;
+  border: 2px solid transparent;
   border-radius: var(--radius-md);
   cursor: pointer;
   transition: border-color 0.15s ease, background 0.15s ease;
@@ -31,8 +32,8 @@
 }
 
 .ya-avatar-picker__option--selected {
-  border-color: var(--color-primary);
-  background: color-mix(in srgb, var(--color-primary) 12%, transparent);
+  border-color: var(--color-outline);
+  background: var(--color-tile-pink);
 }
 
 .ya-avatar-picker__option:disabled {
@@ -52,7 +53,7 @@
   height: 64px;
   border-radius: var(--radius-pill);
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: var(--outline);
 }
 
 .ya-avatar-picker__preview img {

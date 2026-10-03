@@ -4,28 +4,28 @@
 }
 
 .ya-app-layout__main {
-  margin-left: 260px;
+  margin-left: 168px;
   min-height: 100svh;
-  padding: var(--space-6) var(--space-7);
+  padding: var(--space-5) var(--space-6) var(--space-7);
 }
 
 .ya-app-layout__content {
-  max-width: 1080px;
+  max-width: 1120px;
   margin: 0 auto;
   position: relative;
 }
 
 @media (max-width: 1024px) {
   .ya-app-layout__main {
-    margin-left: 84px;
-    padding: var(--space-5);
+    margin-left: 104px;
+    padding: var(--space-5) var(--space-4);
   }
 }
 
 @media (max-width: 767px) {
   .ya-app-layout__main {
     margin-left: 0;
-    margin-top: 56px;
+    margin-top: 60px;
     padding: var(--space-4);
   }
 }

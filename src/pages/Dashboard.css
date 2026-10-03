@@ -1,226 +1,454 @@
-.ya-dashboard__eyebrow {
-  margin: 0 0 var(--space-2);
+/* ---------------------------------------------------------------------
+   Dashboard — the visual benchmark for the redesign. Structure follows the
+   reference: outlined panels, tinted tiles, chunky headings. Colours all
+   come from theme tokens (--color-tile-*, --color-outline, …).
+--------------------------------------------------------------------- */
+.ya-dash {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  min-width: 0;
 }
 
-.ya-dashboard__hero-name {
-  color: var(--color-primary-hover);
+/* Flex/grid children default to min-width:auto, which lets wide content push
+   a panel past the viewport on phones. */
+.ya-dash > * {
+  min-width: 0;
 }
 
-.ya-dashboard__mascot {
-  width: 96px;
-  height: auto;
-  max-width: 100%;
-  object-fit: contain;
+/* ---- search ---- */
+.ya-dash__search {
+  align-self: flex-end;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: min(100%, 400px);
+  height: 56px;
+  padding: 0 var(--space-5);
+  background: var(--color-surface);
+  border: var(--outline);
+  border-radius: var(--radius-pill);
+  color: var(--color-text);
+}
+
+.ya-dash__search:focus-within {
+  border-color: var(--color-focus);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-focus) 25%, transparent);
+}
+
+.ya-dash__search-input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  border: none;
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  color: var(--color-text);
+}
+
+.ya-dash__search-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.ya-dash__search-input:focus {
+  outline: none;
+}
+
+/* ---- hero ---- */
+.ya-dash__hero {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-top: calc(var(--space-2) * -1);
+  /* the cat sits on top of the stats panel, as in the reference */
+  margin-bottom: calc(var(--space-6) * -1);
+  z-index: 1;
   pointer-events: none;
 }
 
-.ya-dashboard__section {
-  margin-bottom: var(--space-6);
+.ya-dash__greeting {
+  padding-bottom: var(--space-7);
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
-.ya-dashboard__section-header {
+.ya-dash__eyebrow {
+  margin: 0 0 var(--space-1);
+}
+
+.ya-dash__name {
   display: flex;
-  align-items: baseline;
-  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.5rem, 6vw, 4.25rem);
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  color: var(--color-text);
+  overflow-wrap: anywhere;
+}
+
+.ya-dash__name .ya-dash__name-sparkle {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  color: var(--color-accent);
+  opacity: 1;
+}
+
+.ya-dash__tagline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  margin: var(--space-2) 0 0;
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary);
+}
+
+.ya-dash__cat {
+  width: clamp(150px, 20vw, 220px);
+  height: auto;
+  flex-shrink: 0;
+  object-fit: contain;
+  margin-right: var(--space-3);
+}
+
+.ya-dash__error {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
   gap: var(--space-3);
+}
+
+/* ---- outlined panels ---- */
+.ya-dash__panel {
+  position: relative;
+  background: var(--color-surface);
+  border: var(--outline);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+}
+
+.ya-dash__panel--blue {
+  background: color-mix(in srgb, var(--color-tile-blue) 45%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-outline) 35%, transparent);
+}
+
+.ya-dash__panel--pink {
+  background: color-mix(in srgb, var(--color-tile-pink) 45%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-outline) 35%, transparent);
+}
+
+/* ---- stat tiles ---- */
+.ya-dash__stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-4);
+  background: color-mix(in srgb, var(--color-tile-pink) 55%, var(--color-surface));
+}
+
+.ya-stat-tile {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  min-height: 112px;
+  padding: var(--space-3) var(--space-4);
+  border: var(--outline);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ya-stat-tile:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.ya-stat-tile--pink {
+  background: var(--color-tile-pink);
+}
+
+.ya-stat-tile--blue {
+  background: var(--color-tile-blue);
+}
+
+.ya-stat-tile--green {
+  background: var(--color-tile-green);
+}
+
+.ya-stat-tile--yellow {
+  background: var(--color-tile-yellow);
+}
+
+.ya-stat-tile__icon {
+  width: 64px;
+  height: 56px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.ya-stat-tile__text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.ya-stat-tile__value {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 2.75rem;
+  line-height: 1;
+}
+
+.ya-stat-tile__label {
+  font-family: var(--font-heading);
+  font-size: var(--text-lg);
+  letter-spacing: 0.02em;
+}
+
+.ya-stat-tile .ya-stat-tile__sparkle {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  width: 20px;
+  height: 20px;
+  color: var(--color-accent);
+}
+
+/* ---- watch list banner ---- */
+.ya-dash__watchlist {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  color: var(--color-text);
+  text-decoration: none;
   flex-wrap: wrap;
 }
 
-.ya-dashboard__section-title {
+.ya-dash__watchlist-icon {
   display: flex;
   align-items: center;
-  gap: var(--space-2);
+  justify-content: center;
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: var(--radius-md);
+  background: var(--color-tile-pink);
 }
 
-.ya-dashboard__section-icon {
-  color: var(--color-primary);
+.ya-dash__watchlist-icon img {
+  width: 56px;
+  height: 48px;
+  object-fit: contain;
 }
 
-.ya-dashboard__view-all {
+.ya-dash__watchlist-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  flex: 1 1 220px;
+  min-width: 0;
+}
+
+.ya-dash__watchlist-title {
+  font-family: var(--font-heading);
+  font-size: var(--text-2xl);
+  letter-spacing: 0.02em;
+}
+
+.ya-dash__watchlist-link {
+  flex-shrink: 0;
+}
+
+.ya-dash__watchlist:hover .ya-dash__watchlist-link {
+  background: var(--color-primary-hover);
+  transform: translateY(-1px);
+}
+
+/* ---- section headings ---- */
+.ya-dash__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.ya-dash__section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.ya-dash__section-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--text-2xl);
+  letter-spacing: 0.04em;
+  color: var(--color-text);
+}
+
+.ya-dash__heading-icon {
+  width: 46px;
+  height: 40px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.ya-dash__view-all {
   display: inline-flex;
   align-items: center;
   gap: var(--space-1);
+  flex-shrink: 0;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: var(--text-sm);
+  font-size: var(--text-base);
   color: var(--color-text-secondary);
   text-decoration: none;
 }
 
-.ya-dashboard__view-all:hover {
-  color: var(--color-primary-hover);
+.ya-dash__view-all:hover {
+  color: var(--color-text);
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
-.ya-dashboard__section-sub {
-  margin-top: var(--space-1);
-  margin-bottom: var(--space-4);
+/* ---- card grids ---- */
+.ya-dash__recent-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--space-4);
 }
 
-.ya-dashboard__error {
+.ya-dash__duo {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.ya-dash__stack {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
   gap: var(--space-3);
 }
 
-.ya-dashboard__stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: var(--space-4);
-}
-
-.ya-stat-card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: center;
-  gap: var(--space-2);
-  min-height: 116px;
-  text-decoration: none;
-}
-
-.ya-stat-card__icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  border-radius: var(--radius-pill);
-  flex-shrink: 0;
-  background: var(--color-surface-secondary);
-  color: var(--color-text);
-}
-
-.ya-stat-card--gold {
-  border-color: color-mix(in srgb, var(--color-gold) 45%, var(--color-border));
-}
-
-.ya-stat-card__icon--gold {
-  color: var(--color-primary);
-}
-
-.ya-stat-card__value {
-  font-family: var(--font-heading);
-  font-weight: 600;
-  font-size: var(--text-2xl);
-  color: var(--color-text);
-}
-
-.ya-stat-card__label {
-  font-weight: 700;
-}
-
-.ya-dashboard__watchlist-card {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  text-decoration: none;
-  flex-wrap: wrap;
-}
-
-@media (max-width: 768px) {
-  .ya-dashboard__watchlist-card {
-    gap: var(--space-3);
+@media (max-width: 1100px) {
+  .ya-dash__recent-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
-
-  .ya-dashboard__watchlist-info {
-    gap: 2px;
-  }
-}
-
-.ya-dashboard__watchlist-info {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-1);
-  flex: 1 1 200px;
-}
-
-.ya-dashboard__watchlist-link {
-  gap: var(--space-1);
-  flex-shrink: 0;
-}
-
-.ya-dashboard__watchlist-quote {
-  display: flex;
-  align-items: center;
-  gap: var(--space-4);
-  padding-left: var(--space-4);
-  flex-shrink: 0;
-}
-
-.ya-dashboard__watchlist-divider {
-  width: 1px;
-  align-self: stretch;
-  background: var(--color-border);
-}
-
-.ya-dashboard__watchlist-quote-text {
-  font-family: var(--font-heading);
-  font-style: italic;
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  max-width: 20ch;
-}
-
-.ya-dashboard__anime-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-  gap: var(--space-4);
 }
 
 @media (max-width: 900px) {
-  .ya-dashboard__stats {
-    grid-template-columns: repeat(2, 1fr);
+  .ya-dash__stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ya-dashboard__mascot {
-    width: 72px;
-  }
-
-  .ya-dashboard__watchlist-quote {
-    display: none;
+  .ya-dash__duo {
+    grid-template-columns: 1fr;
   }
 }
 
-/* Mobile: compact statistic tiles — smaller icon circle, smaller number,
-   smaller label, less internal padding — while the grid itself (and the
-   gap before the next section) stays exactly as it is. */
-@media (max-width: 768px) {
-  .ya-dashboard__stats {
+@media (max-width: 767px) {
+  .ya-dash {
+    gap: var(--space-4);
+  }
+
+  .ya-dash__search {
+    align-self: stretch;
+    width: 100%;
+    height: 48px;
+    padding: 0 var(--space-4);
+  }
+
+  .ya-dash__hero {
+    margin-bottom: calc(var(--space-5) * -1);
+  }
+
+  .ya-dash__greeting {
+    padding-bottom: var(--space-6);
+  }
+
+  .ya-dash__cat {
+    width: 104px;
+    margin-right: 0;
+  }
+
+  .ya-dash__hero {
     gap: var(--space-2);
   }
 
-  .ya-stat-card {
-    min-height: auto;
+  .ya-dash__name .ya-dash__name-sparkle {
+    display: none;
+  }
+
+  .ya-dash__tagline {
+    font-size: var(--text-base);
+  }
+
+  .ya-stat-tile {
+    min-height: 88px;
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-2);
+  }
+
+  .ya-stat-tile__icon {
+    width: 38px;
+    height: 34px;
+  }
+
+  .ya-stat-tile__value {
+    font-size: 2rem;
+  }
+
+  .ya-stat-tile__label {
+    font-size: var(--text-sm);
+  }
+
+  .ya-dash__stats {
+    gap: var(--space-2);
     padding: var(--space-3);
-    gap: var(--space-1);
   }
 
-  .ya-stat-card__icon {
-    width: 30px;
-    height: 30px;
+  .ya-dash__watchlist {
+    padding: var(--space-3);
   }
 
-  .ya-stat-card__icon svg {
-    width: 16px;
-    height: 16px;
+  .ya-dash__watchlist-icon {
+    width: 56px;
+    height: 56px;
   }
 
-  .ya-stat-card__value {
-    font-size: var(--text-lg);
+  .ya-dash__watchlist-icon img {
+    width: 42px;
+    height: 36px;
   }
 
-  .ya-stat-card__label {
-    font-size: 0.6875rem; /* 11px */
-  }
-}
-
-@media (max-width: 480px) {
-  .ya-dashboard__mascot {
-    width: 52px;
+  .ya-dash__watchlist-title {
+    font-size: var(--text-xl);
   }
 
-  .ya-dashboard__anime-grid {
+  .ya-dash__section-title {
+    font-size: var(--text-xl);
+    gap: var(--space-2);
+  }
+
+  .ya-dash__recent-grid {
     grid-template-columns: 1fr;
   }
 }

@@ -1,20 +1,24 @@
 import { Link, useNavigate } from 'react-router-dom'
-import { LayoutDashboard, Clapperboard, Bookmark, UserCircle, Palette, LogOut, ChevronRight } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import NavigationItem from './NavigationItem'
-import Button from './Button'
 import Avatar from './Avatar'
-import { Orbit } from './Decorative'
+import { Sparkle } from './Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { useProfile } from '../hooks/useProfile'
 import { BRAND } from '../lib/brand'
+import dashboardIcon from '../assets/ui/dashboard.png'
+import myAnimeIcon from '../assets/ui/my-anime.png'
+import watchListIcon from '../assets/ui/watch-list.png'
+import profileIcon from '../assets/ui/profile.png'
+import themesIcon from '../assets/ui/themes.png'
 import './Sidebar.css'
 
 const NAV_ITEMS = [
-  { to: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, tourId: 'nav-dashboard' },
-  { to: '/anime', label: 'My Anime', icon: Clapperboard, tourId: 'nav-anime' },
-  { to: '/watchlist', label: 'Watch List', icon: Bookmark, tourId: 'nav-watchlist' },
-  { to: '/profile', label: 'Profile', icon: UserCircle },
-  { to: '/themes', label: 'Themes', icon: Palette, tourId: 'nav-themes' },
+  { to: '/dashboard', label: 'Dashboard', iconSrc: dashboardIcon, tourId: 'nav-dashboard' },
+  { to: '/anime', label: 'My Anime', iconSrc: myAnimeIcon, tourId: 'nav-anime' },
+  { to: '/watchlist', label: 'Watch List', iconSrc: watchListIcon, tourId: 'nav-watchlist' },
+  { to: '/profile', label: 'Profile', iconSrc: profileIcon },
+  { to: '/themes', label: 'Themes', iconSrc: themesIcon, tourId: 'nav-themes' },
 ]
 
 const [BRAND_FIRST_WORD, ...BRAND_REST_WORDS] = BRAND.name.split(' ')
@@ -32,21 +36,13 @@ function Sidebar() {
 
   return (
     <aside className="ya-sidebar">
-      <div className="ya-sidebar__brand">
-        <div className="ya-sidebar__brand-lockup">
-          <span className="ya-sidebar__brand-name">
-            {BRAND_FIRST_WORD}
-            {BRAND_REST && <span className="ya-sidebar__brand-name-rest">{BRAND_REST}</span>}
-          </span>
-          <span className="ya-sidebar__brand-tagline">{BRAND.tagline}</span>
-        </div>
-      </div>
-
-      <div className="ya-sidebar__divider" role="presentation">
-        <span />
-        <Orbit className="ya-sidebar__divider-mark" />
-        <span />
-      </div>
+      <Link to="/dashboard" className="ya-sidebar__brand" aria-label={BRAND.name}>
+        <span className="ya-sidebar__brand-name">
+          {BRAND_FIRST_WORD}
+          {BRAND_REST && <span className="ya-sidebar__brand-name-rest">{BRAND_REST}</span>}
+        </span>
+        <Sparkle className="ya-sidebar__brand-sparkle" />
+      </Link>
 
       <nav className="ya-sidebar__nav" aria-label="Main navigation">
         {NAV_ITEMS.map((item) => (
@@ -56,30 +52,29 @@ function Sidebar() {
 
       <div className="ya-sidebar__spacer" />
 
-      <Link to="/profile" className="ya-sidebar__profile">
+      <Link
+        to="/profile"
+        className="ya-sidebar__profile"
+        aria-label={profile?.username ? `${profile.username}'s profile` : 'Your profile'}
+        title={profile?.username || 'Your profile'}
+      >
         <Avatar
           avatarType={profile?.avatar_type}
           avatarValue={profile?.avatar_value}
-          size={36}
+          size={48}
           className="ya-sidebar__profile-avatar"
         />
-        <span className="ya-sidebar__profile-info">
-          <span className="ya-sidebar__profile-name">{profile?.username || 'Your Profile'}</span>
-          {profile?.unique_id && <span className="ya-sidebar__profile-id">{profile.unique_id}</span>}
-        </span>
-        <ChevronRight size={16} className="ya-sidebar__profile-chevron" aria-hidden="true" />
       </Link>
 
-      <div className="ya-sidebar__footer">
-        <Button
-          variant="outline"
-          icon={LogOut}
-          onClick={handleSignOut}
-          className="ya-sidebar__sign-out"
-        >
-          <span className="ya-sidebar__sign-out-label">Log Out</span>
-        </Button>
-      </div>
+      <button
+        type="button"
+        className="ya-sidebar__sign-out"
+        onClick={handleSignOut}
+        aria-label="Log out"
+        title="Log out"
+      >
+        <LogOut size={22} aria-hidden="true" />
+      </button>
     </aside>
   )
 }

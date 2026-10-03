@@ -1,52 +1,63 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Link } from 'react-router-dom'
-import {
-  Clapperboard,
-  PlayCircle,
-  CheckCircle2,
-  Heart,
-  Bookmark,
-  Sparkles,
-  ChevronRight,
-} from 'lucide-react'
-import PageHeader from '../components/PageHeader'
-import Card from '../components/Card'
+import { Link, useNavigate } from 'react-router-dom'
+import { Heart, ArrowRight, Search } from 'lucide-react'
 import Button from '../components/Button'
 import EmptyState from '../components/EmptyState'
 import DashboardAnimeCard from '../components/DashboardAnimeCard'
 import AnimeDetailsModal from '../components/AnimeDetailsModal'
+import { Bow, Sparkle } from '../components/Decorative'
 import { useAuth } from '../hooks/useAuth'
 import { getProfile } from '../services/profiles'
 import { getAnimeEntries } from '../services/animeEntries'
-import { BRAND } from '../lib/brand'
-import mascotImage from '../assets/mascot/yunori-mascot.png'
+import catImage from '../assets/ui/cat-resting.png'
+import emptyCollectionImage from '../assets/ui/empty-collection.png'
+import totalIcon from '../assets/ui/total-anime.png'
+import watchingIcon from '../assets/ui/watching.png'
+import completedIcon from '../assets/ui/completed.png'
+import favouritesIcon from '../assets/ui/favourites.png'
+import watchListIcon from '../assets/ui/watch-list.png'
 import './Dashboard.css'
 
-const RECENTLY_ADDED_COUNT = 4
+const RECENTLY_ADDED_COUNT = 3
 
-function DashboardSectionHeading({ icon: Icon, children }) {
+function SectionHeading({ icon, children, as: Tag = 'h2' }) {
   return (
-    <div className="ya-dashboard__section-header">
-      <h2 className="ya-section-heading ya-dashboard__section-title">
-        <Icon size={18} className="ya-dashboard__section-icon" aria-hidden="true" />
+    <div className="ya-dash__section-header">
+      <Tag className="ya-dash__section-title">
+        {icon}
         {children}
-      </h2>
-      <Link to="/anime" className="ya-dashboard__view-all">
+      </Tag>
+      <Link to="/anime" className="ya-dash__view-all">
         View All
-        <ChevronRight size={14} aria-hidden="true" />
+        <ArrowRight size={16} aria-hidden="true" />
       </Link>
     </div>
   )
 }
 
+function StatTile({ tone, icon, value, label }) {
+  return (
+    <Link to="/anime" className={`ya-stat-tile ya-stat-tile--${tone}`}>
+      <img src={icon} alt="" className="ya-stat-tile__icon" />
+      <span className="ya-stat-tile__text">
+        <span className="ya-stat-tile__value">{value}</span>
+        <span className="ya-stat-tile__label">{label}</span>
+      </span>
+      <Sparkle className="ya-stat-tile__sparkle" />
+    </Link>
+  )
+}
+
 function Dashboard() {
   const { user } = useAuth()
+  const navigate = useNavigate()
   const [profile, setProfile] = useState(null)
   const [entries, setEntries] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [retryToken, setRetryToken] = useState(0)
   const [viewingEntry, setViewingEntry] = useState(null)
+  const [searchText, setSearchText] = useState('')
 
   useEffect(() => {
     if (!user) return
@@ -105,25 +116,59 @@ function Dashboard() {
     setRetryToken((token) => token + 1)
   }
 
+  // The dashboard search hands off to My Anime, which filters the saved
+  // collection by the same text (see the `q` param read in MyAnime).
+  function handleSearch(event) {
+    event.preventDefault()
+    const trimmed = searchText.trim()
+    navigate(trimmed ? `/anime?q=${encodeURIComponent(trimmed)}` : '/anime')
+  }
+
   const displayName = profile?.username
 
+  function renderCards(list) {
+    return list.map((entry) => (
+      <DashboardAnimeCard
+        key={entry.id}
+        entry={entry}
+        userId={user?.id}
+        onFavouriteChange={handleFavouriteChange}
+        onView={setViewingEntry}
+      />
+    ))
+  }
+
   return (
-    <div>
-      <div className="ya-dashboard__hero">
-        <p className="ya-eyebrow ya-dashboard__eyebrow">Welcome to {BRAND.name}</p>
-        <PageHeader
-          title={
-            displayName ? (
-              <>
-                Welcome back, <span className="ya-dashboard__hero-name">{displayName}</span>.
-              </>
-            ) : (
-              'Welcome back.'
-            )
-          }
-          action={<img src={mascotImage} alt="Yunori mascot" className="ya-dashboard__mascot" />}
+    <div className="ya-dash">
+      <form className="ya-dash__search" onSubmit={handleSearch} role="search">
+        <label htmlFor="dashboard-search" className="ya-visually-hidden">
+          Search your anime
+        </label>
+        <Search size={22} aria-hidden="true" />
+        <input
+          id="dashboard-search"
+          type="search"
+          className="ya-dash__search-input"
+          placeholder="Search anime..."
+          value={searchText}
+          onChange={(event) => setSearchText(event.target.value)}
         />
-      </div>
+      </form>
+
+      <header className="ya-dash__hero">
+        <div className="ya-dash__greeting">
+          {displayName && <p className="ya-eyebrow ya-dash__eyebrow">Welcome back,</p>}
+          <h1 className="ya-dash__name">
+            {displayName ? `${displayName}!` : 'Welcome back!'}
+            <Sparkle className="ya-dash__name-sparkle" />
+          </h1>
+          <p className="ya-dash__tagline">
+            Your anime journey continues
+            <Heart size={16} aria-hidden="true" />
+          </p>
+        </div>
+        <img src={catImage} alt="Yunori mascot" className="ya-dash__cat" />
+      </header>
 
       {loading && (
         <p className="ya-text-muted" role="status">
@@ -132,7 +177,7 @@ function Dashboard() {
       )}
 
       {!loading && error && (
-        <div className="ya-dashboard__error">
+        <div className="ya-dash__error">
           <p className="ya-field__error">{error}</p>
           <Button type="button" variant="outline" onClick={handleRetry}>
             Try Again
@@ -142,7 +187,7 @@ function Dashboard() {
 
       {!loading && !error && entries.length === 0 && (
         <EmptyState
-          icon={Sparkles}
+          image={emptyCollectionImage}
           title="Your anime journey starts here."
           description="Search AniList and add your first anime to start building your collection."
           action={
@@ -155,134 +200,75 @@ function Dashboard() {
 
       {!loading && !error && entries.length > 0 && (
         <>
-          <section className="ya-dashboard__section">
-            <h2 className="ya-section-heading">Your Anime Journey</h2>
-            <p className="ya-text-muted ya-dashboard__section-sub">
-              A summary of your collection.
-            </p>
-
-            <div className="ya-dashboard__stats">
-              <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon" aria-hidden="true">
-                  <Clapperboard size={20} />
-                </div>
-                <span className="ya-stat-card__value">{stats.total}</span>
-                <span className="ya-text-muted ya-stat-card__label">Total Anime</span>
-              </Card>
-
-              <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon" aria-hidden="true">
-                  <PlayCircle size={20} />
-                </div>
-                <span className="ya-stat-card__value">{stats.watching.length}</span>
-                <span className="ya-text-muted ya-stat-card__label">Watching</span>
-              </Card>
-
-              <Card as={Link} to="/anime" hoverable className="ya-stat-card">
-                <div className="ya-stat-card__icon" aria-hidden="true">
-                  <CheckCircle2 size={20} />
-                </div>
-                <span className="ya-stat-card__value">{stats.completed.length}</span>
-                <span className="ya-text-muted ya-stat-card__label">Completed</span>
-              </Card>
-
-              <Card as={Link} to="/anime" hoverable className="ya-stat-card ya-stat-card--gold">
-                <div className="ya-stat-card__icon ya-stat-card__icon--gold" aria-hidden="true">
-                  <Heart size={20} />
-                </div>
-                <span className="ya-stat-card__value">{stats.favourites.length}</span>
-                <span className="ya-text-muted ya-stat-card__label">Favourites</span>
-              </Card>
-            </div>
+          <section className="ya-dash__panel ya-dash__stats" aria-label="Your collection at a glance">
+            <StatTile tone="pink" icon={totalIcon} value={stats.total} label="Total Anime" />
+            <StatTile tone="blue" icon={watchingIcon} value={stats.watching.length} label="Watching" />
+            <StatTile tone="green" icon={completedIcon} value={stats.completed.length} label="Completed" />
+            <StatTile tone="yellow" icon={favouritesIcon} value={stats.favourites.length} label="Favourites" />
           </section>
 
-          <section className="ya-dashboard__section">
-            <Card as={Link} to="/watchlist" hoverable className="ya-dashboard__watchlist-card">
-              <div className="ya-stat-card__icon" aria-hidden="true">
-                <Bookmark size={20} />
-              </div>
-              <div className="ya-dashboard__watchlist-info">
-                <span className="ya-section-heading">{stats.wantToWatch.length} on your Watch List</span>
-                <span className="ya-text-muted">Anime you're planning to watch next.</span>
-              </div>
-              <span className="ya-btn ya-btn--outline ya-dashboard__watchlist-link">
-                View Watch List
-                <ChevronRight size={16} aria-hidden="true" />
-              </span>
-            </Card>
+          <Link to="/watchlist" className="ya-dash__panel ya-dash__watchlist">
+            <span className="ya-dash__watchlist-icon" aria-hidden="true">
+              <img src={watchListIcon} alt="" />
+            </span>
+            <span className="ya-dash__watchlist-info">
+              <span className="ya-dash__watchlist-title">{stats.wantToWatch.length} on your Watch List</span>
+              <span className="ya-text-muted">Anime you're planning to watch next.</span>
+            </span>
+            <span className="ya-btn ya-btn--primary ya-dash__watchlist-link">
+              View Watch List
+              <ArrowRight size={18} aria-hidden="true" />
+            </span>
+          </Link>
+
+          <section className="ya-dash__section">
+            <SectionHeading icon={<Bow />}>Recently Added</SectionHeading>
+            <div className="ya-dash__recent-grid">{renderCards(recentlyAdded)}</div>
           </section>
 
-          <section className="ya-dashboard__section">
-            <DashboardSectionHeading icon={Sparkles}>Recently Added</DashboardSectionHeading>
-            <div className="ya-dashboard__anime-grid">
-              {recentlyAdded.map((entry) => (
-                <DashboardAnimeCard
-                  key={entry.id}
-                  entry={entry}
-                  userId={user?.id}
-                  onFavouriteChange={handleFavouriteChange}
-                  onView={setViewingEntry}
+          <div className="ya-dash__duo">
+            <section className="ya-dash__panel ya-dash__panel--blue" aria-label="Currently Watching">
+              <SectionHeading icon={<img src={watchingIcon} alt="" className="ya-dash__heading-icon" />}>
+                Currently Watching
+              </SectionHeading>
+              {stats.watching.length === 0 ? (
+                <EmptyState
+                  dashed
+                  image={watchingIcon}
+                  title="Nothing in progress yet."
+                  description="Anime you mark as “Watching” will show up here."
+                  action={
+                    <Link to="/anime" className="ya-btn ya-btn--secondary">
+                      <span>Browse My Anime</span>
+                    </Link>
+                  }
                 />
-              ))}
-            </div>
-          </section>
+              ) : (
+                <div className="ya-dash__stack">{renderCards(stats.watching)}</div>
+              )}
+            </section>
 
-          <section className="ya-dashboard__section">
-            <DashboardSectionHeading icon={PlayCircle}>Currently Watching</DashboardSectionHeading>
-            <p className="ya-text-muted ya-dashboard__section-sub">Pick up where you left off.</p>
-            {stats.watching.length === 0 ? (
-              <EmptyState
-                icon={PlayCircle}
-                title="Nothing in progress yet."
-                description="Anime you mark as “Watching” will show up here."
-                action={
-                  <Link to="/anime" className="ya-btn ya-btn--outline">
-                    <span>Browse My Anime</span>
-                  </Link>
-                }
-              />
-            ) : (
-              <div className="ya-dashboard__anime-grid">
-                {stats.watching.map((entry) => (
-                  <DashboardAnimeCard
-                    key={entry.id}
-                    entry={entry}
-                    userId={user?.id}
-                    onFavouriteChange={handleFavouriteChange}
-                    onView={setViewingEntry}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
-
-          <section className="ya-dashboard__section">
-            <DashboardSectionHeading icon={Heart}>Your Favourites</DashboardSectionHeading>
-            {stats.favourites.length === 0 ? (
-              <EmptyState
-                icon={Heart}
-                title="Nothing favourited yet."
-                description="Tap the heart on any saved anime to add it here."
-                action={
-                  <Link to="/anime" className="ya-btn ya-btn--outline">
-                    <span>Browse My Anime</span>
-                  </Link>
-                }
-              />
-            ) : (
-              <div className="ya-dashboard__anime-grid">
-                {stats.favourites.map((entry) => (
-                  <DashboardAnimeCard
-                    key={entry.id}
-                    entry={entry}
-                    userId={user?.id}
-                    onFavouriteChange={handleFavouriteChange}
-                    onView={setViewingEntry}
-                  />
-                ))}
-              </div>
-            )}
-          </section>
+            <section className="ya-dash__panel ya-dash__panel--pink" aria-label="Your Favourites">
+              <SectionHeading icon={<img src={favouritesIcon} alt="" className="ya-dash__heading-icon" />}>
+                Your Favourites
+              </SectionHeading>
+              {stats.favourites.length === 0 ? (
+                <EmptyState
+                  dashed
+                  image={favouritesIcon}
+                  title="Nothing favourited yet."
+                  description="Tap the heart on any saved anime to add it here."
+                  action={
+                    <Link to="/anime" className="ya-btn ya-btn--primary">
+                      <span>Browse My Anime</span>
+                    </Link>
+                  }
+                />
+              ) : (
+                <div className="ya-dash__stack">{renderCards(stats.favourites)}</div>
+              )}
+            </section>
+          </div>
         </>
       )}
 

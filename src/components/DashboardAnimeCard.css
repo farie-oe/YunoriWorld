@@ -1,9 +1,14 @@
+/* Compact dashboard anime card: outlined cover on the left, title / status /
+   category / stars on the right, favourite heart top-right and a "more"
+   marker bottom-right. The whole card opens the details modal. */
 .ya-dash-card {
+  position: relative;
   display: flex;
   flex-direction: row;
   align-items: stretch;
   gap: var(--space-4);
   padding: var(--space-3);
+  min-width: 0;
 }
 
 .ya-dash-card[role='button'] {
@@ -12,10 +17,11 @@
 
 .ya-dash-card__cover {
   position: relative;
-  width: 96px;
+  width: 112px;
   flex-shrink: 0;
   aspect-ratio: 2 / 3;
   overflow: hidden;
+  border: var(--outline);
   border-radius: var(--radius-sm);
   background: var(--color-surface-secondary);
 }
@@ -42,6 +48,7 @@
 
 .ya-dash-card__body {
   display: flex;
+  flex: 1;
   flex-direction: column;
   justify-content: center;
   gap: var(--space-2);
@@ -58,10 +65,11 @@
 
 .ya-dash-card__title {
   margin: 0;
-  font-family: var(--font-body);
-  font-weight: 800;
-  font-size: var(--text-base);
-  letter-spacing: 0.01em;
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--text-lg);
+  line-height: 1.25;
+  letter-spacing: 0.02em;
   color: var(--color-text);
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -73,13 +81,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px;
-  height: 26px;
+  width: 28px;
+  height: 28px;
   flex-shrink: 0;
   border-radius: var(--radius-pill);
   background: none;
   border: none;
-  color: var(--color-text-muted);
+  color: var(--color-text);
   cursor: pointer;
   transition: color 0.15s ease, transform 0.12s ease;
 }
@@ -108,8 +116,9 @@
 }
 
 .ya-dash-card__rating {
-  font-size: var(--text-sm);
-  letter-spacing: 0.06em;
+  font-size: var(--text-base);
+  letter-spacing: 0.08em;
+  line-height: 1;
 }
 
 .ya-dash-card__rating-filled {
@@ -117,7 +126,16 @@
 }
 
 .ya-dash-card__rating-empty {
-  color: var(--color-border);
+  color: color-mix(in srgb, var(--color-text-muted) 55%, var(--color-surface));
+}
+
+.ya-dash-card__more {
+  position: absolute;
+  right: var(--space-3);
+  bottom: var(--space-2);
+  display: flex;
+  color: var(--color-text);
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {
@@ -127,18 +145,14 @@
   }
 
   .ya-dash-card__cover {
-    width: 76px;
-  }
-
-  .ya-dash-card__body {
-    gap: var(--space-1);
+    width: 88px;
   }
 
   .ya-dash-card__title {
-    font-size: 0.875rem; /* 14px */
+    font-size: var(--text-base);
   }
 
   .ya-dash-card__rating {
-    font-size: var(--text-xs);
+    font-size: var(--text-sm);
   }
 }

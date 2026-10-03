@@ -20,6 +20,9 @@
   width: 100%;
   aspect-ratio: 2 / 3;
   background: var(--color-surface-secondary);
+  /* Clear outline between the artwork and the card body, matching the
+     dashboard card's outlined cover. */
+  border-bottom: var(--outline);
 }
 
 .ya-saved-card__cover img {
@@ -44,13 +47,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 32px;
+  height: 32px;
   border-radius: var(--radius-pill);
-  background: color-mix(in srgb, var(--color-surface) 85%, transparent);
-  color: var(--color-text-muted);
-  border: none;
-  box-shadow: var(--shadow-sm);
+  background: var(--color-surface);
+  color: var(--color-text);
+  border: var(--outline);
   cursor: pointer;
   transition: color 0.15s ease, transform 0.12s ease, box-shadow 0.15s ease;
 }

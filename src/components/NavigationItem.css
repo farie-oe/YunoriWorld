@@ -1,27 +1,46 @@
+/* Stacked icon-over-label navigation item, as in the reference. The active
+   item gets a soft tinted box with an outline; everything is token-driven
+   so it follows the selected theme. */
 .ya-nav-item {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: var(--space-3);
-  padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-md);
-  border: 1px solid transparent;
-  color: var(--color-text-secondary);
+  gap: 2px;
+  padding: var(--space-3) var(--space-1) var(--space-2);
+  border-radius: var(--radius-lg);
+  border: 2px solid transparent;
+  color: var(--color-text);
   text-decoration: none;
-  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+  text-align: center;
+  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
 }
 
 .ya-nav-item:hover {
-  background: var(--color-surface-secondary);
-  color: var(--color-text);
+  background: color-mix(in srgb, var(--color-primary) 18%, transparent);
 }
 
-.ya-nav-item--active {
-  background: var(--color-surface-secondary);
-  border-color: var(--color-border);
-  color: var(--color-text);
-  font-weight: 700;
+.ya-nav-item:hover .ya-nav-item__icon {
+  transform: translateY(-2px);
+}
+
+.ya-nav-item--active,
+.ya-nav-item--active:hover {
+  background: var(--color-tile-pink);
+  border-color: color-mix(in srgb, var(--color-primary-hover) 80%, var(--color-outline));
+}
+
+.ya-nav-item__icon {
+  width: 56px;
+  height: 48px;
+  object-fit: contain;
+  transition: transform 0.15s ease;
 }
 
 .ya-nav-item__label {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--text-sm);
+  letter-spacing: 0.02em;
+  text-transform: lowercase;
   white-space: nowrap;
 }

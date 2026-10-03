@@ -3,16 +3,22 @@
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-sm);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--text-base);
+  letter-spacing: 0.02em;
   padding: var(--space-3) var(--space-5);
   border-radius: var(--radius-pill);
-  border: 1px solid transparent;
+  border: var(--outline);
   cursor: pointer;
   transition: transform 0.12s ease, background-color 0.15s ease, box-shadow 0.15s ease,
     border-color 0.15s ease;
   line-height: 1;
+}
+
+.ya-btn,
+a.ya-btn:hover {
+  text-decoration: none;
 }
 
 .ya-btn:disabled {
@@ -33,6 +39,7 @@
 .ya-btn--primary:hover:not(:disabled) {
   background: var(--color-primary-hover);
   box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 /* secondary */
@@ -44,22 +51,21 @@
 .ya-btn--secondary:hover:not(:disabled) {
   filter: brightness(0.97);
   box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 /* outline */
 .ya-btn--outline {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-text);
-  border-color: var(--color-border);
 }
 .ya-btn--outline:hover:not(:disabled) {
-  background: var(--color-surface-secondary);
-  border-color: var(--color-primary);
+  background: var(--color-tile-pink);
 }
 
 /* danger */
 .ya-btn--danger {
-  background: transparent;
+  background: var(--color-surface);
   color: var(--color-danger);
   border-color: var(--color-danger);
 }
@@ -75,6 +81,7 @@
   background: transparent;
   color: var(--color-text-muted);
   border-color: transparent;
+  box-shadow: none;
 }
 .ya-btn--icon:hover:not(:disabled) {
   background: var(--color-surface-secondary);
@@ -87,7 +94,7 @@
 @media (max-width: 768px) {
   .ya-btn {
     gap: 6px;
-    font-size: 0.8125rem; /* 13px */
+    font-size: 0.875rem; /* 14px */
     padding: 9px 14px;
   }
 

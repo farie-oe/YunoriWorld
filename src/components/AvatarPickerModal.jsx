@@ -2,10 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { X, Upload, RotateCcw } from 'lucide-react'
 import Button from './Button'
 import Avatar from './Avatar'
-import { BUILT_IN_AVATARS } from '../lib/avatars'
+import { CLASSIC_AVATARS, POSE_AVATARS } from '../lib/avatars'
 import { updateProfileAvatar } from '../services/profiles'
 import { uploadAvatarImage, validateAvatarFile } from '../services/avatarStorage'
 import './AvatarPickerModal.css'
+
+const AVATAR_SECTIONS = [
+  { label: 'Yunori Avatars', avatars: CLASSIC_AVATARS },
+  { label: 'Yunori Poses', avatars: POSE_AVATARS },
+]
 
 function AvatarPickerModal({ userId, currentAvatarType, currentAvatarValue, onCancel, onSaved }) {
   const [saving, setSaving] = useState(false)
@@ -112,25 +117,29 @@ function AvatarPickerModal({ userId, currentAvatarType, currentAvatarValue, onCa
           />
         </div>
 
-        <p className="ya-eyebrow ya-avatar-picker__section-label">Yunori Avatars</p>
-        <div className="ya-avatar-picker__grid">
-          {BUILT_IN_AVATARS.map((avatar) => {
-            const isSelected = currentAvatarType === 'builtin' && currentAvatarValue === avatar.id
-            return (
-              <button
-                key={avatar.id}
-                type="button"
-                className={`ya-avatar-picker__option ${isSelected ? 'ya-avatar-picker__option--selected' : ''}`}
-                onClick={() => handleSelectBuiltIn(avatar.id)}
-                disabled={saving}
-                aria-pressed={isSelected}
-              >
-                <Avatar avatarType="builtin" avatarValue={avatar.id} size={56} />
-                <span className="ya-meta-text">{avatar.name}</span>
-              </button>
-            )
-          })}
-        </div>
+        {AVATAR_SECTIONS.map((section) => (
+          <div key={section.label}>
+            <p className="ya-eyebrow ya-avatar-picker__section-label">{section.label}</p>
+            <div className="ya-avatar-picker__grid">
+              {section.avatars.map((avatar) => {
+                const isSelected = currentAvatarType === 'builtin' && currentAvatarValue === avatar.id
+                return (
+                  <button
+                    key={avatar.id}
+                    type="button"
+                    className={`ya-avatar-picker__option ${isSelected ? 'ya-avatar-picker__option--selected' : ''}`}
+                    onClick={() => handleSelectBuiltIn(avatar.id)}
+                    disabled={saving}
+                    aria-pressed={isSelected}
+                  >
+                    <Avatar avatarType="builtin" avatarValue={avatar.id} size={56} />
+                    <span className="ya-meta-text">{avatar.name}</span>
+                  </button>
+                )
+              })}
+            </div>
+          </div>
+        ))}
 
         <p className="ya-eyebrow ya-avatar-picker__section-label">Upload Your Own</p>
         <div className="ya-avatar-picker__upload">

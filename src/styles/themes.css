@@ -31,23 +31,24 @@
    each block below sets whichever is correct for its own primary.
 --------------------------------------------------------- */
 
-/* Yunori's own theme — deliberately soft white/neutral rather than pink,
-   since Hana already owns the saturated Blossom Pink identity below. Only
-   a dusty-rose accent carries any pink at all; the surfaces stay a clean,
-   airy white/neutral so the two themes read as clearly distinct. */
+/* Yunori's own theme — the default, and the reference look for the whole
+   redesign: a blush-white page, soft pink primary, dark-plum text/outlines
+   and gold sparkle accents. Every other theme only swaps these same tokens,
+   so the outlined, chunky structure stays identical across themes. */
 [data-theme='sakura-pink'] {
-  --color-bg: #faf9f7;
-  --color-surface: #ffffff;
-  --color-surface-secondary: #f2eff0;
-  --color-primary: #c98fa7;
-  --color-primary-hover: #b97891;
-  --color-secondary: #ebd9e0;
-  --color-accent: #e4c9d3; /* very light dusty rose, used sparingly */
-  --color-text: #33243a;
-  --color-text-muted: #8a7a8c;
-  --color-border: #e9e3e6;
+  --color-bg: #fff6f7;
+  --color-surface: #fffafb;
+  --color-surface-secondary: #fdeaee;
+  --color-primary: #f8bccd;
+  --color-primary-hover: #f3a4ba;
+  --color-secondary: #dfe2fa;
+  --color-accent: #f6d68a;
+  --color-text: #3b1f3f;
+  --color-text-muted: #8c768f;
+  --color-border: #f1d6dd;
   --color-focus: #8c4f68;
   --color-on-primary: var(--color-text);
+  --color-outline: #3b1f3f;
 }
 
 [data-theme='midnight-lavender'] {

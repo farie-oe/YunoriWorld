@@ -6,9 +6,10 @@
 }
 
 .ya-field__label {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-sm);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: var(--text-base);
+  letter-spacing: 0.02em;
   color: var(--color-text);
 }
 
@@ -16,8 +17,8 @@
   font-family: var(--font-body);
   font-size: var(--text-base);
   color: var(--color-text);
-  background: var(--color-surface-secondary);
-  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  border: var(--outline);
   border-radius: var(--radius-md);
   padding: var(--space-3) var(--space-4);
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
@@ -69,13 +70,13 @@
 .ya-form-alert--error {
   background: color-mix(in srgb, var(--color-danger) 12%, var(--color-surface));
   color: var(--color-danger);
-  border: 1px solid color-mix(in srgb, var(--color-danger) 35%, transparent);
+  border: 2px solid var(--color-danger);
 }
 
 .ya-form-alert--success {
-  background: var(--color-surface-secondary);
+  background: var(--color-tile-green);
   color: var(--color-text);
-  border: 1px solid var(--color-border);
+  border: var(--outline);
 }
 
 .ya-form-footer {
@@ -84,9 +85,13 @@
 }
 
 .ya-form-link {
-  color: var(--color-primary-hover);
-  font-weight: 700;
-  text-decoration: none;
+  color: var(--color-text);
+  font-family: var(--font-heading);
+  font-weight: 400;
+  text-decoration: underline;
+  text-decoration-color: var(--color-primary-hover);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 3px;
 }
 
 .ya-form-link:hover {

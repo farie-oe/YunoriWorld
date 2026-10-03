@@ -8,6 +8,10 @@ const TONE_CLASS = {
   success: 'ya-badge--success',
   warning: 'ya-badge--warning',
   danger: 'ya-badge--danger',
+  pink: 'ya-badge--pink',
+  blue: 'ya-badge--blue',
+  green: 'ya-badge--green',
+  yellow: 'ya-badge--yellow',
 }
 
 function Badge({ children, tone = 'neutral', className = '' }) {

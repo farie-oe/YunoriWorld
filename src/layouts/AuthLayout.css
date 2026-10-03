@@ -14,21 +14,24 @@
   --color-bg: #f6f3ee;
   --color-surface: rgba(255, 253, 250, 0.94);
   --color-surface-secondary: rgba(236, 231, 223, 0.9);
-  --color-text: #2b2521;
-  --color-text-muted: #8a8079;
-  --color-border: #d9d2c7;
-  --color-shadow: rgba(43, 37, 33, 0.18);
+  --color-text: #3b1f3f;
+  --color-text-muted: #8c768f;
+  --color-border: #f1d6dd;
+  --color-outline: #3b1f3f;
+  --color-shadow: rgba(59, 31, 63, 0.18);
+  --color-tile-pink: color-mix(in srgb, #f4a3bd 34%, #ffffff);
+  --color-tile-green: color-mix(in srgb, #7fd197 30%, #ffffff);
   /* Soft dusty rose accent (cherry-blossom-inspired), replacing the
      previous brown/gold — used for the Log In button, links, and the
      Orbit brand mark. Dark plum-brown text keeps the button readable
      against the pastel fill. */
-  --color-on-primary: #3d2830;
-  --color-primary: #d9aab3;
-  --color-primary-hover: #c6919c;
+  --color-on-primary: #3b1f3f;
+  --color-primary: #f8bccd;
+  --color-primary-hover: #f3a4ba;
   --color-secondary: #e7e1d8;
   --color-accent: #efe1de;
-  --color-focus: #8c4f5e;
-  --color-danger: #e08999;
+  --color-focus: #8c4f68;
+  --color-danger: #c4455f;
 
   position: relative;
   min-height: 100svh;
@@ -97,22 +100,21 @@
 }
 
 .ya-auth-layout__brand-name {
-  font-family: var(--font-heading);
+  font-family: var(--font-display);
   font-weight: 700;
-  font-size: var(--text-2xl);
+  font-size: var(--text-3xl);
   line-height: 1.05;
   color: var(--color-text);
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  letter-spacing: 0.01em;
   text-shadow: 0 1px 14px rgba(255, 255, 255, 0.7);
 }
 
 .ya-auth-layout__brand-name-rest {
   display: block;
   font-size: var(--text-sm);
-  font-weight: 600;
-  letter-spacing: 0.3em;
-  color: var(--color-text-secondary);
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--color-text);
   margin-top: 2px;
 }
 
@@ -128,9 +130,9 @@
 
 .ya-auth-layout__tagline {
   font-family: var(--font-heading);
-  font-style: italic;
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
+  font-size: var(--text-base);
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary);
   margin-top: var(--space-2);
   margin-bottom: var(--space-6);
   text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
@@ -186,6 +188,7 @@
   --color-surface: rgba(255, 252, 250, 0.94);
   --color-surface-secondary: rgba(255, 255, 255, 0.7);
   --color-border: rgba(255, 255, 255, 0.7);
+  --color-surface: rgba(255, 250, 251, 0.96);
   --color-shadow: rgba(35, 30, 26, 0.12);
 
   /* The photo is used exactly as supplied — no filter, tint, or gradient
@@ -204,7 +207,7 @@
 .ya-auth-layout--login .ya-auth-layout__card,
 .ya-auth-layout--register .ya-auth-layout__card {
   padding: var(--space-6);
-  box-shadow: 0 8px 24px rgba(35, 30, 26, 0.1);
+  box-shadow: 0 6px 0 rgba(59, 31, 63, 0.18);
 }
 
 /* Desktop/tablet only: the 340px card reads a little small against the
@@ -228,7 +231,7 @@
 
   .ya-auth-layout--login .ya-auth-layout__title,
   .ya-auth-layout--register .ya-auth-layout__title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
   }
 
   .ya-auth-layout--login .ya-input,

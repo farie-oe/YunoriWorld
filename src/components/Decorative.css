@@ -38,3 +38,9 @@
   pointer-events: none;
   z-index: 0;
 }
+
+.ya-decor-bow {
+  width: 34px;
+  height: 27px;
+  flex-shrink: 0;
+}

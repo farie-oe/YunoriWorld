@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import { Heart, Tv } from 'lucide-react'
+import { Heart, Tv, Ellipsis } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
+import { statusTone } from '../lib/statusTone'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './DashboardAnimeCard.css'
 
@@ -79,12 +80,12 @@ function DashboardAnimeCard({ entry, userId, onFavouriteChange, onView }) {
             aria-pressed={entry.favourite}
             aria-label={entry.favourite ? `Remove ${entry.title} from favourites` : `Add ${entry.title} to favourites`}
           >
-            <Heart size={15} fill={entry.favourite ? 'currentColor' : 'none'} />
+            <Heart size={20} strokeWidth={2.2} fill={entry.favourite ? 'currentColor' : 'none'} />
           </button>
         </div>
 
         <div className="ya-dash-card__meta">
-          <Badge tone="primary">{entry.status || 'Want to Watch'}</Badge>
+          <Badge tone={statusTone(entry.status || 'Want to Watch')}>{entry.status || 'Want to Watch'}</Badge>
           {entry.category && <Badge tone="neutral">{entry.category}</Badge>}
         </div>
 
@@ -97,6 +98,12 @@ function DashboardAnimeCard({ entry, userId, onFavouriteChange, onView }) {
 
         {favouriteError && <p className="ya-field__error">{favouriteError}</p>}
       </div>
+
+      {isViewable && (
+        <span className="ya-dash-card__more" aria-hidden="true">
+          <Ellipsis size={22} />
+        </span>
+      )}
     </Card>
   )
 }

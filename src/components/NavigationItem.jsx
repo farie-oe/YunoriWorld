@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import './NavigationItem.css'
 
-function NavigationItem({ to, label, icon: Icon, tourId }) {
+function NavigationItem({ to, label, iconSrc, tourId }) {
   return (
     <NavLink
       to={to}
@@ -10,7 +10,7 @@ function NavigationItem({ to, label, icon: Icon, tourId }) {
         `ya-nav-item ${isActive ? 'ya-nav-item--active' : ''}`.trim()
       }
     >
-      <Icon size={20} aria-hidden="true" />
+      <img src={iconSrc} alt="" className="ya-nav-item__icon" />
       <span className="ya-nav-label ya-nav-item__label">{label}</span>
     </NavLink>
   )

@@ -14,9 +14,31 @@
   width: 56px;
   height: 56px;
   border-radius: var(--radius-pill);
-  background: var(--color-surface-secondary);
-  color: var(--color-primary-hover);
+  background: var(--color-tile-pink);
+  border: var(--outline);
+  color: var(--color-text);
   margin-bottom: var(--space-2);
+}
+
+.ya-empty-state__image {
+  width: 150px;
+  height: auto;
+  max-height: 130px;
+  object-fit: contain;
+  margin-bottom: var(--space-2);
+}
+
+/* Smaller art inside the dashboard's dashed slots. */
+.ya-empty-state--dashed .ya-empty-state__image {
+  width: 92px;
+  max-height: 80px;
+}
+
+/* Dashed, borderless-feeling variant for empty slots inside a panel. */
+.ya-empty-state--dashed {
+  background: transparent;
+  border: 2px dashed color-mix(in srgb, var(--color-outline) 28%, transparent);
+  border-radius: var(--radius-md);
 }
 
 .ya-empty-state__description {

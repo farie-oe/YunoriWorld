@@ -16,7 +16,7 @@
   gap: var(--space-2);
   flex: 1 1 260px;
   background: var(--color-surface-secondary);
-  border: 1px solid var(--color-border);
+  border: var(--outline);
   border-radius: var(--radius-md);
   padding: 0 var(--space-4);
   color: var(--color-text-muted);
@@ -99,7 +99,7 @@
   min-width: 220px;
   height: 38px;
   background: var(--color-surface-secondary);
-  border: 1px solid var(--color-border);
+  border: var(--outline);
   border-radius: var(--radius-md);
   padding: 0 var(--space-3);
   color: var(--color-text-muted);

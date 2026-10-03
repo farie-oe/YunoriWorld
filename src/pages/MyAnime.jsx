@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Search, Plus, X, Clapperboard, SearchX, RotateCcw, FileDown } from 'lucide-react'
+import { useSearchParams } from 'react-router-dom'
+import { Search, Plus, X, RotateCcw, FileDown } from 'lucide-react'
 import PageHeader from '../components/PageHeader'
 import Button from '../components/Button'
 import Card from '../components/Card'
@@ -16,6 +17,8 @@ import { getProfile } from '../services/profiles'
 import { exportCollectionToPdf } from '../services/pdfExport'
 import { useAuth } from '../hooks/useAuth'
 import { CATEGORIES, STATUS_OPTIONS } from '../constants/animeOptions'
+import emptyCollectionImage from '../assets/ui/empty-collection.png'
+import noResultsImage from '../assets/ui/no-results.png'
 import './MyAnime.css'
 
 const SORT_OPTIONS = [
@@ -67,7 +70,9 @@ function MyAnime() {
   const [collectionLoading, setCollectionLoading] = useState(true)
   const [collectionError, setCollectionError] = useState('')
 
-  const [collectionSearch, setCollectionSearch] = useState('')
+  // The Dashboard search box links here with ?q=<text> to pre-fill this filter.
+  const [searchParams] = useSearchParams()
+  const [collectionSearch, setCollectionSearch] = useState(searchParams.get('q') ?? '')
   const [statusFilter, setStatusFilter] = useState(DEFAULT_STATUS_FILTER)
   const [categoryFilter, setCategoryFilter] = useState(DEFAULT_CATEGORY_FILTER)
   const [favouriteOnly, setFavouriteOnly] = useState(false)
@@ -287,7 +292,7 @@ function MyAnime() {
 
           {!loading && !error && hasSearched && results.length === 0 && (
             <EmptyState
-              icon={SearchX}
+              image={noResultsImage}
               title="No anime found"
               description="Try a different title or check your spelling."
             />
@@ -447,7 +452,7 @@ function MyAnime() {
 
       {!collectionLoading && !collectionError && collection.length === 0 && (
         <EmptyState
-          icon={Clapperboard}
+          image={emptyCollectionImage}
           title="Your collection is empty"
           description="Search for an anime above to add your first one."
         />
@@ -455,7 +460,7 @@ function MyAnime() {
 
       {!collectionLoading && !collectionError && collection.length > 0 && filteredCollection.length === 0 && (
         <EmptyState
-          icon={SearchX}
+          image={noResultsImage}
           title="No anime match your filters"
           description="Try a different search term or clear your filters."
           action={

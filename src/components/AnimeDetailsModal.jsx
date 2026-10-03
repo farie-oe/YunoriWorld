@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Heart, Tv, X } from 'lucide-react'
 import Button from './Button'
 import Badge from './Badge'
+import { statusTone } from '../lib/statusTone'
 import StarRating from './StarRating'
 import { getAnimeDetails } from '../services/anilist'
 import './AddAnimeModal.css'
@@ -122,7 +123,7 @@ function AnimeDetailsModal({ entry, onClose }) {
           </h2>
 
           <div className="ya-details-modal__meta-row">
-            <Badge tone="primary">{entry.status || 'Want to Watch'}</Badge>
+            <Badge tone={statusTone(entry.status || 'Want to Watch')}>{entry.status || 'Want to Watch'}</Badge>
             {entry.favourite && (
               <Badge tone="accent" className="ya-details-modal__favourite-badge">
                 <Heart size={12} fill="currentColor" aria-hidden="true" />

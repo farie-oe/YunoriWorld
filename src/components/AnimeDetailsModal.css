@@ -49,6 +49,7 @@
   width: 100%;
   aspect-ratio: 16 / 9;
   background: var(--color-surface-secondary);
+  border-bottom: var(--outline);
 }
 
 .ya-details-modal__cover img {
@@ -130,7 +131,7 @@
   padding: var(--space-2);
   border-radius: var(--radius-pill);
   overflow: hidden;
-  border: 1px solid var(--color-border);
+  border: var(--outline);
   box-shadow: var(--shadow-sm);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }

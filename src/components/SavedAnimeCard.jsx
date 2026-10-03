@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Heart, Pencil, Trash2, Tv } from 'lucide-react'
 import Card from './Card'
 import Badge from './Badge'
+import { statusTone } from '../lib/statusTone'
 import Button from './Button'
 import { updateAnimeFavourite } from '../services/animeEntries'
 import './SavedAnimeCard.css'
@@ -86,7 +87,7 @@ function SavedAnimeCard({ entry, userId, onEdit, onView, onFavouriteChange, onDe
         <h3 className="ya-section-heading ya-saved-card__title">{entry.title}</h3>
 
         <div className="ya-saved-card__badges">
-          <Badge tone="primary">{entry.status || 'Want to Watch'}</Badge>
+          <Badge tone={statusTone(entry.status || 'Want to Watch')}>{entry.status || 'Want to Watch'}</Badge>
           {entry.category && <Badge tone="neutral">{entry.category}</Badge>}
           {entry.rating != null && (
             <Badge tone="neutral" className="ya-rating-badge">

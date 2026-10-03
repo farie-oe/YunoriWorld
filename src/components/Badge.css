@@ -9,6 +9,7 @@
   padding: var(--space-1) var(--space-3);
   border-radius: var(--radius-pill);
   border: 1px solid transparent;
+  color: var(--color-text);
 }
 
 /* Mobile: status/genre pills should read as compact metadata tags, not
@@ -62,4 +63,35 @@
   background: color-mix(in srgb, var(--color-danger) 18%, var(--color-surface));
   color: var(--color-danger);
   border-color: color-mix(in srgb, var(--color-danger) 40%, transparent);
+}
+
+/* Soft semantic tints used for anime status labels — the same four tints
+   as the dashboard stat tiles, so a status reads the same everywhere. */
+.ya-badge--pink {
+  background: var(--color-tile-pink);
+  color: var(--color-text);
+  border-color: color-mix(in srgb, #f4a3bd 55%, transparent);
+}
+
+.ya-badge--blue {
+  background: var(--color-tile-blue);
+  color: var(--color-text);
+  border-color: color-mix(in srgb, #8d9cf2 55%, transparent);
+}
+
+.ya-badge--green {
+  background: var(--color-tile-green);
+  color: var(--color-text);
+  border-color: color-mix(in srgb, #7fd197 55%, transparent);
+}
+
+.ya-badge--yellow {
+  background: var(--color-tile-yellow);
+  color: var(--color-text);
+  border-color: color-mix(in srgb, #f5cd78 55%, transparent);
+}
+
+/* Rating stars are always the permanent gold, whatever the badge tone. */
+.ya-badge.ya-rating-badge {
+  color: var(--color-rating-star);
 }

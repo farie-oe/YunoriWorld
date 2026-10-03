@@ -80,3 +80,29 @@ export function Blossom({ className = '' }) {
 export function Blob({ className = '' }) {
   return <span className={`ya-decor-blob ${className}`.trim()} aria-hidden="true" />
 }
+
+/** Small ribbon bow used beside the "Recently Added" heading. Fill follows
+ * the theme (--color-primary) and the outline follows --color-outline, so it
+ * suits every theme. Purely decorative. */
+export function Bow({ className = '' }) {
+  return (
+    <svg
+      className={`ya-decor-bow ${className}`.trim()}
+      viewBox="0 0 40 32"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <g
+        fill="var(--color-primary)"
+        stroke="var(--color-outline)"
+        strokeWidth="2.2"
+        strokeLinejoin="round"
+        strokeLinecap="round"
+      >
+        <path d="M20 16C14 6 5 3 3.5 7.5 2 12 5 24 12 27.5c5 2.5 7-4.5 8-11.5z" />
+        <path d="M20 16c6-10 15-13 16.5-8.5C38 12 35 24 28 27.5c-5 2.5-7-4.5-8-11.5z" />
+        <circle cx="20" cy="16" r="4.2" fill="var(--color-accent)" />
+      </g>
+    </svg>
+  )
+}
