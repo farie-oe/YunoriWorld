@@ -112,7 +112,6 @@ function Login() {
         title="Welcome back."
         subtitle="Log in to pick up your anime journey."
         variant="login"
-        hideBrand
       >
         {formError && (
           <div className="ya-form-alert ya-form-alert--error" role="alert">

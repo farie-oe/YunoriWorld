@@ -138,7 +138,6 @@ function CreateAccount() {
         title="Check your inbox"
         subtitle="You're almost ready to start your journey."
         variant="register"
-        hideBrand
       >
         <div className="ya-form-alert ya-form-alert--success" role="status">
           <MailCheck size={20} aria-hidden="true" />
@@ -189,7 +188,6 @@ function CreateAccount() {
       title="Create your account"
       subtitle="Start organising the anime you love."
       variant="register"
-      hideBrand
     >
       {formError && (
         <div className="ya-form-alert ya-form-alert--error" role="alert">

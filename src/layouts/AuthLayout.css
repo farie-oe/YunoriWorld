@@ -1,18 +1,16 @@
 /* Authentication pages (Login, Register, Forgot/Reset Password) always use
-   this fixed, neutral Yunori presentation — never the signed-in user's
-   saved theme. Re-declaring the theme-able tokens here overrides whatever
-   [data-theme] is currently set on <html>, without touching ThemeProvider
-   or profile persistence.
+   this fixed, neutral Yunori presentation - never the signed-in user's saved
+   theme. Re-declaring the theme-able tokens here overrides whatever
+   [data-theme] is currently set on <html>, without touching ThemeProvider or
+   profile persistence.
 
-   The background is the supplied yunori-login-bg.png photo (a cosy anime
-   bedroom), used exactly as provided — no CSS filter, blur, or full-page
-   overlay is applied to it. --color-bg is only a fallback fill shown
-   before the image paints; every other token below is a soft neutral
-   white / warm grey / muted taupe / brown accent pulled from that image,
-   replacing the previous beige/gold palette. */
+   Each page has its own paper-textured background illustration (set per page
+   in AuthLayout.jsx through --auth-bg), used exactly as supplied - no filter,
+   blur or overlay. --color-bg is only a fallback fill shown before the image
+   paints. */
 .ya-auth-layout {
   --color-bg: #f6f3ee;
-  --color-surface: rgba(255, 253, 250, 0.94);
+  --color-surface: #fffdfb;
   --color-surface-secondary: rgba(236, 231, 223, 0.9);
   --color-text: #3a2e2b;
   --color-text-muted: #8f8079;
@@ -40,9 +38,8 @@
   justify-content: center;
   padding: var(--space-5);
   background-color: var(--color-bg);
-  background-image: url('/images/yunori-login-bg.png');
+  background-image: var(--auth-bg);
   background-size: cover;
-  background-position: center 42%;
   background-repeat: no-repeat;
   overflow: hidden;
 }
@@ -56,86 +53,6 @@
   flex-direction: column;
   align-items: center;
   text-align: center;
-}
-
-/* Wraps the brand mark/wordmark and the tagline together so a single soft
-   haze can sit behind the whole lockup, lifting it off the busy photo
-   without ever looking like a visible box. */
-.ya-auth-layout__brand-wrap {
-  position: relative;
-}
-
-.ya-auth-layout__brand-wrap::before {
-  content: '';
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 340px;
-  height: 210px;
-  transform: translate(-50%, -50%);
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 255, 255, 0.55) 0%,
-    rgba(255, 255, 255, 0.28) 45%,
-    rgba(255, 255, 255, 0) 75%
-  );
-  filter: blur(10px);
-  z-index: -1;
-  pointer-events: none;
-}
-
-.ya-auth-layout__brand {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-1);
-}
-
-.ya-auth-layout__brand-mark {
-  width: 28px;
-  height: 28px;
-  color: var(--color-primary-hover);
-  margin-bottom: var(--space-1);
-  filter: drop-shadow(0 1px 6px rgba(255, 255, 255, 0.55));
-}
-
-.ya-auth-layout__brand-name {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: var(--text-3xl);
-  line-height: 1.05;
-  color: var(--color-text);
-  letter-spacing: 0.01em;
-  text-shadow: 0 1px 14px rgba(255, 255, 255, 0.7);
-}
-
-.ya-auth-layout__brand-name-rest {
-  display: block;
-  font-size: var(--text-sm);
-  font-weight: 700;
-  letter-spacing: 0.01em;
-  color: var(--color-text);
-  margin-top: 2px;
-}
-
-.ya-auth-layout__brand-descriptor {
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: var(--text-xs);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
-}
-
-.ya-auth-layout__tagline {
-  font-family: var(--font-heading);
-  font-size: var(--text-base);
-  letter-spacing: 0.03em;
-  color: var(--color-text-secondary);
-  margin-top: var(--space-2);
-  margin-bottom: var(--space-6);
-  text-shadow: 0 1px 10px rgba(255, 255, 255, 0.7);
 }
 
 .ya-auth-layout__card {
@@ -161,7 +78,6 @@
 @media (max-width: 420px) {
   .ya-auth-layout {
     padding: var(--space-4);
-    background-position: 60% 42%;
   }
 
   .ya-auth-layout__card {
@@ -185,17 +101,16 @@
   /* Warm-white and only lightly translucent (not heavily blurred) — the
      card needs to read clearly on its own against a bright, detailed
      photo without leaning on a blur to do the work. */
-  --color-surface: rgba(255, 252, 250, 0.94);
+  --color-surface: #fffdfb;
   --color-surface-secondary: rgba(255, 255, 255, 0.7);
   --color-border: rgba(255, 255, 255, 0.7);
-  --color-surface: rgba(255, 250, 251, 0.96);
+  --color-surface: #fffdfb;
   --color-shadow: rgba(35, 30, 26, 0.12);
 
   /* The photo is used exactly as supplied — no filter, tint, or gradient
      layered over it. */
-  background-image: url('/images/yunori-login-background.png');
+  background-image: var(--auth-bg);
   background-size: cover;
-  background-position: center 42%;
   justify-content: center;
 }
 
@@ -301,5 +216,125 @@
 
   .ya-auth-divider {
     margin: var(--space-3) 0;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Page backgrounds: keep each illustration's cat in view. The artwork has
+   its cats in the corners, so on tall phone screens (where `cover` crops the
+   sides) anchor to the corner the cat lives in. Create Account has two cats;
+   on a phone the bigger bottom-left one is kept, on wide screens both show. */
+.ya-auth-layout {
+  background-position: right bottom;
+}
+
+.ya-auth-layout--login {
+  background-position: right bottom;
+}
+
+.ya-auth-layout--register {
+  background-position: left bottom;
+}
+
+@media (min-width: 900px) {
+  .ya-auth-layout--register {
+    background-position: center;
+  }
+}
+
+/* The one small wordmark, top-left. Same logo font as the app sidebar. */
+.ya-auth-layout__wordmark {
+  position: absolute;
+  top: var(--space-5);
+  left: var(--space-6);
+  z-index: 1;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-text);
+  transform: rotate(-3deg);
+  pointer-events: none;
+}
+
+@media (max-width: 600px) {
+  .ya-auth-layout__wordmark {
+    top: var(--space-4);
+    left: var(--space-4);
+    font-size: 1.375rem;
+  }
+}
+
+/* ---------------------------------------------------------------------
+   Phones and portrait tablets (<= 900px wide).
+
+   The form card is tall relative to a narrow screen, so a full-bleed
+   background would put the cats behind it. Instead the page is plain paper
+   and each illustration is shown as its own strip along the bottom edge
+   (Create Account also gets its second, peeking cat along the top), with
+   padding reserved so the card always sits clear of the cats. The strips
+   use the same image, cropped to the corner each cat lives in, and fade
+   softly into the paper so there is no visible seam. */
+@media (max-width: 900px) {
+  .ya-auth-layout,
+  .ya-auth-layout--login,
+  .ya-auth-layout--register {
+    --auth-strip: 240px;
+    background-image: none;
+    background-color: #f9f4ef;
+    padding-top: 72px;
+    padding-bottom: calc(var(--auth-strip) + var(--space-3));
+  }
+
+  .ya-auth-layout::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: var(--auth-strip);
+    background-image: var(--auth-bg);
+    background-repeat: no-repeat;
+    /* Twice the strip height, anchored to the bottom: only the lower half of
+       the artwork shows, which is where each page's main cat sits (and keeps
+       Create Account's top-right cat out of the bottom strip). */
+    background-size: auto calc(var(--auth-strip) * 2);
+    background-position: right bottom;
+    -webkit-mask-image: linear-gradient(to top, #000 70%, transparent);
+    mask-image: linear-gradient(to top, #000 70%, transparent);
+    pointer-events: none;
+  }
+
+  .ya-auth-layout--register::before {
+    background-position: left bottom;
+  }
+
+  /* Create Account's second cat, peeking in from the top-right. */
+  .ya-auth-layout--register::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    height: 150px;
+    background-image: var(--auth-bg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: right top;
+    -webkit-mask-image: linear-gradient(to bottom, #000 65%, transparent);
+    mask-image: linear-gradient(to bottom, #000 65%, transparent);
+    pointer-events: none;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+  .ya-auth-layout,
+  .ya-auth-layout--login,
+  .ya-auth-layout--register {
+    --auth-strip: 340px;
+  }
+
+  .ya-auth-layout--register::after {
+    height: 200px;
   }
 }
