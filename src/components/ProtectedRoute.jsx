@@ -4,9 +4,11 @@ import AuthLoadingScreen from './AuthLoadingScreen'
 
 /** Blocks access to nested routes unless a Supabase session exists. */
 function ProtectedRoute() {
-  const { session, loading, isRecovery } = useAuth()
+  const { session, loading, isRecovery, recoveryLinkFailed } = useAuth()
 
   if (loading) return <AuthLoadingScreen />
+
+  if (recoveryLinkFailed) return <Navigate to="/reset-password" replace />
 
   if (session && isRecovery) return <Navigate to="/reset-password" replace />
 

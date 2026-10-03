@@ -1,10 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { CircleAlert, CircleCheck } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout'
 import AuthLoadingScreen from '../components/AuthLoadingScreen'
 import Button from '../components/Button'
-import { supabase } from '../lib/supabase'
+import { supabase, clearResetRequested } from '../lib/supabase'
 import { useAuth } from '../hooks/useAuth'
 
 const MIN_PASSWORD_LENGTH = 8
@@ -29,12 +29,22 @@ function validate({ password, confirmPassword }) {
 
 function ResetPassword() {
   const navigate = useNavigate()
-  const { session, loading } = useAuth()
+  const { session, loading, recoveryLinkFailed, acknowledgeRecoveryLinkFailed } = useAuth()
+  const [linkFailed] = useState(recoveryLinkFailed)
   const [formValues, setFormValues] = useState({ password: '', confirmPassword: '' })
   const [fieldErrors, setFieldErrors] = useState({})
   const [formError, setFormError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [isDone, setIsDone] = useState(false)
+
+  // Keep the failure on screen locally, but release the route guards so the
+  // user can navigate on to /forgot-password or /login.
+  useEffect(() => {
+    if (linkFailed) {
+      acknowledgeRecoveryLinkFailed()
+      clearResetRequested()
+    }
+  }, [linkFailed, acknowledgeRecoveryLinkFailed])
 
   const handleChange = (event) => {
     const { name, value } = event.target
@@ -62,6 +72,7 @@ function ResetPassword() {
       return
     }
 
+    clearResetRequested()
     await supabase.auth.signOut()
     setIsSubmitting(false)
     setIsDone(true)
@@ -89,7 +100,7 @@ function ResetPassword() {
     )
   }
 
-  if (!session) {
+  if (linkFailed || !session) {
     return (
       <AuthLayout title="Link expired" subtitle="This password reset link is invalid or has expired.">
         <div className="ya-form-alert ya-form-alert--error" role="alert">

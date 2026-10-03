@@ -13,4 +13,6 @@ export const AuthContext = createContext({
   holdPublicRedirect: false,
   setHoldPublicRedirect: () => {},
   isRecovery: false,
+  recoveryLinkFailed: false,
+  acknowledgeRecoveryLinkFailed: () => {},
 })

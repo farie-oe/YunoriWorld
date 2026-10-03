@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { CircleAlert, MailCheck } from 'lucide-react'
 import AuthLayout from '../layouts/AuthLayout'
 import Button from '../components/Button'
-import { supabase } from '../lib/supabase'
+import { supabase, markResetRequested } from '../lib/supabase'
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -47,6 +47,7 @@ function ForgotPassword() {
       return
     }
 
+    markResetRequested()
     setIsSubmitted(true)
   }
 

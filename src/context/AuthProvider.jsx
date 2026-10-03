@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { supabase, startedInRecovery } from '../lib/supabase'
+import { supabase, startedInRecovery, startedWithFailedRecoveryLink } from '../lib/supabase'
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
@@ -10,6 +10,8 @@ export function AuthProvider({ children }) {
   // password hasn't been changed yet; route guards send the user to
   // /reset-password instead of the dashboard.
   const [isRecovery, setIsRecovery] = useState(startedInRecovery)
+  // True when the user arrived via a reset link that Supabase rejected.
+  const [recoveryLinkFailed, setRecoveryLinkFailed] = useState(startedWithFailedRecoveryLink)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -41,6 +43,8 @@ export function AuthProvider({ children }) {
     holdPublicRedirect,
     setHoldPublicRedirect,
     isRecovery,
+    recoveryLinkFailed,
+    acknowledgeRecoveryLinkFailed: () => setRecoveryLinkFailed(false),
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
