@@ -120,6 +120,8 @@
   --shadow-sm: 0 2px 0 color-mix(in srgb, var(--color-outline) 18%, transparent);
   --shadow-md: 0 3px 0 color-mix(in srgb, var(--color-outline) 28%, transparent);
   --shadow-lg: 0 16px 40px var(--color-shadow);
+  /* Ambient depth under cards/panels; none by default, set per theme. */
+  --shadow-card: none;
 
   /* typography — an elegant editorial serif for branding and major
      headings, paired with a clean modern sans for functional UI text

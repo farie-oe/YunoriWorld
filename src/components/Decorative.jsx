@@ -94,7 +94,7 @@ export function Bow({ className = '' }) {
     >
       <g
         fill="var(--color-primary)"
-        stroke="var(--color-outline)"
+        stroke="color-mix(in srgb, var(--color-outline) 45%, var(--color-text))"
         strokeWidth="2.2"
         strokeLinejoin="round"
         strokeLinecap="round"

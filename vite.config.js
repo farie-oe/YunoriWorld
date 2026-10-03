@@ -23,7 +23,7 @@ export default defineConfig({
         // [data-theme='sakura-pink']) — the app's current default theme —
         // rather than inventing new brand colours.
         background_color: '#faf9f7',
-        theme_color: '#c98fa7',
+        theme_color: '#f9f4ef',
         icons: [
           { src: '/icons/icon-192.png', sizes: '192x192', type: 'image/png', purpose: 'any' },
           { src: '/icons/icon-512.png', sizes: '512x512', type: 'image/png', purpose: 'any' },

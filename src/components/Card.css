@@ -2,6 +2,7 @@
   background: var(--color-surface);
   border: var(--outline);
   border-radius: var(--radius-sketch-lg);
+  box-shadow: var(--shadow-card);
   padding: var(--space-5);
   transition: box-shadow 0.15s ease, transform 0.15s ease;
 }

@@ -14,23 +14,23 @@
   --color-bg: #f6f3ee;
   --color-surface: rgba(255, 253, 250, 0.94);
   --color-surface-secondary: rgba(236, 231, 223, 0.9);
-  --color-text: #3b1f3f;
-  --color-text-muted: #8c768f;
-  --color-border: #f1d6dd;
-  --color-outline: #3b1f3f;
-  --color-shadow: rgba(59, 31, 63, 0.18);
-  --color-tile-pink: color-mix(in srgb, #f4a3bd 34%, #ffffff);
+  --color-text: #3a2e2b;
+  --color-text-muted: #8f8079;
+  --color-border: #ece3db;
+  --color-outline: #cdbfb3;
+  --color-shadow: rgba(110, 80, 60, 0.18);
+  --color-tile-pink: #f5ece3;
   --color-tile-green: color-mix(in srgb, #7fd197 30%, #ffffff);
   /* Soft dusty rose accent (cherry-blossom-inspired), replacing the
      previous brown/gold — used for the Log In button, links, and the
      Orbit brand mark. Dark plum-brown text keeps the button readable
      against the pastel fill. */
-  --color-on-primary: #3b1f3f;
-  --color-primary: #f8bccd;
-  --color-primary-hover: #f3a4ba;
+  --color-on-primary: #3a2e2b;
+  --color-primary: #eadfd4;
+  --color-primary-hover: #dfd0c2;
   --color-secondary: #e7e1d8;
   --color-accent: #efe1de;
-  --color-focus: #8c4f68;
+  --color-focus: #8a6652;
   --color-danger: #c4455f;
 
   position: relative;
@@ -207,7 +207,7 @@
 .ya-auth-layout--login .ya-auth-layout__card,
 .ya-auth-layout--register .ya-auth-layout__card {
   padding: var(--space-6);
-  box-shadow: 0 6px 0 rgba(59, 31, 63, 0.18);
+  box-shadow: 0 6px 0 rgba(110, 80, 60, 0.16);
 }
 
 /* Desktop/tablet only: the 340px card reads a little small against the

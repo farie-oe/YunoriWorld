@@ -31,24 +31,33 @@
    each block below sets whichever is correct for its own primary.
 --------------------------------------------------------- */
 
-/* Yunori's own theme — the default, and the reference look for the whole
-   redesign: a blush-white page, soft pink primary, dark-plum text/outlines
-   and gold sparkle accents. Every other theme only swaps these same tokens,
-   so the outlined, chunky structure stays identical across themes. */
+/* Yunori's own theme ("Soft White") - the default. A warm white: a soft
+   white page, white cards, and greige / oatmeal accents with a warm taupe
+   outline and warm brown-charcoal text, plus a soft warm shadow under cards
+   for depth. No pink, and no yellow cream/gold, so it stays clearly distinct
+   from Sora (Warm Ivory, the gold theme) and Blossom Pink. Every other theme
+   only swaps these same tokens, so the outlined, chunky structure stays the
+   same across themes.
+   --color-tile-pink is the "first tile" tint used by the nav highlight and
+   dashboard - a warm oat here rather than pink. */
 [data-theme='sakura-pink'] {
-  --color-bg: #fff6f7;
-  --color-surface: #fffafb;
-  --color-surface-secondary: #fdeaee;
-  --color-primary: #f8bccd;
-  --color-primary-hover: #f3a4ba;
-  --color-secondary: #dfe2fa;
-  --color-accent: #f6d68a;
-  --color-text: #3b1f3f;
-  --color-text-muted: #8c768f;
-  --color-border: #f1d6dd;
-  --color-focus: #8c4f68;
+  --color-bg: #fdfbf9;
+  --color-surface: #fffefd;
+  --color-surface-secondary: #f6f0ea;
+  --color-sidebar: #f9f4ef;
+  --color-primary: #eadfd4;
+  --color-primary-hover: #dfd0c2;
+  --color-secondary: #efe6dd;
+  --color-accent: #d9b99c;
+  --color-text: #3a2e2b;
+  --color-text-muted: #8f8079;
+  --color-border: #ece3db;
+  --color-focus: #8a6652;
   --color-on-primary: var(--color-text);
-  --color-outline: #3b1f3f;
+  --color-outline: #cdbfb3;
+  --color-tile-pink: #f5ece3;
+  --color-shadow: rgba(110, 80, 60, 0.14);
+  --shadow-card: 0 8px 18px rgba(110, 80, 60, 0.09);
 }
 
 [data-theme='midnight-lavender'] {

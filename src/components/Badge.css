@@ -70,7 +70,7 @@
 .ya-badge--pink {
   background: var(--color-tile-pink);
   color: var(--color-text);
-  border-color: color-mix(in srgb, #f4a3bd 55%, transparent);
+  border-color: color-mix(in srgb, var(--color-outline) 45%, transparent);
 }
 
 .ya-badge--blue {
