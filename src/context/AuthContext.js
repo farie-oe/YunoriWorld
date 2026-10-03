@@ -12,4 +12,5 @@ export const AuthContext = createContext({
   // Supabase's session updates.
   holdPublicRedirect: false,
   setHoldPublicRedirect: () => {},
+  isRecovery: false,
 })

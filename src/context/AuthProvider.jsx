@@ -1,11 +1,15 @@
 import { useEffect, useState } from 'react'
 import { AuthContext } from './AuthContext'
-import { supabase } from '../lib/supabase'
+import { supabase, startedInRecovery } from '../lib/supabase'
 
 export function AuthProvider({ children }) {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [holdPublicRedirect, setHoldPublicRedirect] = useState(false)
+  // True while the session came from a password-recovery link and the
+  // password hasn't been changed yet; route guards send the user to
+  // /reset-password instead of the dashboard.
+  const [isRecovery, setIsRecovery] = useState(startedInRecovery)
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data }) => {
@@ -13,7 +17,9 @@ export function AuthProvider({ children }) {
       setLoading(false)
     })
 
-    const { data: subscription } = supabase.auth.onAuthStateChange((_event, newSession) => {
+    const { data: subscription } = supabase.auth.onAuthStateChange((event, newSession) => {
+      if (event === 'PASSWORD_RECOVERY') setIsRecovery(true)
+      if (event === 'SIGNED_OUT') setIsRecovery(false)
       setSession(newSession)
       setLoading(false)
     })
@@ -34,6 +40,7 @@ export function AuthProvider({ children }) {
     signOut,
     holdPublicRedirect,
     setHoldPublicRedirect,
+    isRecovery,
   }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
