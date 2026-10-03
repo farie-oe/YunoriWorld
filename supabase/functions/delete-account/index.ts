@@ -16,31 +16,47 @@
 
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2.45.4'
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
+// Only the real app origins may call this function from a browser. The bearer
+// token is still verified below either way; this just stops other websites
+// from being able to invoke it with a stolen/forwarded token from a page.
+const ALLOWED_ORIGINS = [
+  'https://www.yunori.world',
+  'https://yunori.world',
+  'http://localhost:5173',
+]
+
+function corsHeadersFor(req) {
+  const origin = req.headers.get('Origin') ?? ''
+  const headers = {
+    'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    Vary: 'Origin',
+  }
+  if (ALLOWED_ORIGINS.includes(origin)) headers['Access-Control-Allow-Origin'] = origin
+  return headers
 }
 
-function jsonResponse(body, status) {
+function jsonResponse(body, status, cors) {
   return new Response(JSON.stringify(body), {
     status,
-    headers: { ...CORS_HEADERS, 'Content-Type': 'application/json' },
+    headers: { ...cors, 'Content-Type': 'application/json' },
   })
 }
 
 Deno.serve(async (req) => {
+  const cors = corsHeadersFor(req)
+
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: CORS_HEADERS })
+    return new Response('ok', { headers: cors })
   }
 
   if (req.method !== 'POST') {
-    return jsonResponse({ error: 'Method not allowed.' }, 405)
+    return jsonResponse({ error: 'Method not allowed.' }, 405, cors)
   }
 
   const jwt = (req.headers.get('Authorization') ?? '').replace(/^Bearer\s+/i, '').trim()
   if (!jwt) {
-    return jsonResponse({ error: 'Missing authorization token.' }, 401)
+    return jsonResponse({ error: 'Missing authorization token.' }, 401, cors)
   }
 
   const supabaseUrl = Deno.env.get('SUPABASE_URL')
@@ -48,7 +64,7 @@ Deno.serve(async (req) => {
 
   if (!supabaseUrl || !serviceRoleKey) {
     console.error('delete-account: missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY.')
-    return jsonResponse({ error: 'Server misconfiguration.' }, 500)
+    return jsonResponse({ error: 'Server misconfiguration.' }, 500, cors)
   }
 
   // Service-role client: full privileges (bypasses RLS), used only
@@ -61,7 +77,7 @@ Deno.serve(async (req) => {
   // of the user id used below.
   const { data: userData, error: userError } = await admin.auth.getUser(jwt)
   if (userError || !userData?.user) {
-    return jsonResponse({ error: 'Could not verify your session. Please log in again.' }, 401)
+    return jsonResponse({ error: 'Could not verify your session. Please log in again.' }, 401, cors)
   }
   const userId = userData.user.id
 
@@ -75,7 +91,7 @@ Deno.serve(async (req) => {
   const { data: files, error: listError } = await admin.storage.from('avatars').list(userId)
   if (listError) {
     console.error('delete-account: failed to list avatar files:', listError)
-    return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500)
+    return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500, cors)
   }
 
   if (files && files.length > 0) {
@@ -83,7 +99,7 @@ Deno.serve(async (req) => {
     const { error: removeError } = await admin.storage.from('avatars').remove(paths)
     if (removeError) {
       console.error('delete-account: failed to remove avatar files:', removeError)
-      return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500)
+      return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500, cors)
     }
   }
 
@@ -96,8 +112,8 @@ Deno.serve(async (req) => {
   const { error: deleteError } = await admin.auth.admin.deleteUser(userId)
   if (deleteError) {
     console.error('delete-account: failed to delete auth user:', deleteError)
-    return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500)
+    return jsonResponse({ error: 'We could not delete your account right now. Please try again.' }, 500, cors)
   }
 
-  return jsonResponse({ success: true }, 200)
+  return jsonResponse({ success: true }, 200, cors)
 })
